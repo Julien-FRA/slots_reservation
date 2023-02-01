@@ -1,19 +1,21 @@
 package controller
 
 import (
+	"app/controller/crud"
 	"fmt"
+	"github.com/gorilla/mux"
 	"log"
 	"net/http"
-
-	"github.com/go-chi/chi/v5"
 )
 
-func initHandlers() {
+var router *mux.Router
 
+func initHandlers() {
+	router.HandleFunc("/user", userController.GetAllUsers).Methods("GET")
 }
 
 func Start() {
-	router := chi.NewRouter()
+	router = mux.NewRouter()
 
 	initHandlers()
 	fmt.Printf("router initialized and listening on 3200\n")

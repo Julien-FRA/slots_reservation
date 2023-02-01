@@ -2,7 +2,7 @@ package main
 
 import (
 	"app/controller"
-	"app/model"
+	"app/model/crud"
 )
 
 func main() {

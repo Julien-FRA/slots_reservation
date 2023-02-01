@@ -13,19 +13,12 @@ import (
 	_ "github.com/lib/pq"
 )
 
-type connection struct {
-	Host     string
-	Port     string
-	User     string
-	Password string
-	DBName   string
-}
-
 // declare a db object, where we can use throughout the model package
 // so in blog.go, we have access to this object
 var db *sql.DB
 
 func Init() {
+	fmt.Println(db)
 	err := godotenv.Load("../.env")
 
 	if err != nil {
