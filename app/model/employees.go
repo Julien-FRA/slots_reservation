@@ -57,7 +57,6 @@ func GetEmployee(id uint64) (Employee, error) {
 	if err != nil {
 		return employee, err
 	}
-
 	defer row.Close()
 
 	if row.Next() {
