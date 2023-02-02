@@ -1,92 +1,79 @@
-CREATE TABLE IF NOT EXISTS posts (
+create table if not exists posts (
     id serial not null unique,
     title varchar(64),
     content text,
     primary key(id)
 );
 
-CREATE TABLE IF NOT EXISTS `user` (
-    `idUser` int NOT NULL AUTO_INCREMENT,
-    `email` varchar(64) NULL ,
-    `name` varchar(64) NULL ,
-    `password` varchar(64) NULL ,
-    `role` int NULL ,
-    PRIMARY KEY (
-        `idUser`
-    )
+create table if not exists users (
+    idUser serial not null unique,
+    email varchar(64) null,
+    name varchar(64) null,
+    password varchar(64) null,
+    role integer null,
+    primary key(idUser)
 );
 
-CREATE TABLE IF NOT EXISTS `professional` (
-    `idProfessional` int NOT NULL AUTO_INCREMENT ,
-    `idUser` int  NOT NULL ,
-    `idTimeSlot` int  NOT NULL ,
-    `name` varchar(64)  NULL ,
-    `adress` varchar(64)  NULL ,
-    `service` varchar(64)  NULL ,
-    PRIMARY KEY (
-        `idProfessional`
-    )
-);
+insert into users(email, name, password, role)
+values
+    ('juan@gmail.com', 'juan', 'password', 0),
+    ('alex@gmail.com', 'alex', 'password', 1);
 
-CREATE TABLE IF NOT EXISTS `customer` (
-    `idCustomer` int NOT NULL AUTO_INCREMENT ,
-    `idUser` int  NOT NULL ,
-    PRIMARY KEY (
-        `idCustomer`
-    )
-);
+insert into posts(title, content)
+values
+    ('Hello World', 'The obligatory Hello World Post ...'),
+    ('Another Post', 'Yet another blog post about something exciting');
 
-CREATE TABLE IF NOT EXISTS `employee` (
-    `idEmployee` int  NOT NULL ,
-    `name` varchar(64)  NOT NULL ,
-    `description` varchar(128)  NOT NULL ,
-    `price` int  NOT NULL ,
-    PRIMARY KEY (
-        `idEmployee`
-    )
-);
-
-CREATE TABLE IF NOT EXISTS `slot` (
-    `idSlot` int  NOT NULL AUTO_INCREMENT ,
-    `idTimeSlot` int  NOT NULL ,
-    `idCustomer` in  NOT NULL ,
-    `idEmployee` int  NOT NULL ,
-    `day` date NULL ,
-    `hour` int NULL ,
-    PRIMARY KEY (
-        `idSlot`
-    )
-);
-
-CREATE TABLE IF NOT EXISTS `timeSlot` (
-    `idTimeSlot` int  NOT NULL AUTO_INCREMENT ,
-    `day` date  NOT NULL ,
-    `opening` int  NOT NULL ,
-    `closure` int  NOT NULL ,
-    PRIMARY KEY (
-        `idTimeSlot`
-    )
-);
-
-ALTER TABLE `user` ADD CONSTRAINT `fk_user_idUser` FOREIGN KEY(`idUser`)
-    REFERENCES `customer` (`idUser`);
-
-ALTER TABLE `professional` ADD CONSTRAINT `fk_professional_idUser` FOREIGN KEY(`idUser`)
-    REFERENCES `user` (`idUser`);
-
-ALTER TABLE `professional` ADD CONSTRAINT `fk_professional_idTimeSlot` FOREIGN KEY(`idTimeSlot`)
-    REFERENCES `timeSlot` (`idTimeSlot`);
-
-ALTER TABLE `slot` ADD CONSTRAINT `fk_slot_idCustomer` FOREIGN KEY(`idCustomer`)
-    REFERENCES `customer` (`idCustomer`);
-
-ALTER TABLE `slot` ADD CONSTRAINT `fk_slot_idEmployee` FOREIGN KEY(`idEmployee`)
-    REFERENCES `employee` (`idEmployee`);
-
-ALTER TABLE `timeSlot` ADD CONSTRAINT `fk_timeSlot_idTimeSlot` FOREIGN KEY(`idTimeSlot`)
-    REFERENCES `slot` (`idTimeSlot`);
-
-
-INSERT INTO posts(title, content) VALUES ('Hello World', 'The obligatory Hello World Post ...'), ('Another Post', 'Yet another blog post about something exciting');
-
-INSERT INTO user(email, name, password, role) VALUES ('juan@gmail.com', 'Juan', 'juanpassword', 0), ('alex@gmail.com', 'Alex', 'alexpassword', 1), ('julien@gmail.com', 'Julien', 'julienpassword', 1);
+-- create table if not exists professionals (
+--     idProfessional serial not null unique,
+--     idUser integer,
+--     idTimeSlot integer not null,
+--     name varchar(64)  null,
+--     adress varchar(64)  null,
+--     service varchar(64)  null,
+--
+--     CONSTRAINT fk_user  FOREIGN KEY(idUser)
+--         REFERENCES users(idUser) ON DELETE CASCADE,
+--
+--     CONSTRAINT fk_timeSlot FOREIGN KEY(idTimeSlot)
+--         REFERENCES timeSlots(idTimeSlot)  ON DELETE CASCADE
+-- );
+--
+-- create table if not exists customers (
+--     idCustomer serial not null unique,
+--     idUser integer,
+--     CONSTRAINT fk_idUser FOREIGN KEY(idUser)
+--         REFERENCES users(idUser) ON DELETE CASCADE
+-- );
+--
+-- create table if not exists employees (
+--     idEmployee serial not null unique,
+--     name varchar(64) null,
+--     description varchar(64) null,
+--     price integer null
+-- );
+--
+-- create table if not exists slots (
+--     idSlot serial not null unique,
+--     idTimeSlot integer,
+--     idCustomer integer,
+--     idEmployee integer,
+--     day date null,
+--     hour integer null,
+--
+--     CONSTRAINT fk_idCustomer FOREIGN KEY(idCustomer)
+--         REFERENCES customers(idCustomer) ON DELETE CASCADE,
+--
+--     CONSTRAINT fk_idEmployee FOREIGN KEY(idEmployee)
+--         REFERENCES employees(idEmployee) ON DELETE CASCADE
+-- );
+--
+-- create table if not exists timeSlots (
+--     idTimeSlot serial not null unique,
+--     day date null,
+--     opening integer not null,
+--     closure integer not null,
+--     idSlot integer,
+--     CONSTRAINT fk_idSlot FOREIGN KEY(idSlot)
+--         REFERENCES slots(idTimeSlot) ON DELETE CASCADE
+-- );

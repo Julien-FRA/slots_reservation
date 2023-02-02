@@ -1,13 +1,13 @@
 package controller
 
 import (
-	"app/model/crud"
+	"app/model"
 	"encoding/json"
 	"net/http"
 	_ "strconv"
 )
 
-func UserController(w http.ResponseWriter, r *http.Request) {
+func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	user, err := model.GetAllUsers()

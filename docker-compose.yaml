@@ -1,38 +1,35 @@
-version: "3.8"
+version: '3'
 
 services:
-  database:
-    image: mariadb
+  postgres:
+    image: postgres:15
     restart: always
-    ports:
-      - "3306:3306"
+    networks:
+      - backend
     volumes:
+      - ./db_data:/var/lib/postgresql/data
       - ./app/config/init.sql:/docker-entrypoint-initdb.d/10-init.sql
-    environment:
-      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
-      MARIADB_DATABASE: ${MARIADB_DATABASE}
+    env_file:
+      - ./app/config/.env
     healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$MARIADB_ROOT_PASSWORD" ]
-      interval: 5s
-      timeout: 5s
-      retries: 5
+      test: [ "CMD", "pg_isready", "-q", "-d", "devdb", "-U", "dev" ]
+      timeout: 45s
+      interval: 10s
+      retries: 10
 
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    restart: on-failure
-    environment:
-      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
-      MARIADB_DATABASE: ${MARIADB_DATABASE}
+    build: app
     ports:
-      - "8097:8097"
+      - 3200:3200
+    networks:
+      - backend
     depends_on:
-      database:
+      postgres:
         condition: service_healthy
 
-  adminer:
-    image: adminer
-    restart: always
-    ports:
-      - "8080:8080"
+volumes:
+  db_data:
+
+networks:
+  backend:
+    driver: bridge
