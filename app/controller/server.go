@@ -20,7 +20,7 @@ func initHandlers() {
 	router.HandleFunc("/api/post/delete/{id}", controller.DeletePost).Methods("DELETE")
 
 	// Router for user test
-	//router.HandleFunc("/api/posts", controller.GetAllUsers).Methods("GET")
+	router.HandleFunc("/api/users", controller.GetAllUsers).Methods("GET")
 }
 
 func Start() {

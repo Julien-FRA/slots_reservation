@@ -11,7 +11,7 @@ type User struct {
 func GetAllUsers() ([]User, error) {
 	var users []User
 
-	query := `select idUser, email, name, password, role from user;`
+	query := `select idUser, email, name, password, role from users;`
 
 	rows, err := db.Query(query)
 	if err != nil {
