@@ -25,6 +25,7 @@ func initHandlers() {
 	router.HandleFunc("/api/user/create", controller.CreateUser).Methods("POST")
 	router.HandleFunc("/api/user/update", controller.UpdateUser).Methods("PUT")
 	router.HandleFunc("/api/user/delete/{id}", controller.DeleteUser).Methods("DELETE")
+	router.HandleFunc("/api/user/role/{id}", controller.RolesManagement).Methods("GET")
 }
 
 func Start() {
