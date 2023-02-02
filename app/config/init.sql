@@ -1,5 +1,5 @@
 create table posts (
-    id int not null unique,
+    id serial not null unique,
     title varchar(64),
     content text,
     primary key(id)
