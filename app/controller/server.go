@@ -32,6 +32,10 @@ func initHandlers() {
 	router.HandleFunc("/api/employee/create", controller.CreateEmployee).Methods("POST")
 	router.HandleFunc("/api/employee/update", controller.UpdateEmployee).Methods("PUT")
 	router.HandleFunc("/api/employee/delete/{id}", controller.DeleteEmployee).Methods("DELETE")
+
+  //check status user
+	router.HandleFunc("/api/user/role/{id}", controller.RolesManagement).Methods("GET")
+
 }
 
 func Start() {
