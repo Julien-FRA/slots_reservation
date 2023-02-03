@@ -8,7 +8,7 @@ create table if not exists users (
     idUser serial not null unique primary key,
     email varchar(64) null,
     name varchar(64) null,
-    password varchar(64) null,
+    password varchar(128) null,
     role integer null
 );
 
