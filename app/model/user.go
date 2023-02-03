@@ -21,6 +21,11 @@ type UserUpdate struct {
 	ROLE        int16  `json:"role"`
 }
 
+type UserLogin struct {
+	EMAIL    string `json:"email"`
+	PASSWORD string `json:"password"`
+}
+
 func GetAllUsers() ([]User, error) {
 	var users []User
 
@@ -89,7 +94,7 @@ func GetUser(id uint64) (User, error) {
 	return user, nil
 }
 
-func CreateUser(user User) error {
+func RegisterUser(user User) error {
 
 	query := `insert into users(email, name, password, role) values($1, $2, $3, $4);`
 
@@ -106,6 +111,38 @@ func CreateUser(user User) error {
 	}
 
 	return nil
+}
+
+func LoginUser(userLogin UserLogin) (bool, error) {
+	IsLogin := false
+
+	query := `select email, password from users where email=$1;`
+
+	row, err := db.Query(query, userLogin.EMAIL)
+	if err != nil {
+		return IsLogin, err
+	}
+
+	defer row.Close()
+
+	for row.Next() {
+		var email, password string
+
+		err := row.Scan(&email, &password)
+
+		if err != nil {
+			return IsLogin, err
+		}
+
+		if email == userLogin.EMAIL {
+			err = bcrypt.CompareHashAndPassword([]byte(password), []byte(userLogin.PASSWORD))
+			if err != nil {
+				return IsLogin, err
+			}
+			IsLogin = true
+		}
+	}
+	return IsLogin, err
 }
 
 func UpdateUser(user UserUpdate) error {
