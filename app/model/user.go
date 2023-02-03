@@ -1,11 +1,24 @@
 package model
 
+import (
+	"golang.org/x/crypto/bcrypt"
+)
+
 type User struct {
 	ID       uint64 `json:"idUser"`
 	EMAIL    string `json:"email"`
 	NAME     string `json:"name"`
 	PASSWORD string `json:"password"`
 	ROLE     int16  `json:"role"`
+}
+
+type UserUpdate struct {
+	ID          uint64 `json:"idUser"`
+	EMAIL       string `json:"email"`
+	NAME        string `json:"name"`
+	PASSWORD    string `json:"password"`
+	NEWPASSWORD string `json:"newpassword"`
+	ROLE        int16  `json:"role"`
 }
 
 func GetAllUsers() ([]User, error) {
@@ -80,7 +93,13 @@ func CreateUser(user User) error {
 
 	query := `insert into users(email, name, password, role) values($1, $2, $3, $4);`
 
-	_, err := db.Exec(query, user.EMAIL, user.NAME, user.PASSWORD, user.ROLE)
+	hash, err := bcrypt.GenerateFromPassword([]byte(user.PASSWORD), 14)
+
+	if err != nil {
+		return err
+	}
+
+	_, err = db.Exec(query, user.EMAIL, user.NAME, hash, user.ROLE)
 
 	if err != nil {
 		return err
@@ -89,14 +108,50 @@ func CreateUser(user User) error {
 	return nil
 }
 
-func UpdateUser(user User) error {
+func UpdateUser(user UserUpdate) error {
 
 	query := `update users set email=$1, name=$2, password=$3, role=$4 where idUser=$5;`
 
-	_, err := db.Exec(query, user.EMAIL, user.NAME, user.PASSWORD, user.ROLE, user.ID)
+	queryVerify := `select password from users where idUser=$1;`
+
+	row, err := db.Query(queryVerify, user.ID)
 	if err != nil {
 		return err
 	}
+
+	defer row.Close()
+
+	for row.Next() {
+		var password string
+
+		err := row.Scan(&password)
+
+		if err != nil {
+			return err
+		}
+
+		err = bcrypt.CompareHashAndPassword([]byte(password), []byte(user.PASSWORD))
+
+		if err == nil {
+
+			if len([]rune(user.NEWPASSWORD)) > 0 {
+				hash, err := bcrypt.GenerateFromPassword([]byte(user.NEWPASSWORD), 14)
+				if err != nil {
+					return err
+				}
+				_, err = db.Exec(query, user.EMAIL, user.NAME, hash, user.ROLE, user.ID)
+			} else {
+				hash, err := bcrypt.GenerateFromPassword([]byte(user.PASSWORD), 14)
+				if err != nil {
+					return err
+				}
+				_, err = db.Exec(query, user.EMAIL, user.NAME, hash, user.ROLE, user.ID)
+			}
+
+		}
+		return err
+	}
+
 	return nil
 }
 

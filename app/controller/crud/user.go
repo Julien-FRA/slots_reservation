@@ -69,7 +69,7 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	decoder := json.NewDecoder(r.Body)
-	var user model.User
+	var user model.UserUpdate
 	err := decoder.Decode(&user)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
