@@ -19,10 +19,11 @@ func initHandlers() {
 	router.HandleFunc("/api/post/update", controller.UpdatePost).Methods("PUT")
 	router.HandleFunc("/api/post/delete/{id}", controller.DeletePost).Methods("DELETE")
 
-	// Router for user test
+	// Router for user
 	router.HandleFunc("/api/users", controller.GetAllUsers).Methods("GET")
 	router.HandleFunc("/api/user/{id}", controller.GetUser).Methods("GET")
-	router.HandleFunc("/api/user/create", controller.CreateUser).Methods("POST")
+	router.HandleFunc("/api/user/register", controller.RegisterUser).Methods("POST")
+	router.HandleFunc("/api/user/login", controller.LoginUser).Methods("POST")
 	router.HandleFunc("/api/user/update", controller.UpdateUser).Methods("PUT")
 	router.HandleFunc("/api/user/delete/{id}", controller.DeleteUser).Methods("DELETE")
 
@@ -33,7 +34,7 @@ func initHandlers() {
 	router.HandleFunc("/api/employee/update", controller.UpdateEmployee).Methods("PUT")
 	router.HandleFunc("/api/employee/delete/{id}", controller.DeleteEmployee).Methods("DELETE")
 
-  //check status user
+	//check status user
 	router.HandleFunc("/api/user/role/{id}", controller.RolesManagement).Methods("GET")
 
 }
