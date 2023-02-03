@@ -26,6 +26,13 @@ func initHandlers() {
 	router.HandleFunc("/api/user/update", controller.UpdateUser).Methods("PUT")
 	router.HandleFunc("/api/user/delete/{id}", controller.DeleteUser).Methods("DELETE")
 
+	// Router for professionals  test
+	router.HandleFunc("/api/shops", controller.GetAllShops).Methods("GET")
+	router.HandleFunc("/api/shop/{id}", controller.GetShop).Methods("GET")
+	router.HandleFunc("/api/shop/create", controller.CreateShop).Methods("POST")
+	router.HandleFunc("/api/shop/update", controller.UpdateShop).Methods("PUT")
+	router.HandleFunc("/api/shop/delete/{id}", controller.DeleteShop).Methods("DELETE")
+
 	//router for employees
 	router.HandleFunc("/api/employees", controller.GetAllEmployees).Methods("GET")
 	router.HandleFunc("/api/employee/{id}", controller.GetEmployee).Methods("GET")
@@ -33,7 +40,7 @@ func initHandlers() {
 	router.HandleFunc("/api/employee/update", controller.UpdateEmployee).Methods("PUT")
 	router.HandleFunc("/api/employee/delete/{id}", controller.DeleteEmployee).Methods("DELETE")
 
-  //check status user
+	//check status user
 	router.HandleFunc("/api/user/role/{id}", controller.RolesManagement).Methods("GET")
 
 }
