@@ -2,6 +2,7 @@ package model
 
 type Employee struct {
 	ID          uint64 `json:"idEmployee"`
+	ID_SHOP		uint64 `json:"idShop"`
 	EMAIL       string `json:"email"`
 	PHONE       string `json:"phone"`
 	NAME        string `json:"name"`
@@ -14,7 +15,7 @@ type Employee struct {
 func GetAllEmployees() ([]Employee, error) {
 	var employees []Employee
 
-	query := `select idEmployee, email, phone, name, lastName, expertise, description, price from employees;`
+	query := `select idEmployee, idShop, email, phone, name, lastName, expertise, description, price from employees;`
 
 	rows, err := db.Query(query)
 	if err != nil {
@@ -24,16 +25,17 @@ func GetAllEmployees() ([]Employee, error) {
 	defer rows.Close()
 
 	for rows.Next() {
-		var idEmployee, price uint64
+		var idEmployee, idShop,price uint64
 		var email, phone, name, lastName, expertise, description string
 
-		err := rows.Scan(&idEmployee, &email, &phone, &name, &lastName, &expertise, &description, &price)
+		err := rows.Scan(&idEmployee, &idShop, &email, &phone, &name, &lastName, &expertise, &description, &price)
 		if err != nil {
 			return employees, err
 		}
 
 		employee := Employee{
 			ID:          idEmployee,
+			ID_SHOP: 	 idShop,
 			EMAIL:       email,
 			PHONE:       phone,
 			NAME:        name,
@@ -42,17 +44,15 @@ func GetAllEmployees() ([]Employee, error) {
 			DESCRIPTION: description,
 			PRICE:       price,
 		}
-
 		employees = append(employees, employee)
 	}
-
 	return employees, nil
 }
 
 func GetEmployee(id uint64) (Employee, error) {
 	var employee Employee
 
-	query := `select idEmployee, email, phone, name, lastName, expertise, description, price from employees where idEmployee=$1;`
+	query := `select idEmployee, idShop, email, phone, name, lastName, expertise, description, price from employees where idEmployee=$1;`
 	row, err := db.Query(query, id)
 	if err != nil {
 		return employee, err
@@ -60,16 +60,17 @@ func GetEmployee(id uint64) (Employee, error) {
 	defer row.Close()
 
 	if row.Next() {
-		var idEmployee, price uint64
+		var idEmployee, idShop, price uint64
 		var email, phone, name, lastName, expertise, description string
 
-		err := row.Scan(&idEmployee, &email, &phone, &name, &lastName, &expertise, &description, &price)
+		err := row.Scan(&idEmployee, &idShop, &email, &phone, &name, &lastName, &expertise, &description, &price)
 		if err != nil {
 			return employee, err
 		}
 
 		employee = Employee{
 			ID:          idEmployee,
+			ID_SHOP: 	 idShop,
 			EMAIL:       email,
 			PHONE:       phone,
 			NAME:        name,
