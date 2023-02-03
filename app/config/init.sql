@@ -12,16 +12,6 @@ create table if not exists users (
     role integer null
 );
 
-insert into users(email, name, password, role)
-values
-    ('juan@gmail.com', 'juan', 'password', 0),
-    ('alex@gmail.com', 'alex', 'password', 1);
-
-insert into posts(title, content)
-values
-    ('Hello World', 'The obligatory Hello World Post ...'),
-    ('Another Post', 'Yet another blog post about something exciting');
-
 create table if not exists customers (
      idCustomer serial not null unique primary key,
      idUser integer,
@@ -31,7 +21,11 @@ create table if not exists customers (
 
 create table if not exists employees (
      idEmployee serial not null unique primary key,
+     email varchar(64) null,
+     phone varchar(64) null,
      name varchar(64) null,
+     lastName varchar(64) null,
+     expertise varchar(64) null,
      description varchar(64) null,
      price integer null
 );
@@ -70,3 +64,18 @@ create table if not exists professionals (
      CONSTRAINT fk_timetable FOREIGN KEY(idTimetable)
      REFERENCES timetable(idTimetable) ON DELETE CASCADE
 );
+
+insert into users(email, name, password, role)
+values
+    ('juan@gmail.com', 'juan', 'password', 0),
+    ('alex@gmail.com', 'alex', 'password', 1);
+
+insert into posts(title, content)
+values
+    ('Hello World', 'The obligatory Hello World Post ...'),
+    ('Another Post', 'Yet another blog post about something exciting');
+
+insert into employees(email, phone, name, lastName, expertise, description, price)
+values
+    ('juan@gmail.com', '0624098203', 'juan','torres', 'tank', 'joue un dk sang', 25),
+    ('alex@gmail.com', '0632095234', 'alex', 'parent', 'dps', 'joue un dk givre (miskine)', 30);

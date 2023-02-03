@@ -6,22 +6,21 @@ import (
 	"github.com/gorilla/mux"
 	"net/http"
 	"strconv"
-	_ "strconv"
 )
 
-func GetAllUsers(w http.ResponseWriter, r *http.Request) {
+func GetAllEmployees(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
-	user, err := model.GetAllUsers()
+	employee, err := model.GetAllEmployees()
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(err.Error()))
 	} else {
-		json.NewEncoder(w).Encode(user)
+		json.NewEncoder(w).Encode(employee)
 	}
 }
 
-func GetUser(w http.ResponseWriter, r *http.Request) {
+func GetEmployee(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	param := mux.Vars(r)["id"]
@@ -32,30 +31,28 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user, err := model.GetUser(id)
+	employee, err := model.GetEmployee(id)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(err.Error()))
 		return
 	}
-
-	json.NewEncoder(w).Encode(user)
-
+	json.NewEncoder(w).Encode(employee)
 }
 
-func CreateUser(w http.ResponseWriter, r *http.Request) {
+func CreateEmployee(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	decoder := json.NewDecoder(r.Body)
-	var user model.User
-	err := decoder.Decode(&user)
+	var employee model.Employee
+	err := decoder.Decode(&employee)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(err.Error()))
 		return
 	}
 
-	err = model.CreateUser(user)
+	err = model.CreateEmployee(employee)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(err.Error()))
@@ -65,19 +62,19 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func UpdateUser(w http.ResponseWriter, r *http.Request) {
+func UpdateEmployee(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	decoder := json.NewDecoder(r.Body)
-	var user model.User
-	err := decoder.Decode(&user)
+	var employee model.Employee
+	err := decoder.Decode(&employee)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(err.Error()))
 		return
 	}
 
-	err = model.UpdateUser(user)
+	err = model.UpdateEmployee(employee)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(err.Error()))
@@ -87,7 +84,7 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func DeleteUser(w http.ResponseWriter, r *http.Request) {
+func DeleteEmployee(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	param := mux.Vars(r)
@@ -99,34 +96,12 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = model.DeleteUser(id)
+	err = model.DeleteEmployee(id)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(err.Error()))
 		return
 	} else {
 		w.WriteHeader(http.StatusOK)
-	}
-}
-
-func RolesManagement(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-
-	param := mux.Vars(r)
-	idStr := param["id"]
-	id, err := strconv.ParseUint(idStr, 10, 64)
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(err.Error()))
-		return
-	}
-
-	query, err := model.IsUserAdmin(id)
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(err.Error()))
-		return
-	} else {
-		json.NewEncoder(w).Encode(query)
 	}
 }
