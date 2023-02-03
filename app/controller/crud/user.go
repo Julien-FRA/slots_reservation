@@ -108,3 +108,25 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 	}
 }
+
+func RolesManagement(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	param := mux.Vars(r)
+	idStr := param["id"]
+	id, err := strconv.ParseUint(idStr, 10, 64)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(err.Error()))
+		return
+	}
+
+	query, err := model.IsUserAdmin(id)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(err.Error()))
+		return
+	} else {
+		json.NewEncoder(w).Encode(query)
+	}
+}

@@ -111,3 +111,31 @@ func DeleteUser(id uint64) error {
 	return nil
 
 }
+
+func IsUserAdmin(id uint64) (bool, error) {
+	IsUserAdmin := false
+	query := `select role from users where idUser=$1;`
+	row, err := db.Query(query, id)
+	if err != nil {
+		return IsUserAdmin, err
+	}
+
+	defer row.Close()
+
+	for row.Next() {
+		var role int16
+
+		err := row.Scan(&role)
+
+		if err != nil {
+			return IsUserAdmin, err
+		}
+
+		if role >= 1 {
+			IsUserAdmin = false
+		} else {
+			IsUserAdmin = true
+		}
+	}
+	return IsUserAdmin, nil
+}
