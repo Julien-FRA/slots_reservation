@@ -22,7 +22,6 @@ create table if not exists shops (
      service varchar(64)  null,
      CONSTRAINT fk_user  FOREIGN KEY(idUser)
      REFERENCES users(idUser) ON DELETE CASCADE
-
 );
 
 create table if not exists employees (
@@ -65,4 +64,13 @@ insert into users(email, name, password, role)
 values
     ('juan@gmail.com', 'juan', 'password', 0),
     ('alex@gmail.com', 'alex', 'password', 1);
+insert into shops(idUser, name, address, service)
+values
+    (1,'juan@gmail.com', '0624098203', 'juan');
+
+insert into employees(idShop, email, phone, name, lastName, expertise, description, price)
+values
+    (1,'juan@gmail.com', '0624098203', 'juan','torres', 'tank', 'joue un dk sang', 25),
+    (1,'alex@gmail.com', '0632095234', 'alex', 'parent', 'dps', 'joue un dk givre (miskine)', 30);
+
 
