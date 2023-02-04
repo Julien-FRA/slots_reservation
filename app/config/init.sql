@@ -51,7 +51,7 @@ create table if not exists workingHours (
 create table if not exists appointement (
       idAppointement serial not null unique primary key,
       idEmployee integer,
-      idCustomer integer,
+      idCustomer integer null,
       day date ,
       startTime timestamp,
       CONSTRAINT fk_employeesAppointement  FOREIGN KEY(idEmployee)
@@ -72,5 +72,12 @@ insert into employees(idShop, email, phone, name, lastName, expertise, descripti
 values
     (1,'juan@gmail.com', '0624098203', 'juan','torres', 'tank', 'joue un dk sang', 25),
     (1,'alex@gmail.com', '0632095234', 'alex', 'parent', 'dps', 'joue un dk givre (miskine)', 30);
+
+insert into workingHours(idEmployee, day, startTime, endTime)
+values
+    (1,'2023-01-01','2023-03-31 4:35:20','2023-03-31 4:35:20'),
+    (1, '2023-01-02','2023-03-31 4:35:20','2023-03-31 4:35:20'),
+    (2,'2023-01-01','2023-03-31 4:35:20','2023-03-31 4:35:20'),
+    (2, '2023-01-02','2023-03-31 4:35:20','2023-03-31 4:35:20')
 
 
