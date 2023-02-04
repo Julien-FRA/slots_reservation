@@ -23,8 +23,8 @@ const Header = () => {
             </Nav.Link>
           </Nav>
           <Form className="d-flex">
-          <BtnLink link='/login' placeholder='Login' className='btn btn-dark' />  
-          <BtnLink link='/register' placeholder='Register' className='btn btn-secondary' />  
+          <BtnLink link='/login' placeholder='Login' className='btn btn-dark mx-2' />  
+          <BtnLink link='/register' placeholder='Register' className='btn btn-secondary mx-2' />  
           </Form>
         </Navbar.Collapse>
       </Container>

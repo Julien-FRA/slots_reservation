@@ -5,7 +5,7 @@ import InputText from '../Input/InputText'
 
 const LoginForm = () => {
   return (
-    <form action="" method="">
+    <form action="" method="" className='d-flex flex-column'>
       <InputText name="pseudo" placeholder="Enter your pseudo"/>
       <InputMail name="email" placeholder="Enter your @email"/>
       <InputPsw name="password" placeholder="Enter your password"/>
