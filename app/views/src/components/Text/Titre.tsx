@@ -1,8 +1,12 @@
 import React from 'react'
 
-const Titre = () => {
+interface TitreProps {
+  content?: string;
+}
+
+const Titre = ({content}: TitreProps) => {
   return (
-    <div>Titre</div>
+    <h1 className='mx-2 my-2'>{content}</h1>
   )
 }
 

@@ -1,9 +1,13 @@
 import React from 'react'
 
-const TextGeneric = () => {
+interface TextContentProps {
+  content?: string;
+}
+
+const TextContent = ({content}: TextContentProps) => {
   return (
-    <div>Text</div>
+    <p className='mx-2 my-2'>{content}</p>
   )
 }
 
-export default TextGeneric
+export default TextContent

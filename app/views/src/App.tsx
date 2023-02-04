@@ -1,14 +1,17 @@
 import { BrowserRouter as Router, Link } from "react-router-dom";
 import { RouterContainer } from "./Router";
-import NavbarContainer from "./components/Navbar";
+import Header from "./components/Inc/Header";
+import Footer from "./components/Inc/Footer";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './assets/css/main.css'
 
 const App = () => {
   return (
       <Router>
         <div>
-          <NavbarContainer/>
+          <Header/>
           <RouterContainer/>
+          <Footer />
         </div>
       </Router>
   );
