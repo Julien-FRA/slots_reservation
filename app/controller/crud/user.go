@@ -38,9 +38,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte(err.Error()))
 		return
 	}
-
 	json.NewEncoder(w).Encode(user)
-
 }
 
 func RegisterUser(w http.ResponseWriter, r *http.Request) {
