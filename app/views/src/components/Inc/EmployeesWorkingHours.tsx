@@ -4,13 +4,28 @@ import { User } from '../../services/HttpRequests';
 import { GetEmployeesWorkingHours } from '../../services/HttpRequests';
 
 function Schedule() {
-    const [schedule, setSchedule] = useState<User[]| any>([]);
+    const [schedule, setSchedule] = useState <any>([]);
   
     useEffect(() => {
       const loadSchedule = async () => {
         try {
-          const schedule = await GetEmployeesWorkingHours();
-          setSchedule(schedule)
+          const schedule:any = await GetEmployeesWorkingHours();
+          var regex = "([0-9]+(:[0-9]+)+)";
+          var regexDate = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
+
+          var scheduleRegex = [...schedule];
+          for (var i=0; i < schedule.length; i++) {
+            var dayRegex = schedule[i].day.match(regexDate);
+            var startTimeRegex = schedule[i].startTime.match(regex);
+            var endTimeRegex = schedule[i].endTime.match(regex);
+            var newDate = new Date(dayRegex[0]);
+            var weekDay = newDate.toLocaleString('en-us', {  weekday: 'long' });
+
+            scheduleRegex[i].day = weekDay;
+            scheduleRegex[i].startTime = startTimeRegex[0];
+            scheduleRegex[i].endTime = endTimeRegex[0];
+          }
+          setSchedule(scheduleRegex);
         } catch(error) {
           console.log(error);
         }

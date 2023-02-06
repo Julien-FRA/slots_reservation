@@ -50,11 +50,10 @@ func GetEmployeeWorkingHours(id uint64) ([]WorkingHours, error) {
 func GetShopEmployeesWorkingHours(id uint64) ([]ShopEmployeesWorkingHours, error) {
 	var shopEmployeesWorkingHours []ShopEmployeesWorkingHours
 
-	query := `select  workinghours.day, workinghours.startTime, workinghours.endTime,  employees.idEmployee, employees.name, shops.name from ((workinghours
-INNER JOIN employees ON workinghours.idEmployee = employees.idEmployee)
-INNER JOIN shops ON employees.idShop = shops.idShop) WHERE shops.idShop =$1;`
+	query := `select workingHours.day, workingHours.startTime, workingHours.endTime,  employees.idEmployee, employees.name, shops.name from ((workingHours
+INNER JOIN employees ON workingHours.idEmployee = employees.idEmployee)
+INNER JOIN shops ON employees.idShop = shops.idShop) WHERE shops.idShop =$1 ORDER BY workingHours.day;`
 
-	//ORDER BY workinghours.day
 	row, err := db.Query(query, id)
 	if err != nil {
 		return shopEmployeesWorkingHours, err
