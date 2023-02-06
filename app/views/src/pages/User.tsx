@@ -1,4 +1,4 @@
-import UserList from "../components/TableUser";
+import UserList from "../components/Inc/TableUser";
 
 const Users = () => (
     <>

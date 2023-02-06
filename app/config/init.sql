@@ -42,8 +42,8 @@ create table if not exists workingHours (
        idWorkingHours serial not null unique primary key,
        idEmployee integer,
        day date ,
-       startTime timestamp,
-       endTime timestamp,
+       startTime time,
+       endTime time,
        CONSTRAINT fk_employees  FOREIGN KEY(idEmployee)
        REFERENCES employees(idEmployee) ON DELETE CASCADE
 );
@@ -75,9 +75,9 @@ values
 
 insert into workingHours(idEmployee, day, startTime, endTime)
 values
-    (1,'2023-01-01','2023-03-31 4:35:20','2023-03-31 4:35:20'),
-    (1, '2023-01-02','2023-03-31 4:35:20','2023-03-31 4:35:20'),
-    (2,'2023-01-01','2023-03-31 4:35:20','2023-03-31 4:35:20'),
-    (2, '2023-01-02','2023-03-31 4:35:20','2023-03-31 4:35:20')
+    (1,'2023-01-01','14:35:20','15:35:20'),
+    (1, '2023-01-02','14:35:20','15:35:20'),
+    (2,'2023-01-01','14:35:20','15:35:20'),
+    (2, '2023-01-02','15:35:20','16:35:20')
 
 

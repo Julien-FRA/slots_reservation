@@ -1,7 +1,7 @@
 import { Table } from 'react-bootstrap';
 import { useState, useEffect } from "react";
-import { GetAllUsers } from '../services/HttpRequests';
-import { User } from '../services/HttpRequests';
+import { GetAllUsers } from '../../services/HttpRequests';
+import { User } from '../../services/HttpRequests';
 
 function UserList() {
   const [users, setUsers] = useState<User[]| any>([]);

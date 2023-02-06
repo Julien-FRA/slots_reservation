@@ -1,4 +1,11 @@
-.btn-link {
+div#root {
+    height: 100vh;
+}
+.container-fluid {
+    padding: 0px!important;
+}
+
+.btn-link, .nav-link {
     text-decoration: none;
     color: #212529;
 }
