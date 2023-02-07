@@ -20,7 +20,7 @@ create table if not exists shops (
      name varchar(64)  null,
      address varchar(64)  null,
      service varchar(64)  null,
-     CONSTRAINT fk_user  FOREIGN KEY(idUser)
+     CONSTRAINT fk_user FOREIGN KEY(idUser)
      REFERENCES users(idUser) ON DELETE CASCADE
 );
 
@@ -64,9 +64,11 @@ insert into users(email, name, password, role)
 values
     ('juan@gmail.com', 'juan', 'password', 0),
     ('alex@gmail.com', 'alex', 'password', 1);
+
 insert into shops(idUser, name, address, service)
 values
-    (1,'juan@gmail.com', '0624098203', 'juan');
+    (1,'Kiloutou', '15 Rue test', 'hairdresser'),
+    (2,'Uber', '10 Rue taste', 'barber');
 
 insert into employees(idShop, email, phone, name, lastName, expertise, description, price)
 values

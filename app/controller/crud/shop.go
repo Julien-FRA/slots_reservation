@@ -3,10 +3,11 @@ package controller
 import (
 	"app/model"
 	"encoding/json"
-	"github.com/gorilla/mux"
 	"net/http"
 	"strconv"
 	_ "strconv"
+
+	"github.com/gorilla/mux"
 )
 
 func GetAllShops(w http.ResponseWriter, r *http.Request) {
@@ -43,7 +44,6 @@ func GetShop(w http.ResponseWriter, r *http.Request) {
 }
 
 func CreateShop(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
 
 	decoder := json.NewDecoder(r.Body)
 	var shop model.Shop
@@ -60,6 +60,7 @@ func CreateShop(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte(err.Error()))
 		return
 	} else {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.WriteHeader(http.StatusOK)
 	}
 }
