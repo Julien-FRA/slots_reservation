@@ -47,7 +47,7 @@ function CreateShop() {
   };
   const [hasShop, setHasShop] = useState<any>(false);
   const [shopName, setShopName] = useState<any>({
-    idUser: 3, //CHANGE TO URL PARAMS
+    idUser: 1, //CHANGE TO URL PARAMS
     name: ' ',
     address:' ',
     service:' '

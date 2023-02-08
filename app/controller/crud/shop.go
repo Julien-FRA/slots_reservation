@@ -44,7 +44,8 @@ func GetShop(w http.ResponseWriter, r *http.Request) {
 }
 
 func CreateShop(w http.ResponseWriter, r *http.Request) {
-
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Content-Type", "application/json")
 	decoder := json.NewDecoder(r.Body)
 	var shop model.Shop
 	err := decoder.Decode(&shop)
@@ -60,7 +61,7 @@ func CreateShop(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte(err.Error()))
 		return
 	} else {
-		w.Header().Set("Access-Control-Allow-Origin", "*")
+
 		w.WriteHeader(http.StatusOK)
 	}
 }
