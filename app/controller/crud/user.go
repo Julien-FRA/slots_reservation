@@ -12,6 +12,7 @@ import (
 func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Type", "application/json")
+	w.Header().Add("Access-Control-Allow-Methods", "GET")
 
 	user, err := model.GetAllUsers()
 	if err != nil {
@@ -25,6 +26,7 @@ func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 func GetUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Type", "application/json")
+	w.Header().Add("Access-Control-Allow-Methods", "GET")
 
 	param := mux.Vars(r)["id"]
 	id, err := strconv.ParseUint(param, 10, 64)
@@ -46,6 +48,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 func RegisterUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Type", "application/json")
+	w.Header().Add("Access-Control-Allow-Methods", "POST")
 
 	decoder := json.NewDecoder(r.Body)
 	var user model.User
@@ -69,6 +72,7 @@ func RegisterUser(w http.ResponseWriter, r *http.Request) {
 func LoginUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Type", "application/json")
+	w.Header().Add("Access-Control-Allow-Methods", "GET")
 
 	decoder := json.NewDecoder(r.Body)
 	var user model.UserLogin
@@ -92,6 +96,7 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Type", "application/json")
+	w.Header().Add("Access-Control-Allow-Methods", "PUT")
 
 	decoder := json.NewDecoder(r.Body)
 	var user model.UserUpdate
@@ -115,6 +120,7 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Type", "application/json")
+	w.Header().Add("Access-Control-Allow-Methods", "DELETE")
 
 	param := mux.Vars(r)
 	idStr := param["id"]
