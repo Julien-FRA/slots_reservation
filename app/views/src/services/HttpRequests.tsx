@@ -22,11 +22,3 @@ export const GetEmployeesWorkingHours = async (): Promise<User | false> =>
       return response.data;
     })
     .catch((error) => false);
-
-export const getAllUsers = async (): Promise<User | false> =>
-  await axios
-    .get("http://localhost:3200/api/users")
-    .then((response) => {
-        return response.data;
-    })
-    .catch((error) => false);
