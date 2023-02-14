@@ -3,16 +3,17 @@ package controller
 import (
 	"app/model"
 	"encoding/json"
-	"github.com/gorilla/mux"
 	"net/http"
 	"strconv"
 	_ "strconv"
+
+	"github.com/gorilla/mux"
 )
 
 func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Type", "application/json")
-	w.Header().Add("Access-Control-Allow-Methods", "GET")
+	w.Header().Add("Access-Control-Allow-Methods", "*")
 
 	user, err := model.GetAllUsers()
 	if err != nil {
@@ -26,7 +27,7 @@ func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 func GetUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Type", "application/json")
-	w.Header().Add("Access-Control-Allow-Methods", "GET")
+	w.Header().Add("Access-Control-Allow-Methods", "*")
 
 	param := mux.Vars(r)["id"]
 	id, err := strconv.ParseUint(param, 10, 64)
@@ -48,7 +49,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 func RegisterUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Type", "application/json")
-	w.Header().Add("Access-Control-Allow-Methods", "POST")
+	w.Header().Add("Access-Control-Allow-Methods", "*")
 
 	decoder := json.NewDecoder(r.Body)
 	var user model.User
@@ -72,7 +73,7 @@ func RegisterUser(w http.ResponseWriter, r *http.Request) {
 func LoginUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Type", "application/json")
-	w.Header().Add("Access-Control-Allow-Methods", "GET")
+	w.Header().Add("Access-Control-Allow-Methods", "*")
 
 	decoder := json.NewDecoder(r.Body)
 	var user model.UserLogin
@@ -96,7 +97,7 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Type", "application/json")
-	w.Header().Add("Access-Control-Allow-Methods", "PUT")
+	w.Header().Add("Access-Control-Allow-Methods", "*")
 
 	decoder := json.NewDecoder(r.Body)
 	var user model.UserUpdate
@@ -120,7 +121,7 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Type", "application/json")
-	w.Header().Add("Access-Control-Allow-Methods", "DELETE")
+	w.Header().Add("Access-Control-Allow-Methods", "*")
 
 	param := mux.Vars(r)
 	idStr := param["id"]
@@ -144,7 +145,7 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 func RolesManagement(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Type", "application/json")
-	
+
 	param := mux.Vars(r)
 	idStr := param["id"]
 	id, err := strconv.ParseUint(idStr, 10, 64)

@@ -10,7 +10,7 @@ const LoginForm = () => {
       <InputText name="pseudo" placeholder="Enter your pseudo"/>
       <InputMail name="email" placeholder="Enter your @email"/>
       <InputPsw name="password" placeholder="Enter your password"/>
-      <BtnSubmit variant='dark' value='login' placeholder='Envoyer' />
+      <BtnSubmit variant='dark' value='login' placeholder='Envoyer' disabled={true} />
     </form>
   )
 }
