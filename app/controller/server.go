@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"github.com/rs/cors"
 )
 
 var router *mux.Router
@@ -55,7 +56,26 @@ func initHandlers() {
 func Start() {
 	router = mux.NewRouter()
 
+	corsOpts := cors.New(cors.Options{
+		AllowedOrigins: []string{"http://localhost:3000"}, //for this base url
+		AllowedMethods: []string{
+			http.MethodGet, //http methods
+			http.MethodPost,
+			http.MethodPut,
+			http.MethodPatch,
+			http.MethodDelete,
+			http.MethodOptions,
+			http.MethodHead,
+		},
+
+		AllowedHeaders: []string{
+			"*",
+		},
+	})
+
+	handler := corsOpts.Handler(router)
+
 	initHandlers()
 	fmt.Printf("router initialized and listening on 3200\n")
-	log.Fatal(http.ListenAndServe(":3200", router))
+	log.Fatal(http.ListenAndServe(":3200", handler))
 }

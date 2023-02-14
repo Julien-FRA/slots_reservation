@@ -1,5 +1,7 @@
 import axios from "axios";
 
+const PATH = 'http://localhost:3200/api';
+
 export interface User {
   idUser?: number;
   email?: string;
@@ -7,24 +9,16 @@ export interface User {
   password?: string;
 }
 
-export const getAllUsers = async (): Promise<User> =>
-  await axios
-    .get("http://localhost:3200/api/users")
-    .then((response) => {
-      return response.data;
-    })
-    .catch((error) => false);
-
 export const registerUser = async (
   $email: string,
-  $pseudo: string,
+  $name: string,
   $password: string,
   $role = 0
 ) => {
   await axios
-    .post("http://localhost:3200/api/user/register", {
+    .post(`${PATH}/user/register`, {
       email: $email,
-      pseudo: $pseudo,
+      name: $name,
       password: $password
     })
     .then((res) => {
@@ -33,4 +27,21 @@ export const registerUser = async (
     .catch((err) => {
       console.log(err);
     });
+};
+
+export const loginUser = async (
+  $email: string,
+  $password: string
+) => {
+  await axios
+    .post(`${PATH}/user/login`, {
+      email: $email,
+      password: $password
+    })
+    .then((res) => {
+      console.log(res);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
 };
