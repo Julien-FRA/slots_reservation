@@ -1,4 +1,5 @@
 import axios from "axios";
+import { IUser } from "../schemas/User";
 
 const PATH = 'http://localhost:3200/api';
 
@@ -9,39 +10,26 @@ export interface User {
   password?: string;
 }
 
-export const registerUser = async (
-  $email: string,
-  $name: string,
-  $password: string,
-  $role = 0
-) => {
-  await axios
-    .post(`${PATH}/user/register`, {
-      email: $email,
-      name: $name,
-      password: $password
-    })
-    .then((res) => {
-      console.log(res);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
+export interface UserLogin {
+  email?: string;
+  password?: string;
+}
 
-export const loginUser = async (
-  $email: string,
-  $password: string
-) => {
-  await axios
-    .post(`${PATH}/user/login`, {
-      email: $email,
-      password: $password
-    })
-    .then((res) => {
-      console.log(res);
-    })
-    .catch((err) => {
-      console.log(err);
-    })
-};
+export const registerUser = async (user: IUser): Promise<User | false> => (
+  await axios.post(`${PATH}/user/register`, {
+    email: user.email,
+    name: user.name,
+    password: user.password
+  })
+    .then(res => res.data)
+    .catch(err => false)
+);
+
+export const loginUser = async (user: IUser): Promise<UserLogin | false> => (
+  await axios.post(`${PATH}/user/login`, {
+    email: user.email,
+    password: user.password
+  })
+  .then(res => res.data)
+  .catch(err => false)
+);

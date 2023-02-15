@@ -60,13 +60,13 @@ func RegisterUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = model.RegisterUser(user)
+	bool, err := model.RegisterUser(user)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(err.Error()))
 		return
 	} else {
-		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(bool)
 	}
 }
 

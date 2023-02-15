@@ -11,4 +11,7 @@ require (
 	golang.org/x/crypto v0.5.0
 )
 
-require github.com/felixge/httpsnoop v1.0.1 // indirect
+require (
+	github.com/felixge/httpsnoop v1.0.1 // indirect
+	github.com/golang-jwt/jwt/v4 v4.4.3
+)

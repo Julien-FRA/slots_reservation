@@ -94,23 +94,26 @@ func GetUser(id uint64) (User, error) {
 	return user, nil
 }
 
-func RegisterUser(user User) error {
+func RegisterUser(user User) (bool, error) {
+	IsRegister := false
 
 	query := `insert into users(email, name, password, role) values($1, $2, $3, $4);`
 
 	hash, err := bcrypt.GenerateFromPassword([]byte(user.PASSWORD), 14)
 
 	if err != nil {
-		return err
+		return IsRegister, err
 	}
 
 	_, err = db.Exec(query, user.EMAIL, user.NAME, hash, user.ROLE)
 
 	if err != nil {
-		return err
+		return IsRegister, err
 	}
 
-	return nil
+	IsRegister = true
+
+	return IsRegister, nil
 }
 
 func LoginUser(userLogin UserLogin) (bool, error) {
