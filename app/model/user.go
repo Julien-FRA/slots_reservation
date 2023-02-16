@@ -1,8 +1,14 @@
 package model
 
 import (
+	"strconv"
+	"time"
+
+	"github.com/golang-jwt/jwt/v4"
 	"golang.org/x/crypto/bcrypt"
 )
+
+const SecretKey = "libererlacrim"
 
 type User struct {
 	ID       uint64 `json:"idUser"`
@@ -116,14 +122,14 @@ func RegisterUser(user User) (bool, error) {
 	return IsRegister, nil
 }
 
-func LoginUser(userLogin UserLogin) (bool, error) {
-	IsLogin := false
+func LoginUser(user User) (error, string) {
+	token := "Le token n'est pas généré"
 
 	query := `select email, password from users where email=$1;`
 
-	row, err := db.Query(query, userLogin.EMAIL)
+	row, err := db.Query(query, user.EMAIL)
 	if err != nil {
-		return IsLogin, err
+		return err, token
 	}
 
 	defer row.Close()
@@ -134,18 +140,30 @@ func LoginUser(userLogin UserLogin) (bool, error) {
 		err := row.Scan(&email, &password)
 
 		if err != nil {
-			return IsLogin, err
+			return err, token
 		}
 
-		if email == userLogin.EMAIL {
-			err = bcrypt.CompareHashAndPassword([]byte(password), []byte(userLogin.PASSWORD))
-			if err != nil {
-				return IsLogin, err
-			}
-			IsLogin = true
+		err = bcrypt.CompareHashAndPassword([]byte(password), []byte(user.PASSWORD))
+		if err != nil {
+			return err, token
 		}
+
+		claims := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.StandardClaims{
+			Issuer:    strconv.Itoa(int(user.ID)),
+			ExpiresAt: time.Now().Add(time.Hour * 24).Unix(),
+		})
+
+		newToken, err := claims.SignedString([]byte(SecretKey))
+
+		if err != nil {
+			token = "Erreur de génération du token"
+			return err, token
+		}
+
+		token = newToken
 	}
-	return IsLogin, err
+
+	return err, token
 }
 
 func UpdateUser(user UserUpdate) error {
