@@ -14,7 +14,7 @@ type User struct {
 	ID       uint64 `json:"idUser"`
 	EMAIL    string `json:"email"`
 	NAME     string `json:"name"`
-	PASSWORD string `json:"password"`
+	PASSWORD string `json:"-"`
 	ROLE     int16  `json:"role"`
 }
 
@@ -125,7 +125,7 @@ func RegisterUser(user User) (bool, error) {
 func LoginUser(user User) (error, string) {
 	token := "Le token n'est pas généré"
 
-	query := `select email, password from users where email=$1;`
+	query := `select idUser, email, password from users where email=$1;`
 
 	row, err := db.Query(query, user.EMAIL)
 	if err != nil {
@@ -135,11 +135,17 @@ func LoginUser(user User) (error, string) {
 	defer row.Close()
 
 	for row.Next() {
+		var id uint64
 		var email, password string
 
-		err := row.Scan(&email, &password)
+		err := row.Scan(&id, &email, &password)
 
 		if err != nil {
+			return err, token
+		}
+
+		if id == 0 {
+			token := "Utilisateur non trouvé"
 			return err, token
 		}
 
@@ -149,7 +155,7 @@ func LoginUser(user User) (error, string) {
 		}
 
 		claims := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.StandardClaims{
-			Issuer:    strconv.Itoa(int(user.ID)),
+			Issuer:    strconv.Itoa(int(id)),
 			ExpiresAt: time.Now().Add(time.Hour * 24).Unix(),
 		})
 
@@ -222,7 +228,6 @@ func DeleteUser(id uint64) error {
 		return err
 	}
 	return nil
-
 }
 
 func IsUserAdmin(id uint64) (bool, error) {

@@ -56,7 +56,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	token, err := jwt.ParseWithClaims(cookie.Name, &jwt.StandardClaims{}, func(token *jwt.Token) (interface{}, error) {
+	token, err := jwt.ParseWithClaims(cookie.Value, &jwt.StandardClaims{}, func(token *jwt.Token) (interface{}, error) {
 		return []byte(SecretKey), nil
 	})
 
@@ -65,19 +65,16 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	claims := token.Claims.(*jwt.StandardClaims)
-	json.NewEncoder(w).Encode(claims)
 
-	json.NewEncoder(w).Encode(claims)
-	claim, err := strconv.ParseUint(claims.Issuer, 10, 64)
-	println(&claim)
+	claim, _ := strconv.ParseUint(claims.Issuer, 10, 64)
 
-	// user, err := model.GetUser(claim)
-	// if err != nil {
-	// 	w.WriteHeader(http.StatusInternalServerError)
-	// 	w.Write([]byte(err.Error()))
-	// 	return
-	// }
-	// json.NewEncoder(w).Encode(user)
+	user, err := model.GetUser(claim)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(err.Error()))
+		return
+	}
+	json.NewEncoder(w).Encode(user)
 }
 
 func RegisterUser(w http.ResponseWriter, r *http.Request) {
@@ -136,6 +133,19 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 	http.SetCookie(w, &cookie)
 
 	json.NewEncoder(w).Encode(map[string]string{"token": token})
+}
+
+func LogoutUser(w http.ResponseWriter, r *http.Request) {
+	cookie := http.Cookie{
+		Name:     "jwt",
+		Value:    "",
+		Expires:  time.Now().Add(-time.Hour),
+		HttpOnly: true,
+	}
+
+	http.SetCookie(w, &cookie)
+
+	json.NewEncoder(w).Encode(map[string]string{"message": "Déconnecté"})
 }
 
 func UpdateUser(w http.ResponseWriter, r *http.Request) {
