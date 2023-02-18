@@ -1,6 +1,6 @@
 create table if not exists users (
     idUser serial not null unique primary key,
-    email varchar(64) null,
+    email varchar(64) null unique,
     name varchar(64) null,
     password varchar(128) null,
     role integer null

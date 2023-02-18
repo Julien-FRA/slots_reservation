@@ -3,12 +3,18 @@ package controller
 import (
 	"app/model"
 	"encoding/json"
+	"errors"
+	"log"
 	"net/http"
 	"strconv"
 	_ "strconv"
+	"time"
 
+	"github.com/golang-jwt/jwt"
 	"github.com/gorilla/mux"
 )
+
+const SecretKey = "libererlacrim"
 
 func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
@@ -29,15 +35,40 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Add("Access-Control-Allow-Methods", "*")
 
-	param := mux.Vars(r)["id"]
-	id, err := strconv.ParseUint(param, 10, 64)
+	// param := mux.Vars(r)["id"]
+	// id, err := strconv.ParseUint(param, 10, 64)
+	// if err != nil {
+	// 	w.WriteHeader(http.StatusInternalServerError)
+	// 	w.Write([]byte(err.Error()))
+	// 	return
+	// }
+
+	cookie, err := r.Cookie("jwt")
+
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(err.Error()))
+		switch {
+		case errors.Is(err, http.ErrNoCookie):
+			http.Error(w, "cookie not found", http.StatusBadRequest)
+		default:
+			log.Println(err)
+			http.Error(w, "server error", http.StatusInternalServerError)
+		}
 		return
 	}
 
-	user, err := model.GetUser(id)
+	token, err := jwt.ParseWithClaims(cookie.Value, &jwt.StandardClaims{}, func(token *jwt.Token) (interface{}, error) {
+		return []byte(SecretKey), nil
+	})
+
+	if err != nil {
+		json.NewEncoder(w).Encode(map[string]string{"message": "Unauthenticated"})
+	}
+
+	claims := token.Claims.(*jwt.StandardClaims)
+
+	claim, _ := strconv.ParseUint(claims.Issuer, 10, 64)
+
+	user, err := model.GetUser(claim)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(err.Error()))
@@ -47,9 +78,9 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func RegisterUser(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Content-Type", "application/json")
-	w.Header().Add("Access-Control-Allow-Methods", "*")
+	// w.Header().Set("Access-Control-Allow-Origin", "*")
+	// w.Header().Set("Content-Type", "application/json")
+	// w.Header().Add("Access-Control-Allow-Methods", "*")
 
 	decoder := json.NewDecoder(r.Body)
 	var user model.User
@@ -60,31 +91,7 @@ func RegisterUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = model.RegisterUser(user)
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(err.Error()))
-		return
-	} else {
-		w.WriteHeader(http.StatusOK)
-	}
-}
-
-func LoginUser(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Content-Type", "application/json")
-	w.Header().Add("Access-Control-Allow-Methods", "*")
-
-	decoder := json.NewDecoder(r.Body)
-	var user model.UserLogin
-	err := decoder.Decode(&user)
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(err.Error()))
-		return
-	}
-
-	bool, err := model.LoginUser(user)
+	bool, err := model.RegisterUser(user)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(err.Error()))
@@ -92,6 +99,53 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 	} else {
 		json.NewEncoder(w).Encode(bool)
 	}
+}
+
+func LoginUser(w http.ResponseWriter, r *http.Request) {
+	// w.Header().Set("Access-Control-Allow-Origin", "*")
+	// w.Header().Set("Content-Type", "application/json")
+	// w.Header().Add("Access-Control-Allow-Methods", "*")
+
+	decoder := json.NewDecoder(r.Body)
+	var user model.User
+	err := decoder.Decode(&user)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(err.Error()))
+		return
+	}
+
+	err, token := model.LoginUser(user)
+
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(err.Error()))
+		return
+	}
+
+	cookie := http.Cookie{
+		Name:     "jwt",
+		Value:    token,
+		Expires:  time.Now().Add(time.Hour * 24),
+		HttpOnly: true,
+	}
+
+	http.SetCookie(w, &cookie)
+
+	json.NewEncoder(w).Encode(map[string]string{"token": token})
+}
+
+func LogoutUser(w http.ResponseWriter, r *http.Request) {
+	cookie := http.Cookie{
+		Name:     "jwt",
+		Value:    "",
+		Expires:  time.Now().Add(-time.Hour),
+		HttpOnly: true,
+	}
+
+	http.SetCookie(w, &cookie)
+
+	json.NewEncoder(w).Encode(map[string]string{"message": "Déconnecté"})
 }
 
 func UpdateUser(w http.ResponseWriter, r *http.Request) {

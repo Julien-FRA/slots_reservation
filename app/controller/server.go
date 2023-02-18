@@ -21,10 +21,11 @@ func initHandlers() {
 	router.HandleFunc("/api/post/delete/{id}", controller.DeletePost).Methods("DELETE")
 
 	// Router for user
-	router.HandleFunc("/api/users", controller.GetAllUsers).Methods("GET")
-	router.HandleFunc("/api/user/{id}", controller.GetUser).Methods("GET")
+	router.HandleFunc("/api/user", controller.GetUser).Methods("GET")
 	router.HandleFunc("/api/user/register", controller.RegisterUser).Methods("POST")
 	router.HandleFunc("/api/user/login", controller.LoginUser).Methods("POST")
+	router.HandleFunc("/api/user/logout", controller.LogoutUser).Methods("POST")
+	router.HandleFunc("/api/users", controller.GetAllUsers).Methods("GET")
 	router.HandleFunc("/api/user/update", controller.UpdateUser).Methods("PUT")
 	router.HandleFunc("/api/user/delete/{id}", controller.DeleteUser).Methods("DELETE")
 
@@ -67,7 +68,7 @@ func Start() {
 			http.MethodOptions,
 			http.MethodHead,
 		},
-
+		AllowCredentials: true,
 		AllowedHeaders: []string{
 			"*",
 		},
