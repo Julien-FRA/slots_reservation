@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { SyntheticEvent, useState } from 'react'
 import { loginUser } from '../../services/UserRequest'
 import BtnSubmit from '../Button/BtnSubmit'
 import InputMail from '../Input/InputMail'
@@ -19,12 +19,16 @@ const LoginForm = () => {
     setLogin({ ...login, [e.target.id]: e.target.value })
   }
   
-  const handleSubmit = async (event: any) => {
+  const handleSubmit = async (event: SyntheticEvent) => {
     event.preventDefault();
     if(login.email !== "" && login.password !== "") {
       const successLogin = await loginUser(login)
-      if(successLogin) {
+      console.log(successLogin)
+      if(successLogin.status === 200) {
         setIsLogin(true)
+        setError("")
+      } else {
+        setError("Votre compte est introuvable")
       }
     }
   }
