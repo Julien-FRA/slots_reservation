@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { SyntheticEvent, useState } from 'react'
 import { loginUser } from '../../services/UserRequest'
 import BtnSubmit from '../Button/BtnSubmit'
 import InputMail from '../Input/InputMail'
@@ -19,12 +19,23 @@ const LoginForm = () => {
     setLogin({ ...login, [e.target.id]: e.target.value })
   }
   
-  const handleSubmit = async (event: any) => {
+  const handleSubmit = async (event: SyntheticEvent) => {
     event.preventDefault();
     if(login.email !== "" && login.password !== "") {
       const successLogin = await loginUser(login)
+      console.log(successLogin)
+
       if(successLogin) {
-        setIsLogin(true)
+        if(successLogin.message !== "Echec de la connexion") {
+          setIsLogin(true)
+          setError("")
+        } else {
+          setIsLogin(false)
+          setError("Echec de la connexion")
+        }
+      } else {
+        setIsLogin(false)
+        setError("Echec de la connexion")
       }
     }
   }

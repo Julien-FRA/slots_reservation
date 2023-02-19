@@ -102,10 +102,6 @@ func RegisterUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func LoginUser(w http.ResponseWriter, r *http.Request) {
-	// w.Header().Set("Access-Control-Allow-Origin", "*")
-	// w.Header().Set("Content-Type", "application/json")
-	// w.Header().Add("Access-Control-Allow-Methods", "*")
-
 	decoder := json.NewDecoder(r.Body)
 	var user model.User
 	err := decoder.Decode(&user)
@@ -123,16 +119,20 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	cookie := http.Cookie{
-		Name:     "jwt",
-		Value:    token,
-		Expires:  time.Now().Add(time.Hour * 24),
-		HttpOnly: true,
+	if token != "" {
+		cookie := http.Cookie{
+			Name:     "jwt",
+			Value:    token,
+			Expires:  time.Now().Add(time.Hour * 24),
+			HttpOnly: true,
+		}
+
+		http.SetCookie(w, &cookie)
+
+		json.NewEncoder(w).Encode(map[string]string{"token": token})
+	} else {
+		json.NewEncoder(w).Encode(map[string]string{"message": "Echec de la connexion"})
 	}
-
-	http.SetCookie(w, &cookie)
-
-	json.NewEncoder(w).Encode(map[string]string{"token": token})
 }
 
 func LogoutUser(w http.ResponseWriter, r *http.Request) {

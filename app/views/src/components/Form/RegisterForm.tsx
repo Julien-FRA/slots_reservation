@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { SyntheticEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { registerUser } from "../../services/UserRequest";
 import BtnSubmit from "../Button/BtnSubmit";
@@ -21,7 +21,7 @@ const RegisterForm = () => {
     setRegister({ ...register, [e.target.id]: e.target.value})
   }
 
-  const handleSubmit = async (event: any) => {
+  const handleSubmit = async (event: SyntheticEvent) => {
     event.preventDefault();
     if(register.email.length >= 5 && register.email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)) {
       if (register.name.length >= 5) {

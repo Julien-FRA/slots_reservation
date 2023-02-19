@@ -4,7 +4,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/golang-jwt/jwt/v4"
+	"github.com/golang-jwt/jwt"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -14,7 +14,7 @@ type User struct {
 	ID       uint64 `json:"idUser"`
 	EMAIL    string `json:"email"`
 	NAME     string `json:"name"`
-	PASSWORD string `json:"-"`
+	PASSWORD string `json:"password"`
 	ROLE     int16  `json:"role"`
 }
 
@@ -123,7 +123,7 @@ func RegisterUser(user User) (bool, error) {
 }
 
 func LoginUser(user User) (error, string) {
-	token := "Le token n'est pas généré"
+	token := ""
 
 	query := `select idUser, email, password from users where email=$1;`
 
@@ -145,7 +145,6 @@ func LoginUser(user User) (error, string) {
 		}
 
 		if id == 0 {
-			token := "Utilisateur non trouvé"
 			return err, token
 		}
 
@@ -162,7 +161,6 @@ func LoginUser(user User) (error, string) {
 		newToken, err := claims.SignedString([]byte(SecretKey))
 
 		if err != nil {
-			token = "Erreur de génération du token"
 			return err, token
 		}
 
