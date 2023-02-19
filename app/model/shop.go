@@ -86,6 +86,7 @@ func CreateShop(shop Shop) error {
 
 	return nil
 }
+
 func UpdateShop(shop Shop) error {
 
 	query := `update shops set idUser=$1, name=$2, address=$3, service=$4 where idShop=$5;`
@@ -96,6 +97,7 @@ func UpdateShop(shop Shop) error {
 	}
 	return nil
 }
+
 func DeleteShop(id uint64) error {
 
 	query := `delete from shops where idShop=$1;`
@@ -105,5 +107,4 @@ func DeleteShop(id uint64) error {
 		return err
 	}
 	return nil
-
 }

@@ -22,21 +22,23 @@ function CreateShop() {
       event.stopPropagation();
     }
     setHasShop(true);
-   
-    const data = JSON.stringify(shopName)
-    console.log("this is stringified shop", data)
-    try {
-      let result:any = axios
-      .post("http://localhost:3200/api/shop/create", {data})
-      console.log("this is the response",result.response);
-    } catch (error:any) {
-      console.log("this is an error",error.response.data)
-    }
+    var shopJSON = JSON.stringify(shopName);
+    console.log("this is shopJSON", shopJSON);
+    axios.post("http://localhost:3200/api/shop/create", {shopJSON}, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+      console.log("this is a good response",response);
+    }).catch(error => {
+      console.log("this is an error",error);
+    });
   
   };
   const [hasShop, setHasShop] = useState<any>(false);
   const [shopName, setShopName] = useState<any>({
-    idUser: 1, //CHANGE TO URL PARAMS
+    iduser: 1, //CHANGE TO URL PARAMS
     name: ' ',
     address:' ',
     service:' '
