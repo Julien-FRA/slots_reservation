@@ -21,10 +21,11 @@ func initHandlers() {
 	router.HandleFunc("/api/post/delete/{id}", controller.DeletePost).Methods("DELETE")
 
 	// Router for user
-	router.HandleFunc("/api/users", controller.GetAllUsers).Methods("GET")
-	router.HandleFunc("/api/user/{id}", controller.GetUser).Methods("GET")
+	router.HandleFunc("/api/user", controller.GetUser).Methods("GET")
 	router.HandleFunc("/api/user/register", controller.RegisterUser).Methods("POST")
 	router.HandleFunc("/api/user/login", controller.LoginUser).Methods("POST")
+	router.HandleFunc("/api/user/logout", controller.LogoutUser).Methods("POST")
+	router.HandleFunc("/api/users", controller.GetAllUsers).Methods("GET")
 	router.HandleFunc("/api/user/update", controller.UpdateUser).Methods("PUT")
 	router.HandleFunc("/api/user/delete/{id}", controller.DeleteUser).Methods("DELETE")
 
@@ -55,15 +56,25 @@ func initHandlers() {
 
 func Start() {
 	router = mux.NewRouter()
-
-	corsKiller := cors.New(cors.Options{
-		AllowedOrigins: []string{"http://localhost:3000"},
-		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
-		AllowedHeaders: []string{"Content-Type", "Authorization"},
-		Debug:          true,
+  
+	corsOpts := cors.New(cors.Options{
+		AllowedOrigins: []string{"http://localhost:3000"}, //for this base url
+		AllowedMethods: []string{
+			http.MethodGet, //http methods
+			http.MethodPost,
+			http.MethodPut,
+			http.MethodPatch,
+			http.MethodDelete,
+			http.MethodOptions,
+			http.MethodHead,
+		},
+		AllowCredentials: true,
+		AllowedHeaders: []string{
+			"*",
+		},
 	})
 
-	handler := corsKiller.Handler(router)
+	handler := corsOpts.Handler(router)
 
 	initHandlers()
 	fmt.Printf("router initialized and listening on 3200\n")

@@ -1,14 +1,20 @@
 package model
 
 import (
+	"strconv"
+	"time"
+
+	"github.com/golang-jwt/jwt/v4"
 	"golang.org/x/crypto/bcrypt"
 )
+
+const SecretKey = "libererlacrim"
 
 type User struct {
 	ID       uint64 `json:"idUser"`
 	EMAIL    string `json:"email"`
 	NAME     string `json:"name"`
-	PASSWORD string `json:"password"`
+	PASSWORD string `json:"-"`
 	ROLE     int16  `json:"role"`
 }
 
@@ -94,55 +100,76 @@ func GetUser(id uint64) (User, error) {
 	return user, nil
 }
 
-func RegisterUser(user User) error {
+func RegisterUser(user User) (bool, error) {
+	IsRegister := false
 
 	query := `insert into users(email, name, password, role) values($1, $2, $3, $4);`
 
 	hash, err := bcrypt.GenerateFromPassword([]byte(user.PASSWORD), 14)
 
 	if err != nil {
-		return err
+		return IsRegister, err
 	}
 
 	_, err = db.Exec(query, user.EMAIL, user.NAME, hash, user.ROLE)
 
 	if err != nil {
-		return err
+		return IsRegister, err
 	}
 
-	return nil
+	IsRegister = true
+
+	return IsRegister, nil
 }
 
-func LoginUser(userLogin UserLogin) (bool, error) {
-	IsLogin := false
+func LoginUser(user User) (error, string) {
+	token := "Le token n'est pas généré"
 
-	query := `select email, password from users where email=$1;`
+	query := `select idUser, email, password from users where email=$1;`
 
-	row, err := db.Query(query, userLogin.EMAIL)
+	row, err := db.Query(query, user.EMAIL)
 	if err != nil {
-		return IsLogin, err
+		return err, token
 	}
 
 	defer row.Close()
 
 	for row.Next() {
+		var id uint64
 		var email, password string
 
-		err := row.Scan(&email, &password)
+		err := row.Scan(&id, &email, &password)
 
 		if err != nil {
-			return IsLogin, err
+			return err, token
 		}
 
-		if email == userLogin.EMAIL {
-			err = bcrypt.CompareHashAndPassword([]byte(password), []byte(userLogin.PASSWORD))
-			if err != nil {
-				return IsLogin, err
-			}
-			IsLogin = true
+		if id == 0 {
+			token := "Utilisateur non trouvé"
+			return err, token
 		}
+
+		err = bcrypt.CompareHashAndPassword([]byte(password), []byte(user.PASSWORD))
+		if err != nil {
+			return err, token
+		}
+
+		claims := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.StandardClaims{
+			Issuer:    strconv.Itoa(int(id)),
+			ExpiresAt: time.Now().Add(time.Hour * 24).Unix(),
+		})
+
+		newToken, err := claims.SignedString([]byte(SecretKey))
+
+		if err != nil {
+			token = "Erreur de génération du token"
+			return err, token
+		}
+
+		token = newToken
 	}
-	return IsLogin, err
+
+	return err, token
 }
 
 func UpdateUser(user UserUpdate) error {
@@ -201,7 +228,6 @@ func DeleteUser(id uint64) error {
 		return err
 	}
 	return nil
-
 }
 
 func IsUserAdmin(id uint64) (bool, error) {

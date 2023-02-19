@@ -13,7 +13,7 @@ export const RouterContainer = () => (
     <Route path="/" element={<Home />} />
     <Route path="/users" element={<Users />} />
     <Route path="/login" element={<Login />} />
-    <Route path="/login" element={<Register />} />
+    <Route path="/register" element={<Register />} />
     <Route path="/dashboard" element={<DashBoard />}>
       <Route path ="shop" element={<Shop/>}/>
       <Route path ="employees" element={<Employees/>}/>
