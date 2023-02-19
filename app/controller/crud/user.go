@@ -31,17 +31,6 @@ func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetUser(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Content-Type", "application/json")
-	w.Header().Add("Access-Control-Allow-Methods", "*")
-
-	// param := mux.Vars(r)["id"]
-	// id, err := strconv.ParseUint(param, 10, 64)
-	// if err != nil {
-	// 	w.WriteHeader(http.StatusInternalServerError)
-	// 	w.Write([]byte(err.Error()))
-	// 	return
-	// }
 
 	cookie, err := r.Cookie("jwt")
 
