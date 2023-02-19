@@ -3,6 +3,7 @@ package controller
 import (
 	"app/model"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strconv"
 	_ "strconv"
@@ -21,6 +22,7 @@ func GetAllShops(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(shop)
 	}
 }
+
 func GetShop(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
@@ -45,10 +47,12 @@ func GetShop(w http.ResponseWriter, r *http.Request) {
 
 func CreateShop(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
 	decoder := json.NewDecoder(r.Body)
 	var shop model.Shop
 	err := decoder.Decode(&shop)
+	fmt.Println("this is encoded JSON", err)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(err.Error()))
@@ -61,7 +65,6 @@ func CreateShop(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte(err.Error()))
 		return
 	} else {
-
 		w.WriteHeader(http.StatusOK)
 	}
 }

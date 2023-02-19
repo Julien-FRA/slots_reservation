@@ -1,13 +1,10 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import axios from "axios";
-import { ErrorCallback } from 'typescript';
 
 function CreateShop() {
-  
-
   const handleOnChange = (event:any)=> {
     const value = event.target.value;
     setShopName({
@@ -25,24 +22,16 @@ function CreateShop() {
       event.stopPropagation();
     }
     setHasShop(true);
-    const headers = {
-      'Content-Type': 'text/plain; charset=utf-8'
-    };
+   
     const data = JSON.stringify(shopName)
     console.log("this is stringified shop", data)
     try {
       let result:any = axios
-      .post("http://localhost:3200/api/shop/create", {data}, {headers})
-      console.log(result.response);
+      .post("http://localhost:3200/api/shop/create", {data})
+      console.log("this is the response",result.response);
     } catch (error:any) {
-      console.log("this is",error.response.data)
+      console.log("this is an error",error.response.data)
     }
-    /*axios
-      .post("http://localhost:3200/api/shop/create", {shopName}, {headers})
-      .then(response => {
-        console.log("this is",error.response.data)
-        // Handle response
-      })*/
   
   };
   const [hasShop, setHasShop] = useState<any>(false);
@@ -52,7 +41,6 @@ function CreateShop() {
     address:' ',
     service:' '
   });
-  //console.log(shopName)
   return (
     <>
       {hasShop === false ? 

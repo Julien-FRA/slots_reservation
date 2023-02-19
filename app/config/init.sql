@@ -66,6 +66,11 @@ values
     ('alex@gmail.com', 'alex', 'password', 1);
 
     
+insert into shops(idUser, name, address, service)
+values
+    (1,'Kiloutou', '15 Rue test', 'hairdresser'),
+    (2,'Uber', '10 Rue taste', 'barber');
+    
 insert into employees(idShop, email, phone, name, lastName, expertise, description, price)
 values
     (1,'juan@gmail.com', '0624098203', 'juan','torres', 'tank', 'joue un dk sang', 25),
@@ -78,8 +83,4 @@ values
     (2,'2023-01-01','14:35:20','15:35:20'),
     (2, '2023-01-02','15:35:20','16:35:20')
 
-insert into shops(idUser, name, address, service)
-values
-    (1,'Kiloutou', '15 Rue test', 'hairdresser'),
-    (2,'Uber', '10 Rue taste', 'barber');
 
