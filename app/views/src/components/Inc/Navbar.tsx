@@ -17,6 +17,9 @@ function NavbarContainer() {
             <Nav.Link>
                 <Link to="/users">Users</Link>
             </Nav.Link>
+            <Nav.Link>
+                <Link to="/dashboard/shop">Dashboard</Link>
+            </Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>

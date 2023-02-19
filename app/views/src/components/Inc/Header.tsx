@@ -21,6 +21,9 @@ const Header = () => {
             <Nav.Link>
               <BtnLink link='/users' placeholder='Users' className='btn-link' />  
             </Nav.Link>
+            <Nav.Link>
+              <BtnLink link='/dashboard/shop' placeholder='Dashboard' className='btn-link' />  
+            </Nav.Link>
           </Nav>
           <Form className="d-flex">
           <BtnLink link='/login' placeholder='Login' className='btn btn-dark mx-2' />  

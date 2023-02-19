@@ -7,9 +7,16 @@ export interface User {
   password?: string;
 }
 
-export const GetAllUsers = async (): Promise<User | false> =>
-  await axios
-    .get("http://localhost:3200/api/users")
+export interface Shop {
+    idShop: number;
+    idUser: number;
+    name: string;
+    address: string;
+    service: string;
+}
+
+export const GetAllUsers = async (): Promise<User | false> => (
+    await axios.get("http://localhost:3200/api/users")
     .then((response) => {
       return response.data;
     })
@@ -21,4 +28,13 @@ export const GetEmployeesWorkingHours = async (): Promise<User | false> =>
     .then((response) => {
       return response.data;
     })
-    .catch((error) => false);
+    .catch(error => false)
+)
+
+export const CreateShop = async (): Promise<Shop | false> => (
+    await axios.post("http://localhost:3200/api/shop/create", new FormData())
+    .then((response) => {
+    return response.data;
+    })
+    .catch(error => false)
+)

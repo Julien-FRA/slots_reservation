@@ -56,7 +56,7 @@ func initHandlers() {
 
 func Start() {
 	router = mux.NewRouter()
-
+  
 	corsOpts := cors.New(cors.Options{
 		AllowedOrigins: []string{"http://localhost:3000"}, //for this base url
 		AllowedMethods: []string{
