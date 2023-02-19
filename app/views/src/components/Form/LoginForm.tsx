@@ -29,8 +29,10 @@ const LoginForm = () => {
         if(successLogin.message !== "Echec de la connexion") {
           setIsLogin(true)
           setError("")
+        } else {
+          setIsLogin(false)
+          setError("Echec de la connexion")
         }
-        setError("Echec de la connexion")
       } else {
         setIsLogin(false)
         setError("Echec de la connexion")

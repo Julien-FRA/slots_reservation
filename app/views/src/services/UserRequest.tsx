@@ -10,10 +10,6 @@ export interface User {
   password?: string;
 }
 
-export interface UserToken {
-  token: string
-}
-
 export const registerUser = async (user: IUser): Promise<User> => (
   await axios.post(`${PATH}/user/register`, {
     email: user.email,
@@ -41,6 +37,17 @@ export const loginUser = async(user: IUser): Promise<any> => (
       email: user.email,
       password: user.password
     })
+  })
+  .then((response) => response.json())
+  .catch((error) => {
+    console.error('Error:', error);
+  })
+)
+
+export const getUser = async(): Promise<any> => (
+  await fetch(`${PATH}/user`, {
+    headers: {'Content-Type': 'application/json'},
+    credentials: 'include',
   })
   .then((response) => response.json())
   .catch((error) => {

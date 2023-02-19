@@ -19,7 +19,7 @@ const Header = () => {
               <BtnLink link='/' placeholder='Home' className='btn-link' />
             </Nav.Link>
             <Nav.Link>
-              <BtnLink link='/users' placeholder='Users' className='btn-link' />  
+              <BtnLink link='/profil' placeholder='Profil' className='btn-link' />  
             </Nav.Link>
           </Nav>
           <Form className="d-flex">
