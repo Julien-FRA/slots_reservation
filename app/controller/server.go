@@ -31,6 +31,7 @@ func initHandlers() {
 
 	// Router for professionals  test
 	router.HandleFunc("/api/shops", controller.GetAllShops).Methods("GET")
+	router.HandleFunc("/api/shop/user/{id}", controller.GetUserShop).Methods("GET")
 	router.HandleFunc("/api/shop/{id}", controller.GetShop).Methods("GET")
 	router.HandleFunc("/api/shop/create", controller.CreateShop).Methods("POST")
 	router.HandleFunc("/api/shop/update", controller.UpdateShop).Methods("PUT")
@@ -56,7 +57,7 @@ func initHandlers() {
 
 func Start() {
 	router = mux.NewRouter()
-  
+
 	corsOpts := cors.New(cors.Options{
 		AllowedOrigins: []string{"http://localhost:3000"}, //for this base url
 		AllowedMethods: []string{
