@@ -19,21 +19,20 @@ export const registerUser = async (user: IUser): Promise<User> => (
     email: user.email,
     name: user.name,
     password: user.password
+  },
+  {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    withCredentials: true,
   })
     .then(res => res.data)
     .catch(err => false)
 );
 
-// export const loginUser = async (user: IUser): Promise<UserToken> => (
-//   await axios.post(`${PATH}/user/login`, {
-//     email: user.email,
-//     password: user.password
-//   })
-//   .then(res => res.data)
-//   .catch(err => false)
-// );
-
-export const loginUser = async(user: IUser) => (
+export const loginUser = async(user: IUser): Promise<any> => (
   await fetch(`${PATH}/user/login`, {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
@@ -42,5 +41,9 @@ export const loginUser = async(user: IUser) => (
       email: user.email,
       password: user.password
     })
+  })
+  .then((response) => response.json())
+  .catch((error) => {
+    console.error('Error:', error);
   })
 )

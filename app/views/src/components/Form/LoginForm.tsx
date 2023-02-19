@@ -24,11 +24,16 @@ const LoginForm = () => {
     if(login.email !== "" && login.password !== "") {
       const successLogin = await loginUser(login)
       console.log(successLogin)
-      if(successLogin.status === 200) {
-        setIsLogin(true)
-        setError("")
+
+      if(successLogin) {
+        if(successLogin.message !== "Echec de la connexion") {
+          setIsLogin(true)
+          setError("")
+        }
+        setError("Echec de la connexion")
       } else {
-        setError("Votre compte est introuvable")
+        setIsLogin(false)
+        setError("Echec de la connexion")
       }
     }
   }
