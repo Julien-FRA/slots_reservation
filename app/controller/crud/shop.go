@@ -3,10 +3,11 @@ package controller
 import (
 	"app/model"
 	"encoding/json"
-	"github.com/gorilla/mux"
 	"net/http"
 	"strconv"
 	_ "strconv"
+
+	"github.com/gorilla/mux"
 )
 
 func GetAllShops(w http.ResponseWriter, r *http.Request) {
@@ -20,6 +21,7 @@ func GetAllShops(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(shop)
 	}
 }
+
 func GetShop(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
@@ -43,17 +45,31 @@ func GetShop(w http.ResponseWriter, r *http.Request) {
 }
 
 func CreateShop(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
-	decoder := json.NewDecoder(r.Body)
 	var shop model.Shop
-	err := decoder.Decode(&shop)
+
+	var reqBody struct {
+		ShopJSON string `json:"shopJSON"`
+	}
+
+	err := json.NewDecoder(r.Body).Decode(&reqBody)
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(err.Error()))
+		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
+	err = json.Unmarshal([]byte(reqBody.ShopJSON), &shop)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	//This reads struct content => fmt.Printf("Received shop data: %+v\n", shop)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
 	err = model.CreateShop(shop)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)

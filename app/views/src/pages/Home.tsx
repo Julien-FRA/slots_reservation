@@ -1,7 +1,11 @@
 import React from "react";
 
 const Home = () => (
-    <h1>This is Home</h1>
+    <div className="homepage">
+        <div className="fading">
+            <h1>CergyOnHair</h1>
+        </div>
+    </div>
 );
 
 export default Home;
