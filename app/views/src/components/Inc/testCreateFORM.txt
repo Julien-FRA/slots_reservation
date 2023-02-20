@@ -4,13 +4,11 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import { useCallback, useEffect, useState } from "react";
 import { CreateShops } from '../../services/ShopRequest';
 import { GetUserShop } from '../../services/ShopRequest';
-import { Spinner, Table } from 'react-bootstrap';
-import ModalButton from '../Button/Modal';
+import { Table } from 'react-bootstrap';
 
 function CreateShop() {
   
   const [hasShop, setHasShop] = useState<any>();
-  const [isLoading, setIsLoading] = useState(false)
   console.log("hasShopValue", hasShop)
   const [shopData, setShopData] = useState<any>({
     iduser: 2, //CHANGE TO URL PARAMS
@@ -36,48 +34,36 @@ function CreateShop() {
       event.preventDefault();
       event.stopPropagation();
     }
-    setIsLoading(true);
-    setHasShop(true);
-    var shopJSON = JSON.stringify(shopData);
-    console.log("this is shopdatajson",shopJSON) 
+    //setHasShop(true);
+    let shopDataJson = JSON.stringify(shopData);
+    console.log("this is shopdatajson",shopDataJson) 
     try {
-      await CreateShops(shopJSON);
-      setIsLoading(false); // hide the loader
+      const response = await CreateShops(shopDataJson);
+      console.log("this is response",response);
     } catch (error) {
-      setIsLoading(false); // hide the loader even when there's an error
-      console.error(error);
+      console.log("this is error",error);
     }
+    //CreateShops(shopDataJson);
   }, [shopData]);
 
   const [userShop, setUserShop] = useState<any>([]);
   useEffect(() => {
     const hasShopRequest = async() => {
-      setIsLoading(true);
-      try {
-        var result = await GetUserShop();
-        if (!result) {
-          console.log('Response is an empty JSON object');
-          setHasShop (false);
-        } else {
-          console.log('Response is not an empty JSON object');
-          setUserShop(result);
-          setHasShop (true);
-        }
-      } catch (error) {
-        console.error(error);
+      var result = await GetUserShop();
+      if (!result) {
+        console.log('Response is an empty JSON object');
+        setHasShop (false);
+      } else {
+        console.log('Response is not an empty JSON object');
+        setUserShop(result);
+        setHasShop (true);
       }
-      setIsLoading(false);
     }
     hasShopRequest()
-  }, [hasShop]);
+  }, [handleSubmit]);
   return (
     <>
-      {isLoading ? ( // show the loader if the request is still in progress
-        <Spinner animation="border" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </Spinner>
-      ) :
-      (hasShop === false ? 
+      {hasShop === false ? 
         (<Form noValidate validated={hasShop} onSubmit={handleSubmit}>
         
           <Form.Group className="mb-3" controlId="validationCustom01">
@@ -124,33 +110,29 @@ function CreateShop() {
         <Button type="submit">Create shop</Button>
         </Form>)
         : 
-        <>
-          <Table striped bordered hover>
-          <thead>
+        <Table striped bordered hover>
+        <thead>
+          <tr>
+            <th>ID SHOP</th>
+            <th>ID USER</th>
+            <th>Shop Name</th> 
+            <th>Address</th> 
+            <th>Service Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          {userShop.map((item: any) => (
             <tr>
-              <th>ID SHOP</th>
-              <th>ID USER</th>
-              <th>Shop Name</th> 
-              <th>Address</th> 
-              <th>Service Time</th>
+              <td>{item.idShop}</td>
+              <td>{item.idUser}</td>
+              <td>{item.name}</td>
+              <td>{item.address}</td>
+              <td>{item.service}</td>
             </tr>
-          </thead>
-          <tbody>
-            {userShop.map((item: any) => (
-              <tr>
-                <td>{item.idShop}</td>
-                <td>{item.idUser}</td>
-                <td>{item.name}</td>
-                <td>{item.address}</td>
-                <td>{item.service}</td>
-              </tr>
-            ))}
-          </tbody>
-          </Table>
-          <ModalButton/>
-        </>
-
-      )}
+          ))}
+        </tbody>
+      </Table>
+      }
     </>
   );
 }

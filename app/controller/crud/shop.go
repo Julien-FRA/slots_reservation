@@ -22,6 +22,27 @@ func GetAllShops(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func GetUserShop(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	param := mux.Vars(r)["id"]
+	id, err := strconv.ParseUint(param, 10, 64)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(err.Error()))
+		return
+	}
+
+	userShop, err := model.GetUserShop(id)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(err.Error()))
+		return
+	}
+
+	json.NewEncoder(w).Encode(userShop)
+}
+
 func GetShop(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 

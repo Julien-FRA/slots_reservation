@@ -1,7 +1,7 @@
 import { Table } from 'react-bootstrap';
 import { useState, useEffect } from "react";
-import { User } from '../../services/HttpRequests';
-import { GetEmployeesWorkingHours } from '../../services/HttpRequests';
+import { User } from '../../services/ShopRequest';
+import { GetEmployeesWorkingHours } from '../../services/ShopRequest';
 
 function Schedule() {
     const [schedule, setSchedule] = useState <any>([]);

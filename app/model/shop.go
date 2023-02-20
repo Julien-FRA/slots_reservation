@@ -43,6 +43,41 @@ func GetAllShops() ([]Shop, error) {
 	return shops, nil
 }
 
+func GetUserShop(idUser uint64) ([]Shop, error) {
+	var userShop []Shop
+
+	query := `select idShop, idUser, address, service, name from shops where idUser=$1;`
+
+	rows, err := db.Query(query, idUser)
+	if err != nil {
+		return userShop, err
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		var idShop, idUser uint64
+		var service, address, name string
+
+		err := rows.Scan(&idShop, &idUser, &address, &service, &name)
+		if err != nil {
+			return userShop, err
+		}
+
+		shop := Shop{
+			ID:      idShop,
+			ID_USER: idUser,
+			NAME:    name,
+			ADDRESS: address,
+			SERVICE: service,
+		}
+
+		userShop = append(userShop, shop)
+	}
+
+	return userShop, nil
+}
+
 func GetShop(id uint64) (Shop, error) {
 	var shop Shop
 
