@@ -32,8 +32,8 @@ export const GetEmployeesWorkingHours = async (): Promise<User | false> => (
     .catch(error => false)
 );
 
-export const CreateShops = async (shopDataJson: any): Promise<any> => (
-    await axios.post("http://localhost:3200/api/shop/create", {shopDataJson}, {
+export const CreateShops = async (shopJSON: any): Promise<any> => (
+    await axios.post("http://localhost:3200/api/shop/create", {shopJSON}, {
         headers: {
           'Content-Type': 'application/json'
         }
@@ -56,5 +56,18 @@ export const GetUserShop = async (): Promise<any> => (
     return response.data
   }).catch(error => {
     console.log("this is an error",error);
+  })
+);
+export const DeleteShop = async (): Promise<any> => (
+  //remove the HARD CODED idShop, get it from URL/COOKIE
+  await axios.delete("http://localhost:3200/api/shop/delete/27", {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+  })
+  .then(response => {
+    console.log("this is delete response", response)
+  }).catch(error => {
+    console.log("this is an error on delete",error);
   })
 );
