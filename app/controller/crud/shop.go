@@ -104,16 +104,20 @@ func CreateShop(w http.ResponseWriter, r *http.Request) {
 func UpdateShop(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
+	param := mux.Vars(r)
+	idStr := param["id"]
+	id, err := strconv.ParseUint(idStr, 10, 64)
 	decoder := json.NewDecoder(r.Body)
 	var shop model.Shop
-	err := decoder.Decode(&shop)
+
+	err = decoder.Decode(&shop)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(err.Error()))
 		return
 	}
 
-	err = model.UpdateShop(shop)
+	err = model.UpdateShop(id, shop)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(err.Error()))

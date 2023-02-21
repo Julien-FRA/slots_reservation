@@ -21,8 +21,8 @@ function CardContainer(props:any) {
                             <Card.Text> IdUser : {item.idUser} </Card.Text>
                             <Card.Footer>
                                 <Row>
-                                    <BtnEdit idShop={item.idShop} updateOnDelete={props.updateOnDelete}/>
-                                    <BtnDelete idShop={item.idShop} updateOnDelete={props.updateOnDelete}/>
+                                    <BtnEdit idShop={item.idShop} updateShopData={props.updateShopData}/>
+                                    <BtnDelete idShop={item.idShop} updateShopData={props.updateShopData}/>
                                 </Row>
                             </Card.Footer>
                         </Card.Body>

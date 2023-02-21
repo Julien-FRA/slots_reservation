@@ -26,7 +26,7 @@ func initHandlers() {
 	router.HandleFunc("/api/user/login", controller.LoginUser).Methods("POST")
 	router.HandleFunc("/api/user/logout", controller.LogoutUser).Methods("POST")
 	router.HandleFunc("/api/users", controller.GetAllUsers).Methods("GET")
-	router.HandleFunc("/api/user/update", controller.UpdateUser).Methods("PUT")
+	router.HandleFunc("/api/user/update/{id}", controller.UpdateUser).Methods("PUT")
 	router.HandleFunc("/api/user/delete/{id}", controller.DeleteUser).Methods("DELETE")
 
 	// Router for professionals  test
@@ -34,7 +34,7 @@ func initHandlers() {
 	router.HandleFunc("/api/shop/user/{id}", controller.GetUserShop).Methods("GET")
 	router.HandleFunc("/api/shop/{id}", controller.GetShop).Methods("GET")
 	router.HandleFunc("/api/shop/create", controller.CreateShop).Methods("POST")
-	router.HandleFunc("/api/shop/update", controller.UpdateShop).Methods("PUT")
+	router.HandleFunc("/api/shop/update/{id}", controller.UpdateShop).Methods("PUT")
 	router.HandleFunc("/api/shop/delete/{id}", controller.DeleteShop).Methods("DELETE")
 
 	//router for employees

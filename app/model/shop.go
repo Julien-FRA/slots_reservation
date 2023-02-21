@@ -122,7 +122,7 @@ func CreateShop(shop Shop) error {
 	return nil
 }
 
-func UpdateShop(shop Shop) error {
+func UpdateShop(id uint64, shop Shop) error {
 
 	query := `update shops set idUser=$1, name=$2, address=$3, service=$4 where idShop=$5;`
 

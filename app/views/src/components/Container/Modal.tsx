@@ -1,17 +1,16 @@
 import { Button, Modal } from "react-bootstrap";
 import { DeleteShop } from '../../services/ShopRequest';
 import { EditShop } from '../../services/ShopRequest';
-import CreateShopForm from "../Form/CreateShopForm";
+import CreateShop from "../Inc/CreateShopForm";
 
 const GlobalModal:any = (props: any) => {
-
     const DeleteShopFunc = () => {
         DeleteShop(props.idShop);
-        props.updateOnDelete(false);
+        props.updateShopData(false);
     }
     const EditShopFunc = () => {
         EditShop(props.idShop);
-        props.updateOnDelete(false);
+        props.updateShopData(false);
     }
 
     if (props.type === "deleteModal") {
@@ -53,7 +52,7 @@ const GlobalModal:any = (props: any) => {
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <CreateShopForm/>
+                <CreateShop/>
             </Modal.Body>
             <Modal.Footer>
                 <Button onClick={props.onHide}>Close</Button>

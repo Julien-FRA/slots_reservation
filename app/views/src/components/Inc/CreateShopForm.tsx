@@ -81,7 +81,7 @@ const CreateShop = () => {
    * to trigger the above useEffect hook.
    * @param value 
    */
-  const updateOnDelete = (value:Boolean) => {
+  const updateShopData = (value:Boolean) => {
     setHasShop(value);
   };
 
@@ -93,7 +93,7 @@ const CreateShop = () => {
       (hasShop === false ? 
         <CreateShopForm hasShop={hasShop} handleSubmit={handleSubmit} handleOnChange={handleOnChange}/>
         : 
-        <CardContainer type="shop" userShopData={userShop} updateOnDelete={updateOnDelete}/>
+        <CardContainer type="shop" userShopData={userShop} updateShopData={updateShopData}/>
       )}
     </>
   );
