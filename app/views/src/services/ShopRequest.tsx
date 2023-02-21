@@ -58,9 +58,24 @@ export const GetUserShop = async (): Promise<any> => (
     console.log("this is an error",error);
   })
 );
-export const DeleteShop = async (): Promise<any> => (
+
+export const DeleteShop = async (id:any): Promise<any> => (
   //remove the HARD CODED idShop, get it from URL/COOKIE
-  await axios.delete("http://localhost:3200/api/shop/delete/27", {
+  await axios.delete(`http://localhost:3200/api/shop/delete/${id}`, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+  })
+  .then(response => {
+    console.log("this is delete response", response)
+  }).catch(error => {
+    console.log("this is an error on delete",error);
+  })
+);
+
+export const EditShop = async (id:any): Promise<any> => (
+  //remove the HARD CODED idShop, get it from URL/COOKIE
+  await axios.delete(`http://localhost:3200/api/shop/delete/${id}`, {
       headers: {
         'Content-Type': 'application/json'
       }

@@ -1,17 +1,14 @@
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import InputGroup from 'react-bootstrap/InputGroup';
 import { useCallback, useEffect, useState } from "react";
 import { CreateShops } from '../../services/ShopRequest';
 import { GetUserShop } from '../../services/ShopRequest';
-import { Spinner, Table } from 'react-bootstrap';
-import ModalButton from '../Button/Modal';
+import CardContainer from '../Container/CardContainer';
+import CreateShopForm from '../Form/CreateShopForm';
+import LoadSpinner from "./LoadSpinner";
 
-function CreateShop() {
-  
+const CreateShop = () => {
+  const [userShop, setUserShop] = useState<any>([]);
   const [hasShop, setHasShop] = useState<any>();
   const [isLoading, setIsLoading] = useState(false)
-  console.log("hasShopValue", hasShop)
   const [shopData, setShopData] = useState<any>({
     iduser: 2, //CHANGE TO URL PARAMS
     name: ' ',
@@ -19,6 +16,10 @@ function CreateShop() {
     service:' '
   });
 
+  /**
+   * This function updates shopData hook on event (each time form is modified).
+   * @param event
+   */
   const handleOnChange = (event:any)=> {
     const value = event.target.value;
     setShopData({
@@ -27,7 +28,10 @@ function CreateShop() {
     });
   };
 
-
+  /**
+   * This function checks form data syntax and make a POST request to the API.
+   * setIsloading hook sets a loader while awaiting POST request
+   */
   const handleSubmit = useCallback(async(event: any) => {
     event.preventDefault();
 
@@ -37,29 +41,30 @@ function CreateShop() {
       event.stopPropagation();
     }
     setIsLoading(true);
-    setHasShop(true);
     var shopJSON = JSON.stringify(shopData);
-    console.log("this is shopdatajson",shopJSON) 
     try {
       await CreateShops(shopJSON);
-      setIsLoading(false); // hide the loader
+      setHasShop(true);
+      setIsLoading(false);
     } catch (error) {
-      setIsLoading(false); // hide the loader even when there's an error
+      setIsLoading(false);
       console.error(error);
     }
   }, [shopData]);
 
-  const [userShop, setUserShop] = useState<any>([]);
+  /**
+   * This useEffect hook runs each time hasShop state's change, calling hasShopRequest
+   * function, to update front in consequence.
+   */
   useEffect(() => {
     const hasShopRequest = async() => {
       setIsLoading(true);
       try {
         var result = await GetUserShop();
+
         if (!result) {
-          console.log('Response is an empty JSON object');
           setHasShop (false);
         } else {
-          console.log('Response is not an empty JSON object');
           setUserShop(result);
           setHasShop (true);
         }
@@ -70,86 +75,25 @@ function CreateShop() {
     }
     hasShopRequest()
   }, [hasShop]);
+
+  /**
+   * This function is passed to CardContainer up until deleteShop button, 
+   * to trigger the above useEffect hook.
+   * @param value 
+   */
+  const updateOnDelete = (value:Boolean) => {
+    setHasShop(value);
+  };
+
   return (
     <>
-      {isLoading ? ( // show the loader if the request is still in progress
-        <Spinner animation="border" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </Spinner>
+      {isLoading ? (
+        <LoadSpinner/>
       ) :
       (hasShop === false ? 
-        (<Form noValidate validated={hasShop} onSubmit={handleSubmit}>
-        
-          <Form.Group className="mb-3" controlId="validationCustom01">
-            <Form.Label>Shop name</Form.Label>
-            <Form.Control
-              onChange={handleOnChange}
-              name="name"
-              required
-              type="text"
-              placeholder="Ex : Mcdonald's"
-              defaultValue="Mcdonald's"
-            />
-            <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="validationCustom02">
-            <Form.Label>Shop address location</Form.Label>
-            <Form.Control
-              onChange={handleOnChange}
-              name="address"
-              required
-              type="text"
-              placeholder="Ex : 10 Rue Hyjal"
-              defaultValue="10 Rue Hyjal"
-            />
-            <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="validationCustom03">
-            <Form.Label>Enter your service type</Form.Label>
-            <InputGroup>
-              <Form.Control
-                onChange={handleOnChange}
-                name="service"
-                type="text"
-                placeholder="Ex : Haidresser"
-                aria-describedby="inputGroupPrepend"
-                required
-              />
-              <Form.Control.Feedback type="invalid">
-                Please change !
-              </Form.Control.Feedback>
-            </InputGroup>
-          </Form.Group>
-        
-        <Button type="submit">Create shop</Button>
-        </Form>)
+        <CreateShopForm hasShop={hasShop} handleSubmit={handleSubmit} handleOnChange={handleOnChange}/>
         : 
-        <>
-          <Table striped bordered hover>
-          <thead>
-            <tr>
-              <th>ID SHOP</th>
-              <th>ID USER</th>
-              <th>Shop Name</th> 
-              <th>Address</th> 
-              <th>Service Time</th>
-            </tr>
-          </thead>
-          <tbody>
-            {userShop.map((item: any) => (
-              <tr>
-                <td>{item.idShop}</td>
-                <td>{item.idUser}</td>
-                <td>{item.name}</td>
-                <td>{item.address}</td>
-                <td>{item.service}</td>
-              </tr>
-            ))}
-          </tbody>
-          </Table>
-          <ModalButton/>
-        </>
-
+        <CardContainer type="shop" userShopData={userShop} updateOnDelete={updateOnDelete}/>
       )}
     </>
   );
