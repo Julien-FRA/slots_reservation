@@ -3,20 +3,15 @@ import Button from 'react-bootstrap/Button';
 import GlobalModal from '../Container/Modal';
 
 function BtnEdit(props:any) {
-  const [modalShow, setModalShow] = React.useState(false);
+  const EditShopFunc = () => {
+    props.setShopRequestType(false);
+    props.setIdShop(props.idShop);
+  }
   return (
     <>
-      <Button variant="outline-primary" onClick={() => setModalShow(true)}>
+      <Button variant="outline-primary" onClick={() => EditShopFunc()}>
         Edit
       </Button>
-      
-      <GlobalModal
-        type="editModal"
-        show={modalShow}
-        onHide={() => setModalShow(false)}
-        idShop={props.idShop}
-        updateShopData={props.updateShopData}
-      />
     </>
   );
 }

@@ -10,7 +10,6 @@ function CardContainer(props:any) {
         return (
         <Row xs={1} md={2} className="g-4">
             {props.userShopData.map((item: any) => (
-                
                     <Card border="dark" style={{ width: '18rem' }}>
                         <Card.Img variant="bottom" src={require('../../assets/no-image.png')}/>
                         <Card.Body>
@@ -21,7 +20,7 @@ function CardContainer(props:any) {
                             <Card.Text> IdUser : {item.idUser} </Card.Text>
                             <Card.Footer>
                                 <Row>
-                                    <BtnEdit idShop={item.idShop} updateShopData={props.updateShopData}/>
+                                    <BtnEdit setIdShop={props.setIdShop} idShop={item.idShop} updateShopData={props.updateShopData} setShopRequestType={props.setShopRequestType}/>
                                     <BtnDelete idShop={item.idShop} updateShopData={props.updateShopData}/>
                                 </Row>
                             </Card.Footer>

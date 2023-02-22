@@ -2,8 +2,9 @@ import { InputGroup, Button } from "react-bootstrap";
 import Form from 'react-bootstrap/Form';
 
 const CreateShopForm = (props:any) => {
+    console.log("updateForm", props.userShop)
     return(
-    <Form noValidate validated={props.hasShop} onSubmit={props.handleSubmit}>
+    <Form noValidate onSubmit={props.handleSubmit}>
         <Form.Group className="mb-3" controlId="validationCustom01">
             <Form.Label>Shop name</Form.Label>
             <Form.Control
@@ -44,7 +45,11 @@ const CreateShopForm = (props:any) => {
                 </Form.Control.Feedback>
             </InputGroup>
         </Form.Group>
-        <Button type="submit">Create shop</Button>
+        {props.setShopRequestType ? 
+            <Button type="submit">Edit shop</Button>
+        :
+            <Button type="submit">Create shop</Button>
+        }
     </Form>
     )
 }

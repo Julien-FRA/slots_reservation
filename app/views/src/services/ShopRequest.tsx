@@ -32,7 +32,7 @@ export const GetEmployeesWorkingHours = async (): Promise<User | false> => (
     .catch(error => false)
 );
 
-export const CreateShops = async (shopJSON: any): Promise<any> => (
+export const CreateShopsRequest = async (shopJSON: any): Promise<any> => (
     await axios.post("http://localhost:3200/api/shop/create", {shopJSON}, {
         headers: {
           'Content-Type': 'application/json'
@@ -45,7 +45,7 @@ export const CreateShops = async (shopJSON: any): Promise<any> => (
     })
 );
 
-export const GetUserShop = async (): Promise<any> => (
+export const GetUserShopRequest = async (): Promise<any> => (
   //remove the HARD CODED idUser, get it from URL/COOKIE
   await axios.get("http://localhost:3200/api/shop/user/2", {
       headers: {
@@ -59,7 +59,7 @@ export const GetUserShop = async (): Promise<any> => (
   })
 );
 
-export const DeleteShop = async (id:any): Promise<any> => (
+export const DeleteShopRequest = async (id:any): Promise<any> => (
   //remove the HARD CODED idShop, get it from URL/COOKIE
   await axios.delete(`http://localhost:3200/api/shop/delete/${id}`, {
       headers: {
@@ -73,16 +73,17 @@ export const DeleteShop = async (id:any): Promise<any> => (
   })
 );
 
-export const EditShop = async (id:any): Promise<any> => (
+export const EditShopRequest = async (shopJSON:any): Promise<any> => (
+  console.log("haha", shopJSON),
   //remove the HARD CODED idShop, get it from URL/COOKIE
-  await axios.put(`http://localhost:3200/api/shop/update/${id}`, {
+  await axios.put(`http://localhost:3200/api/shop/update`, {shopJSON}, {
       headers: {
         'Content-Type': 'application/json'
       }
   })
   .then(response => {
-    console.log("this is delete response", response)
+    console.log("this is edit response", response)
   }).catch(error => {
-    console.log("this is an error on delete",error);
+    console.log("this is an error on edit",error);
   })
 );
