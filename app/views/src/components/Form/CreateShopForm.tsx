@@ -2,7 +2,6 @@ import { InputGroup, Button } from "react-bootstrap";
 import Form from 'react-bootstrap/Form';
 
 const CreateShopForm = (props:any) => {
-    console.log("updateForm", props.userShop)
     return(
     <Form noValidate onSubmit={props.handleSubmit}>
         <Form.Group className="mb-3" controlId="validationCustom01">

@@ -17,6 +17,7 @@ const ShopManager = () => {
         service:' '
     });
     const [idShop, setIdShop] = useState<any>();
+    const [addShop, setAddShop] = useState<any>(false);
     /**
      * This function updates shopData hook on event (each time form is modified).
      * @param event
@@ -48,14 +49,18 @@ const ShopManager = () => {
         console.log("this is shopDataJSON", shopJSON)
         //shopRequestType ? CreateShopsRequest(shopJSON) : EditShopRequest(shopJSON);
         //console.log("this is request type", request);
+        
+        //TRY TO ADD THIS TO UPDATE setInterval(async () => {}, 5000)
         try {
         await (shopRequestType ? CreateShopsRequest(shopJSON) : EditShopRequest(shopJSON));
+            setAddShop(false);
             setHasShop(true);
             setIsLoading(false);
         } catch (error) {
             setIsLoading(false);
             console.error(error);
         }
+        setShopRequestType(true);
     }, [shopData]);
 
     /**
@@ -68,7 +73,7 @@ const ShopManager = () => {
         try {
             var result = await GetUserShopRequest();
 
-            if (!result) {
+            if (!result || addShop === true) { //add state to break on adding new shop
                 setHasShop (false);
             } else {
                 setUserShop(result);
@@ -93,7 +98,7 @@ const ShopManager = () => {
     return (
         <>
             {shopRequestType ?
-                <CreateShop setIdShop={setIdShop} setShopRequestType={setShopRequestType} hasShop={hasShop} userShop={userShop} isLoading={isLoading} shopData={shopData} handleSubmit={handleSubmit} handleOnChange={handleOnChange} updateShopData={updateShopData}/>
+                <CreateShop setAddShop={setAddShop} setIdShop={setIdShop} setShopRequestType={setShopRequestType} hasShop={hasShop} setHasShop={setHasShop} userShop={userShop} isLoading={isLoading} shopData={shopData} handleSubmit={handleSubmit} handleOnChange={handleOnChange} updateShopData={updateShopData}/>
             :
                 <EditShops setIdShop={setIdShop} setShopRequestType={setShopRequestType} hasShop={hasShop} userShop={userShop} isLoading={isLoading} shopData={shopData} handleSubmit={handleSubmit} handleOnChange={handleOnChange} updateShopData={updateShopData}/>
             }
