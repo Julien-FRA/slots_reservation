@@ -1,4 +1,4 @@
-import UserProfil from "../components/Container/UserProfil";
+import UserProfil from "../components/Container/User/UserProfil";
 
 const Profil = () => (
     <>

@@ -26,7 +26,7 @@ func initHandlers() {
 	router.HandleFunc("/api/user/login", controller.LoginUser).Methods("POST")
 	router.HandleFunc("/api/user/logout", controller.LogoutUser).Methods("POST")
 	router.HandleFunc("/api/users", controller.GetAllUsers).Methods("GET")
-	router.HandleFunc("/api/user/update", controller.UpdateUser).Methods("PUT")
+	router.HandleFunc("/api/user/update/{id}", controller.UpdateUser).Methods("PUT")
 	router.HandleFunc("/api/user/delete/{id}", controller.DeleteUser).Methods("DELETE")
 
 	// Router for professionals  test

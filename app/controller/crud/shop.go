@@ -3,6 +3,7 @@ package controller
 import (
 	"app/model"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strconv"
 	_ "strconv"
@@ -104,15 +105,24 @@ func CreateShop(w http.ResponseWriter, r *http.Request) {
 func UpdateShop(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
-	decoder := json.NewDecoder(r.Body)
 	var shop model.Shop
-	err := decoder.Decode(&shop)
+
+	var reqBody struct {
+		ShopJSON string `json:"shopJSON"`
+	}
+
+	err := json.NewDecoder(r.Body).Decode(&reqBody)
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(err.Error()))
+		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
+	err = json.Unmarshal([]byte(reqBody.ShopJSON), &shop)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	fmt.Printf("Received shop data: %+v\n", shop)
 	err = model.UpdateShop(shop)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
