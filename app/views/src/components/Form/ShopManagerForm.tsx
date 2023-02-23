@@ -1,7 +1,7 @@
 import { InputGroup, Button } from "react-bootstrap";
 import Form from 'react-bootstrap/Form';
 
-const CreateShopForm = (props:any) => {
+const ShopManagerForm = (props: any) => {
     return(
     <Form noValidate onSubmit={props.handleSubmit}>
         <Form.Group className="mb-3" controlId="validationCustom01">
@@ -53,4 +53,4 @@ const CreateShopForm = (props:any) => {
     )
 }
 
-export default CreateShopForm;
+export default ShopManagerForm;

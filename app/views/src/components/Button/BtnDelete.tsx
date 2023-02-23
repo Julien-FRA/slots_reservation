@@ -15,7 +15,7 @@ function BtnDelete(props:any) {
         show={modalShow}
         onHide={() => setModalShow(false)}
         idShop={props.idShop}
-        updateShopData={props.updateShopData}
+        setHasShop={props.setHasShop}
       />
     </>
   );

@@ -5,7 +5,7 @@ import BtnSubmit from '../Button/BtnSubmit';
 
 const Header = () => {
   return (
-    <Navbar bg="light" expand="lg">
+    <Navbar bg="light" expand="lg" sticky="top">
       <Container fluid="xl">
         <Navbar.Brand>CergyOnHair</Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />

@@ -1,7 +1,4 @@
-import React from 'react'
-import { Container, Form, Nav, Navbar } from 'react-bootstrap';
-import BtnLink from '../Button/BtnLink';
-import BtnSubmit from '../Button/BtnSubmit';
+import { Container, Navbar } from 'react-bootstrap';
 
 const Footer = () => {
   return (

@@ -5,13 +5,13 @@ import Footer from "./components/Inc/Footer";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './assets/css/main.css';
 
+//YOU CAN IMPORT FOOTER HERE
 const App = () => {
   return (
       <Router>
-        <div className="h-100">
+        <div className="app">
           <Header/>
-          <RouterContainer/>
-          <Footer />
+          <RouterContainer />
         </div>
       </Router>
   );

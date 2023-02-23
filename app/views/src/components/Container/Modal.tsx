@@ -1,16 +1,16 @@
 import { Button, Modal } from "react-bootstrap";
 import { DeleteShopRequest } from '../../services/ShopRequest';
 import { EditShopRequest } from '../../services/ShopRequest';
-import EditShops from "../Inc/EditShop";
+import EditShops from "./Shop/EditShop";
 
 const GlobalModal:any = (props: any) => {
     const DeleteShopFunc = () => {
         DeleteShopRequest(props.idShop);
-        props.updateShopData(false);
+        props.setHasShop(false);
     }
     const EditShopFunc = () => {
         EditShopRequest(props.idShop);
-        props.updateShopData(false);
+        props.setHasShop(false);
     }
 
     if (props.type === "deleteModal") {

@@ -1,3 +1,6 @@
+.app {
+    height: 100vh;
+}
 .homepage { 
     background: url(../homepage.jpg) no-repeat center center fixed; 
     -webkit-background-size: cover;
@@ -29,12 +32,17 @@
     }
 }
 
-div#root {
-    height: 100vh;
-}
 .shop-container, .employees-container, .calendar-container{
     width: 100%;
-    padding: 5%;
+    padding: 1% 5% 15% 5%;
+}
+.shop-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.shop-container h1 {
+    text-align: center;
 }
 .container-fluid {
     padding: 0px!important;
@@ -48,4 +56,17 @@ div#root {
 .btn-link:hover {
     color: #212529;
     opacity: 0.75;
+}
+
+.card-body{
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: space-around;
+}
+
+.dashboard {
+    display: flex;
+    flex-direction: row;
+    height: auto;
 }

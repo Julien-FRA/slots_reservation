@@ -6,7 +6,7 @@ function BtnAdd(props:any) {
   const AddShopFunc = () => {
     props.setShopRequestType(true);
     props.setAddShop(true);
-    props.updateShopData(false);
+    props.setHasShop(false);
   }
   return (
     <>
