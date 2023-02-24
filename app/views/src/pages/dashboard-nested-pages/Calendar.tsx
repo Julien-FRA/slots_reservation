@@ -1,8 +1,10 @@
 import React from "react";
+import CalendarContainer from "../../components/Container/Appointment/Calendar";
 
 const Calendar = () => (
-    <div className="calendar-container">
-        <h1>This is Calendar SubPage</h1>
+    <div className="calendar-dashboard-nested-page">
+        <h1>Employees Calendar</h1>
+        <CalendarContainer/>
     </div>
 );
 
