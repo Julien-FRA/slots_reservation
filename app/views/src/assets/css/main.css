@@ -36,6 +36,9 @@
     width: 100%;
     padding: 1% 5% 15% 5%;
 }
+.calendar-dashboard-nested-page h1 {
+    text-align: center;
+}
 .shop-container {
     display: flex;
     flex-direction: column;
@@ -79,6 +82,7 @@
     border-radius: 10px;
     -webkit-box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.5); 
     box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.5);
+    position: relative;
 }
 .calendar-title-head {
     display: flex;
@@ -124,6 +128,36 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin: 10px 0px;
+}
+.calendar-toggle-buttons {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+.select-employee {
+    width: 30%;
+}
+.calendar-week-selectors {
+    font-size: 20px;
+    top: 13%;
+    margin-top: 25px;
+}
+label.btn.btn-primary {
+    background-color: #adb5bd;
+    color: #ffffff;
+    margin: 5px;
+    border: none;
+    border-radius: 10px 10px 10px 10px!important;
+}
+label.btn.btn-primary:hover{
+    background-color: #7d8184!important;
+}
+label.btn.btn-primary:checked{
+    background-color: #222323!important;
+}
+label.btn.btn-primary .btn-check:checked {
+ background-color: #222323!important;
 }
 .select-employee-toggle-container {
     margin: 5px;

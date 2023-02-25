@@ -2,7 +2,14 @@ import React, { Key, useEffect, useState } from 'react';
 import { Button, Form, InputGroup, Table, ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
 import { GetEmployeeWorkingHoursRequest } from '../../../services/WorkingHoursRequest';
 import { GetAllEmployeesRequest } from '../../../services/EmployeeRequests';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
+interface Date {
+    date: Date,
+    numberDay: number,
+    stringDay: string,
+    stringMonth: string,
+    workingHours: []
+}
 
 const CalendarContainer = () => {
 // Define state variable for the current week
@@ -44,7 +51,7 @@ const CalendarContainer = () => {
     };
     var regexHour = "([0-9]+(:[0-9]+))";
     var regexWeek = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
-    var dateArray = [];
+    var dateArray:any = [];
 
     for (var i = 0; i < currentWeek.length; i++) {
         var dateRegexed:any = JSON.stringify(currentWeek[i]).match(regexWeek)
@@ -59,7 +66,7 @@ const CalendarContainer = () => {
             numberDay: numberDay,
             stringDay: stringDay,
             stringMonth: stringMonth,
-            workingHours: [{}]
+            workingHours: []
         });
     };
 
@@ -120,23 +127,27 @@ const CalendarContainer = () => {
 
     return (
         <div className='calendar-container'>
-            <ToggleButtonGroup
-                type="radio"
-                name="options"
-                value={selectedEmployee}
-                onChange={handleToggleChange}
-                className="select-employee"
-                defaultValue={1}
-            >
-                {employees?.map((employee:any) => (
-                    <ToggleButton id={"tbg-radio-" + employee.idEmployee} value={employee.idEmployee}>
-                        {employee.name}
-                    </ToggleButton>
-                ))}
-            </ToggleButtonGroup>
+            <div className='calendar-toggle-buttons'>
+                <ToggleButtonGroup
+                    type="radio"
+                    name="options"
+                    value={selectedEmployee}
+                    onChange={handleToggleChange}
+                    className="select-employee"
+                    defaultValue={1}
+                >
+                    {employees?.map((employee:any) => (
+                        <ToggleButton id={"tbg-radio-" + employee.idEmployee} value={employee.idEmployee}>
+                            {employee.name}
+                        </ToggleButton>
+                    ))}
+                </ToggleButtonGroup>
+            </div>
             <div className='calendar'>
                 <>
-                    <i className="fa-solid fa-angle-left" onClick={handlePrevWeek}></i>
+                    <div className='calendar-week-selectors'>
+                        <i className="fa-solid fa-angle-left" onClick={handlePrevWeek}></i>
+                    </div>
                         {dateArray.map((date:any) => {
                             return (
                                 <div className='calendar-columns'>
@@ -153,7 +164,9 @@ const CalendarContainer = () => {
                                 </div>
                             )
                         })}
-                    <i className="fa-solid fa-angle-right" onClick={handleNextWeek}></i>
+                    <div className='calendar-week-selectors'>
+                        <i className="fa-solid fa-angle-right" onClick={handleNextWeek}></i>
+                    </div>
                 </>
             </div>
             <div>

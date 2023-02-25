@@ -3,7 +3,7 @@ import CalendarContainer from "../../components/Container/Appointment/Calendar";
 
 const Calendar = () => (
     <div className="calendar-dashboard-nested-page">
-        <h1>Employees Calendar</h1>
+        <h1>Appointment calendar</h1>
         <CalendarContainer/>
     </div>
 );
