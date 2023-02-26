@@ -160,6 +160,7 @@ const CalendarManager = (props:any) => {
         shopEmployeesWorkinghours: shopEmployeesWorkinghours,
         dateArray: dateArray,
         shopData: props.shopData.shopData,
+        selectedShop: selectedShop,
         setSetSelectedShop: setSetSelectedShop,
         getCurrentWeekDates: getCurrentWeekDates,
         handlePrevWeek: handlePrevWeek,

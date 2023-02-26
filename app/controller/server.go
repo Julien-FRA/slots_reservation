@@ -51,6 +51,14 @@ func initHandlers() {
 	router.HandleFunc("/api/working-hours/create", controller.CreateEmployeeWorkingHours).Methods("POST")
 	router.HandleFunc("/api/working-hours/delete/{idEmployee}/{idWorkingHours}", controller.DeleteEmployeeWorkingHour).Methods("DELETE")
 
+	// Router for appointments
+	router.HandleFunc("/api/appointments", controller.GetAllAppointmentsController).Methods("GET")
+	router.HandleFunc("/api/appointment/customer/{id}", controller.GetCustomerAppointmentsController).Methods("GET")
+	router.HandleFunc("/api/appointment/shop/{id}", controller.GetShopAppointmentsController).Methods("GET")
+	router.HandleFunc("/api/appointment/create", controller.CreateAppointmentController).Methods("POST")
+	router.HandleFunc("/api/appointment/update", controller.UpdateAppointmentController).Methods("PUT")
+	router.HandleFunc("/api/appointment/delete/{id}", controller.DeleteAppointmentController).Methods("DELETE")
+
 	//check status user
 	router.HandleFunc("/api/user/role/{id}", controller.RolesManagement).Methods("GET")
 

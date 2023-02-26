@@ -41,29 +41,36 @@ create table if not exists employees (
 create table if not exists workingHours (
        idWorkingHours serial not null unique primary key,
        idEmployee integer not null,
-       day date ,
+       day date,
        startTime time,
        endTime time,
        CONSTRAINT fk_employees  FOREIGN KEY(idEmployee)
        REFERENCES employees(idEmployee) ON DELETE CASCADE
 );
 
-create table if not exists appointement (
-      idAppointement serial not null unique primary key,
-      idEmployee integer not null,
-      idCustomer integer not null,
-      day date ,
-      startTime timestamp,
-      CONSTRAINT fk_employeesAppointement  FOREIGN KEY(idEmployee)
-      REFERENCES employees(idEmployee) ON DELETE CASCADE,
-      CONSTRAINT fk_customerAppointement  FOREIGN KEY(idCustomer)
-      REFERENCES customers(idCustomer) ON DELETE CASCADE
+create table if not exists appointments (
+       idAppointment serial not null unique primary key,
+       idEmployee integer not null,
+       idCustomer integer not null,
+       idShop integer not null,
+       startTime time,
+       endTime time,
+       name varchar(64) null,
+       shopName varchar(64) null,
+       day date,
+       CONSTRAINT fk_employeesAppointment  FOREIGN KEY(idEmployee)
+       REFERENCES employees(idEmployee) ON DELETE CASCADE,
+       CONSTRAINT fk_customerAppointment  FOREIGN KEY(idCustomer)
+       REFERENCES customers(idCustomer) ON DELETE CASCADE,
+       CONSTRAINT fk_shopAppointment  FOREIGN KEY(idShop)
+       REFERENCES shops(idShop) ON DELETE CASCADE
 );
 
 insert into users(email, name, password, role)
 values
-    ('juan@gmail.com', 'juan', 'password', 0),
-    ('alex@gmail.com', 'alex', 'password', 1);
+    ('juan@gmail.com', 'Juan', 'password', 0),
+    ('alex@gmail.com', 'Alex', 'password', 1),
+    ('Dulls@gmail.com', 'Dulls', 'password', 0);
 
     
 insert into shops(idUser, name, address, service)
@@ -91,3 +98,9 @@ values
     (4, '2023-03-03','16:35:20','13:35:20'),
     (5, '2023-03-05','17:35:20','14:35:20'),
     (6, '2023-03-06','13:35:20','15:35:20');
+
+insert into customers(idUser)
+values
+    (1),
+    (2),
+    (3);
