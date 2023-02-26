@@ -1,11 +1,39 @@
-import React from "react";
-import CalendarContainer from "../../components/Container/Appointment/Calendar";
+import React, { useEffect, useState } from "react";
+import CalendarManager from "../../components/Container/Appointment/CalendarManager";
+import { GetUserShopRequest } from "../../services/ShopRequest";
 
-const Calendar = () => (
-    <div className="calendar-dashboard-nested-page">
-        <h1>Appointment calendar</h1>
-        <CalendarContainer/>
-    </div>
-);
+const Calendar = () => {
+    const [hasShop, setHasShop] = useState<boolean>(false);
+    const [shopData, setHasShopData] = useState<any>([]);
+    useEffect(() => {
+        console.log("useEffect is RAN")
+        const hasShopRequest = async() => {
+            try {
+                var result = await GetUserShopRequest(); //add user ID in this func
+
+                if (!result) {
+                    setHasShop (false);
+                } else {
+                    setHasShop(true);
+                    setHasShopData(result);
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        hasShopRequest()
+    }, [hasShop]);
+        console.log("shopData data",shopData)
+    const shopProps:any = {
+        shopData: {shopData}
+    }
+    return (
+        <div className="calendar-dashboard-nested-page">
+            <h1>Appointment calendar</h1>
+            {hasShop ? <CalendarManager {...shopProps} /> : ''/*here add like a link button to take us to shop creation*/}
+            
+        </div>
+    )
+};
 
 export default Calendar;

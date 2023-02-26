@@ -9,7 +9,7 @@ function Schedule() {
     useEffect(() => {
       const loadSchedule = async () => {
         try {
-          const schedule:any = await GetShopEmployeesWorkingHoursRequest();
+          const schedule:any = await GetShopEmployeesWorkingHoursRequest(1);
           var regex = "([0-9]+(:[0-9]+)+)";
           var regexDate = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
 

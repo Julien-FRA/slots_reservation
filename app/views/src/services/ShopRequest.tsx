@@ -38,7 +38,7 @@ export const CreateShopsRequest = async (shopJSON: any): Promise<any> => (
 
 export const GetUserShopRequest = async (): Promise<any> => (
   //remove the HARD CODED idUser, get it from URL/COOKIE
-  await axios.get("http://localhost:3200/api/shop/user/2", {
+  await axios.get("http://localhost:3200/api/shop/user/1", {
       headers: {
         'Content-Type': 'application/json'
       }

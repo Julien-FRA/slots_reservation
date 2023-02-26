@@ -27,3 +27,17 @@ export const GetEmployeeRequest = async (id: any): Promise<any> => (
         console.log("this is an error on GetEmployeeRequests",error);
   })
 );
+
+export const GetShopEmployeeRequest = async (id: any): Promise<any> => (
+  await axios.get(`http://localhost:3200/api/employee/shop/${id}`, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+  })
+    .then(response => {
+        console.log("this is GetShopEmployeeRequest response", response)
+        return response.data
+  }).catch(error => {
+        console.log("this is an error on GetShopEmployeeRequest",error);
+  })
+);

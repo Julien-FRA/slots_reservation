@@ -172,3 +172,13 @@ label.btn.btn-primary .btn-check:checked {
   padding: 10px;
   border: 1px solid #cccccc;
 }
+.appointment-modal-cards {
+    padding: 10px;
+    margin: 5px;
+}
+.dropdown {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    margin: 20px;
+}

@@ -7,25 +7,26 @@ export interface User {
   password?: string;
 }
 
-export const GetShopEmployeesWorkingHoursRequest = async (): Promise<User | false> => (
+
+export const GetEmployeeWorkingHoursRequest = async (selectedEmployee: any): Promise<any> => (
+  await axios.get(`http://localhost:3200/api/working-hours-employee/${selectedEmployee}`, {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+  .then(response => {
+    console.log("this is GetEmployeeWorkingHours response", response)
+    return response.data
+  }).catch(error => {
+    console.log("this is an error on GetEmployeeWorkingHours",error);
+  })
+);
+
+export const GetShopEmployeesWorkingHoursRequest = async (selectedShop: any): Promise<User | false> => (
   await axios
-    .get("http://localhost:3200/api/working-hours-shop/1")
+    .get(`http://localhost:3200/api/working-hours-shop/${selectedShop}`) //SEND PROPS.SHOP HERE
     .then((response) => {
       return response.data;
     })
     .catch(error => false)
-);
-
-export const GetEmployeeWorkingHoursRequest = async (id: any): Promise<any> => (
-  await axios.get(`http://localhost:3200/api/working-hours-employee/${id}`, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-  })
-    .then(response => {
-        console.log("this is GetEmployeeWorkingHours response", response)
-        return response.data
-  }).catch(error => {
-        console.log("this is an error on GetEmployeeWorkingHours",error);
-  })
 );
