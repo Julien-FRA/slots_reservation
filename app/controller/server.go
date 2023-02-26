@@ -40,6 +40,7 @@ func initHandlers() {
 	//router for employees
 	router.HandleFunc("/api/employees", controller.GetAllEmployees).Methods("GET")
 	router.HandleFunc("/api/employee/{id}", controller.GetEmployee).Methods("GET")
+	router.HandleFunc("/api/employee/shop/{id}", controller.GetShopEmployees).Methods("GET")
 	router.HandleFunc("/api/employee/create", controller.CreateEmployee).Methods("POST")
 	router.HandleFunc("/api/employee/update", controller.UpdateEmployee).Methods("PUT")
 	router.HandleFunc("/api/employee/delete/{id}", controller.DeleteEmployee).Methods("DELETE")
