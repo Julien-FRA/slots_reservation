@@ -4,7 +4,8 @@ import ShopManagerForm from '../../Form/ShopManagerForm';
 import LoadSpinner from "../../Inc/LoadSpinner";
 
 const CreateShop = (props:any) => {
-  props.setShopRequestType(true);
+  //props.setShopRequestType(true);
+  console.log("ENTEREDSHOP", props.hasShop)
   return (
     <>
       {props.isLoading ? (

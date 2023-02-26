@@ -54,6 +54,7 @@
 .btn-link, .nav-link {
     text-decoration: none;
     color: #212529;
+    padding:10px;
 }
 
 .btn-link:hover {

@@ -9,6 +9,8 @@ const Calendar = (props: any) => {
         props: props,
         workingHour: workingHour
     }
+    console.log("this is calendar props", calendarProps)
+    console.log("upper calendar props", props)
     return (
         <div className='calendar-container'>
                 <div className='calendar-toggle-buttons'>
@@ -21,7 +23,7 @@ const Calendar = (props: any) => {
                         defaultValue={1}
                     >
                         {props.employees?.map((employee:any) => (
-                            <ToggleButton id={"tbg-radio-" + employee.idEmployee} value={employee.idEmployee}>
+                            <ToggleButton key={employee.idEmployee} id={"tbg-radio-" + employee.idEmployee} value={employee.idEmployee}>
                                 {employee.name}
                             </ToggleButton>
                         ))}
@@ -51,14 +53,15 @@ const Calendar = (props: any) => {
                         <div className='calendar-week-selectors'>
                             <i className="fa-solid fa-angle-right" onClick={props.handleNextWeek}></i>
                         </div>
-                        {props.isAdmin &&
+                        
+                    {props.isAdmin &&
                         <GlobalModal
-                                {...calendarProps}
-                                type="appointmentModal"
-                                show={modalShow}
-                                onHide={() => (setModalShow(false), setWorkingHour(''))}
-                            />
-                        }
+                        {...calendarProps}
+                        type="appointmentModal"
+                        show={modalShow}
+                        onHide={() => (setModalShow(false), setWorkingHour(''))}
+                    />
+                    }
                     </>
                 </div>
         </div>

@@ -5,7 +5,8 @@ import { DeleteShopRequest } from '../../services/ShopRequest';
 import { EditShopRequest } from '../../services/ShopRequest';
 import EditShops from "./Shop/EditShop";
 
-const GlobalModal:any = (props: any) => {
+const GlobalModal: any = (props: any) => {
+    
     const DeleteShopFunc = () => {
         DeleteShopRequest(props.idShop);
         props.setHasShop(false);
@@ -14,7 +15,6 @@ const GlobalModal:any = (props: any) => {
         EditShopRequest(props.idShop);
         props.setHasShop(false);
     }
-
     const PostAppointment = async () => {
         let appointmentJSON = selectedHour;
         console.log("appointmentJSON", appointmentJSON)
@@ -25,11 +25,55 @@ const GlobalModal:any = (props: any) => {
         }
     }
 
-    const OnCloseClear = () => {
-        props.workingHour = '';
-        console.log("props.workingHour", props.workingHour)
-    }
-
+    if (props.type === "deleteModal") {
+        return (
+            <Modal
+                {...props}
+                size="lg"
+                aria-labelledby="contained-modal-title-vcenter"
+                centered
+            >
+            <Modal.Header closeButton>
+                <Modal.Title id="contained-modal-title-vcenter">
+                Deleting your shop
+                </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <h4>Are you sure ?</h4>
+                <p>
+                This operation is definitive and might be painfull
+                </p>
+            </Modal.Body>
+            <Modal.Footer>
+                <Button onClick={props.onHide}>Close</Button>
+                <Button onClick={() => {DeleteShopFunc(); props.onHide()} }>Delete</Button>
+            </Modal.Footer>
+            </Modal>
+        );
+    } else if (props.type === "editModal") {
+        return (
+            <Modal
+                
+                size="lg"
+                aria-labelledby="contained-modal-title-vcenter"
+                centered
+            >
+            <Modal.Header closeButton>
+                <Modal.Title id="contained-modal-title-vcenter">
+                    Editing your shop
+                </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <EditShops/>
+            </Modal.Body>
+            <Modal.Footer>
+                <Button onClick={props.onHide}>Close</Button>
+                <Button onClick={() => {EditShopFunc(); props.onHide()} }>Validate changes</Button>
+            </Modal.Footer>
+            </Modal>
+        );
+    } else if (props.type === "appointmentModal") {
+        console.log("props.props.shopEmployeesWorkinghours",props)
     var regexHour = "([0-9]+(:[0-9]+))";
     var regexWeek = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
     var employeeArray = props.props.shopEmployeesWorkinghours.filter((obj: any) => obj.idEmployee === props.props.selectedEmployee);
@@ -60,55 +104,6 @@ const GlobalModal:any = (props: any) => {
         }
     }
     console.log("selectedHour", selectedHour)
-
-    if (props.type === "deleteModal") {
-        return (
-            <Modal
-                {...props}
-                size="lg"
-                aria-labelledby="contained-modal-title-vcenter"
-                centered
-            >
-            <Modal.Header closeButton>
-                <Modal.Title id="contained-modal-title-vcenter">
-                Deleting your shop
-                </Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <h4>Are you sure ?</h4>
-                <p>
-                This operation is definitive and might be painfull
-                </p>
-            </Modal.Body>
-            <Modal.Footer>
-                <Button onClick={props.onHide}>Close</Button>
-                <Button onClick={() => {DeleteShopFunc(); props.onHide()} }>Delete</Button>
-            </Modal.Footer>
-            </Modal>
-        );
-    } else if (props.type === "editModal") {
-        return (
-            <Modal
-                {...props}
-                size="lg"
-                aria-labelledby="contained-modal-title-vcenter"
-                centered
-            >
-            <Modal.Header closeButton>
-                <Modal.Title id="contained-modal-title-vcenter">
-                    Editing your shop
-                </Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <EditShops/>
-            </Modal.Body>
-            <Modal.Footer>
-                <Button onClick={props.onHide}>Close</Button>
-                <Button onClick={() => {EditShopFunc(); props.onHide()} }>Validate changes</Button>
-            </Modal.Footer>
-            </Modal>
-        );
-    } else if (props.type === "appointmentModal") {
         return (
             <Modal
                 {...props}
@@ -134,8 +129,8 @@ const GlobalModal:any = (props: any) => {
                     }
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={(props.onHide, OnCloseClear)}>Close</Button>
-                    <Button onClick={() => { PostAppointment(); props.onHide(); OnCloseClear()} }>Confirm</Button>
+                    <Button onClick={(props.onHide)}>Close</Button>
+                    <Button onClick={() => { PostAppointment(); props.onHide();} }>Confirm</Button>
                 </Modal.Footer>
             </Modal>
         );

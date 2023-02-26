@@ -26,6 +26,7 @@ export const GetShopEmployeesWorkingHoursRequest = async (selectedShop: any): Pr
   await axios
     .get(`http://localhost:3200/api/working-hours-shop/${selectedShop}`) //SEND PROPS.SHOP HERE
     .then((response) => {
+      console.log("this is GetEmployeeWorkingHoursRequest", response)
       return response.data;
     })
     .catch(error => false)

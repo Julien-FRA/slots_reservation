@@ -2,7 +2,8 @@ import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import GlobalModal from '../Container/Modal';
 
-function BtnDelete(props:any) {
+function BtnDelete(props: any) {
+  //debugger;
   const [modalShow, setModalShow] = useState(false);
   return (
     <>

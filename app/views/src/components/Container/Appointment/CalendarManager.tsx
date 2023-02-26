@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { GetEmployeeWorkingHoursRequest, GetShopEmployeesWorkingHoursRequest } from '../../../services/WorkingHoursRequest';
-import { GetAllEmployeesRequest, GetShopEmployeeRequest } from '../../../services/EmployeeRequests';
+import { GetShopEmployeeRequest } from '../../../services/EmployeeRequests';
 import Calendar from '../Appointment/Calendar';
 import ShopsDropdown from './ShopsDropdown';
 
@@ -98,6 +98,7 @@ const CalendarManager = (props:any) => {
         const workingHours = async() => {
             try {
                 var response = await GetEmployeeWorkingHoursRequest(selectedEmployee);
+                console.log("this is workingHours response", response)
                 setEmployeeWorkingHours(response);
             } catch (error) {
                 console.error(error);
@@ -119,7 +120,7 @@ const CalendarManager = (props:any) => {
         employeeName();
         ShopEmployeesWorkinghours();
     }, [selectedEmployee, selectedShop]);
-
+    console.log("shopEmployeesWorkinghours",shopEmployeesWorkinghours)
     /**
      * Handle selected employee toggle change
      * @param value 
@@ -170,7 +171,7 @@ const CalendarManager = (props:any) => {
     }
     return (
         <>
-            {isAdmin && <ShopsDropdown {...calendarProps}/>}
+            {isAdmin && <ShopsDropdown {...calendarProps} />}
             <Calendar {...calendarProps} />
         </>
     )
