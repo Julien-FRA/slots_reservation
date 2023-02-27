@@ -7,7 +7,7 @@ import EditShops from "./EditShop";
 
 const ShopManager: React.FC = () => {
   const [shopRequestType, setShopRequestType] = useState<boolean>(true);
-  const [hasShop, setHasShop] = useState<boolean>();
+  const [hasShop, setHasShop] = useState<boolean>(true);
   const [userShop, setUserShop] = useState<Shop[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [shopData, setShopData] = useState<Shop>({
@@ -96,6 +96,7 @@ const ShopManager: React.FC = () => {
       isLoading: isLoading,
       shopData: shopData,
       idShop: idShop,
+      shopRequestType: shopRequestType,
       setIdShop: setIdShop,
       setShopRequestType: setShopRequestType,
       handleSubmit: handleSubmit,

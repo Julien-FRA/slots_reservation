@@ -15,18 +15,18 @@ const Header = () => {
             style={{ maxHeight: '100px' }}
             navbarScroll
           >
-            <Nav.Link>
+            <Nav>
               <BtnLink link='/' placeholder='Home' className='btn-link' />
-            </Nav.Link>
-            <Nav.Link>
+            </Nav>
+            <Nav>
               <BtnLink link='/profil' placeholder='Profil' className='btn-link' />  
-            </Nav.Link>
-            <Nav.Link>
+            </Nav>
+            <Nav>
               <BtnLink link='/dashboard/shop' placeholder='Dashboard' className='btn-link' />  
-            </Nav.Link>
-            <Nav.Link>
+            </Nav>
+            <Nav>
               <BtnLink link='/dashboard/shop' placeholder='Dashboard' className='btn-link' />  
-            </Nav.Link>
+            </Nav>
           </Nav>
           <Form className="d-flex">
           <BtnLink link='/login' placeholder='Login' className='btn btn-dark mx-2' />  

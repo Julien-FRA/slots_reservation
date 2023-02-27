@@ -1,9 +1,10 @@
-import React from 'react';
+import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import GlobalModal from '../Container/Modal';
 
-function BtnDelete(props:any) {
-  const [modalShow, setModalShow] = React.useState(false);
+function BtnDelete(props: any) {
+  //debugger;
+  const [modalShow, setModalShow] = useState(false);
   return (
     <>
       <Button variant="outline-danger" onClick={() => setModalShow(true)}>

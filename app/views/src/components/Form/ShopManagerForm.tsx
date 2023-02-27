@@ -44,7 +44,7 @@ const ShopManagerForm = (props: any) => {
                 </Form.Control.Feedback>
             </InputGroup>
         </Form.Group>
-        {props.setShopRequestType ? 
+        {props.shopRequestType ? 
             <Button type="submit">Edit shop</Button>
         :
             <Button type="submit">Create shop</Button>

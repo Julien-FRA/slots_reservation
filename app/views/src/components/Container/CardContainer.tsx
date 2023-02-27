@@ -4,12 +4,12 @@ import BtnDelete from "../Button/BtnDelete";
 import BtnEdit from '../Button/BtnEdit';
 
 function CardContainer(props:any) {
-    
+    //debugger;
     if (props.type === "shop") {
         return (
         <>
             {props.userShopData.map((item: any) => (
-                    <Card border="dark" style={{ position: 'relative', width: '100%', height: '30rem', margin: '10px 0px' }}>
+                    <Card key={item.idShop} border="dark" style={{ position: 'relative', width: '100%', height: '30rem', margin: '10px 0px' }}>
                         <Card.Img variant="bottom" src={require('../../assets/noImage3.png')} style={{ padding:'10px', position: 'relative', width: '100%', height:'10rem' }}/>
                         <Card.Body>
                             <Card.Title> {item.name} </Card.Title>

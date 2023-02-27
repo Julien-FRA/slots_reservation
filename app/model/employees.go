@@ -2,7 +2,7 @@ package model
 
 type Employee struct {
 	ID          uint64 `json:"idEmployee"`
-	ID_SHOP		uint64 `json:"idShop"`
+	ID_SHOP     uint64 `json:"idShop"`
 	EMAIL       string `json:"email"`
 	PHONE       string `json:"phone"`
 	NAME        string `json:"name"`
@@ -25,7 +25,7 @@ func GetAllEmployees() ([]Employee, error) {
 	defer rows.Close()
 
 	for rows.Next() {
-		var idEmployee, idShop,price uint64
+		var idEmployee, idShop, price uint64
 		var email, phone, name, lastName, expertise, description string
 
 		err := rows.Scan(&idEmployee, &idShop, &email, &phone, &name, &lastName, &expertise, &description, &price)
@@ -35,7 +35,7 @@ func GetAllEmployees() ([]Employee, error) {
 
 		employee := Employee{
 			ID:          idEmployee,
-			ID_SHOP: 	 idShop,
+			ID_SHOP:     idShop,
 			EMAIL:       email,
 			PHONE:       phone,
 			NAME:        name,
@@ -70,7 +70,7 @@ func GetEmployee(id uint64) (Employee, error) {
 
 		employee = Employee{
 			ID:          idEmployee,
-			ID_SHOP: 	 idShop,
+			ID_SHOP:     idShop,
 			EMAIL:       email,
 			PHONE:       phone,
 			NAME:        name,
@@ -83,11 +83,46 @@ func GetEmployee(id uint64) (Employee, error) {
 	return employee, nil
 }
 
+func GetShopEmployees(id uint64) ([]Employee, error) {
+	var employees []Employee
+
+	query := `select idEmployee, idShop, email, phone, name, lastName, expertise, description, price from employees where idShop=$1;`
+	rows, err := db.Query(query, id)
+	if err != nil {
+		return employees, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var idEmployee, idShop, price uint64
+		var email, phone, name, lastName, expertise, description string
+
+		err := rows.Scan(&idEmployee, &idShop, &email, &phone, &name, &lastName, &expertise, &description, &price)
+		if err != nil {
+			return employees, err
+		}
+
+		employee := Employee{
+			ID:          idEmployee,
+			ID_SHOP:     idShop,
+			EMAIL:       email,
+			PHONE:       phone,
+			NAME:        name,
+			LASTNAME:    lastName,
+			EXPERTISE:   expertise,
+			DESCRIPTION: description,
+			PRICE:       price,
+		}
+		employees = append(employees, employee)
+	}
+	return employees, nil
+}
+
 func CreateEmployee(employee Employee) error {
 
-	query := `insert into employees(email, phone, name, lastName, expertise, description, price) values($1, $2, $3, $4, $5, $6, $7);`
+	query := `insert into employees(idShop, email, phone, name, lastName, expertise, description, price) values($1, $2, $3, $4, $5, $6, $7, $8);`
 
-	_, err := db.Exec(query, employee.EMAIL, employee.PHONE, employee.NAME, employee.LASTNAME, employee.EXPERTISE, employee.DESCRIPTION, employee.PRICE)
+	_, err := db.Exec(query, employee.ID_SHOP, employee.EMAIL, employee.PHONE, employee.NAME, employee.LASTNAME, employee.EXPERTISE, employee.DESCRIPTION, employee.PRICE)
 
 	if err != nil {
 		return err
