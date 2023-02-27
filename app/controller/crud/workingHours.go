@@ -3,6 +3,7 @@ package controller
 import (
 	"app/model"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strconv"
 	_ "strconv"
@@ -94,4 +95,28 @@ func DeleteEmployeeWorkingHour(w http.ResponseWriter, r *http.Request) {
 	} else {
 		w.WriteHeader(http.StatusOK)
 	}
+}
+
+func UpdateEmployeeWorkingHours(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	type WorkingHours struct {
+		WorkingHoursJSON []model.WorkingHours `json:"workingHoursJSON"`
+	}
+
+	var reqBody WorkingHours
+	err := json.NewDecoder(r.Body).Decode(&reqBody)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	for _, workingHour := range reqBody.WorkingHoursJSON {
+		// Do something with each appointment, like store it in a database
+		model.UpdateEmployeeWorkingHours(workingHour)
+		fmt.Printf("Received appointment: %+v\n", workingHour)
+	}
+
+	// Return a success message to the client
+	fmt.Fprintln(w, "Appointments created successfully")
 }

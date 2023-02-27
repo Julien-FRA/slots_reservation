@@ -31,3 +31,16 @@ export const GetShopEmployeesWorkingHoursRequest = async (selectedShop: any): Pr
     })
     .catch(error => false)
 );
+
+export const UpdateEmployeeWorkingHoursRequest = async (workingHoursJSON: any): Promise<any> => (
+    await axios.put("http://localhost:3200/api/working-hours/update", {workingHoursJSON}, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+      console.log("this is a good response",response);
+    }).catch(error => {
+      console.log("this is an error",error);
+    })
+);

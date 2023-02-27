@@ -98,7 +98,6 @@ const CalendarManager = (props:any) => {
         const workingHours = async() => {
             try {
                 var response = await GetEmployeeWorkingHoursRequest(selectedEmployee);
-                console.log("this is workingHours response", response)
                 setEmployeeWorkingHours(response);
             } catch (error) {
                 console.error(error);
@@ -120,7 +119,6 @@ const CalendarManager = (props:any) => {
         employeeName();
         ShopEmployeesWorkinghours();
     }, [selectedEmployee, selectedShop]);
-    console.log("shopEmployeesWorkinghours",shopEmployeesWorkinghours)
     /**
      * Handle selected employee toggle change
      * @param value 
@@ -144,15 +142,14 @@ const CalendarManager = (props:any) => {
                     var employeeWorkingHoursStartTime = employeeWorkingHours[j].startTime.match(regexHour);
                     dateArray[k].workingHours.push({
                         employeeId: employeeWorkingHours[j].idEmployee,
-                        startTime: employeeWorkingHoursStartTime[0]
+                        startTime: employeeWorkingHoursStartTime[0], //here maybe add the workingHour status => taken/available
+                        idWorkingHours: employeeWorkingHours[j].idWorkingHours,
+                        status: employeeWorkingHours[j].status,
                     });
                 }
             }
         }
     };
-    console.log("employees", employees);
-    console.log("shopEmployeesWorkinghours", shopEmployeesWorkinghours);
-    console.log("employeeWorkingHours", employeeWorkingHours);
 
     const calendarProps: any = {
         employees: employees,

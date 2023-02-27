@@ -116,6 +116,17 @@
 .calendar-body-items:hover {
     background-color: #7d8184;
 }
+.calendar-body-items-taken {
+    text-decoration: line-through;
+    padding: 5px;
+    margin: 2px 0px;
+    width: 100%;
+    background-color: #adb5bd;
+    color: #141619;
+    border-radius: 5px;
+    border: 1px;
+    opacity: 30%;
+}
 .calendar-header span {
     display: flex;
     text-align: center;

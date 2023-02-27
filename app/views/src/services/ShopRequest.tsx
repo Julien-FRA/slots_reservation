@@ -65,7 +65,6 @@ export const DeleteShopRequest = async (id:any): Promise<any> => (
 );
 
 export const EditShopRequest = async (shopJSON:any): Promise<any> => (
-  console.log("haha", shopJSON),
   //remove the HARD CODED idShop, get it from URL/COOKIE
   await axios.put(`http://localhost:3200/api/shop/update`, {shopJSON}, {
       headers: {
