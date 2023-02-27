@@ -8,6 +8,8 @@ import Shop from "./pages/dashboard-nested-pages/Shop";
 import Employees from "./pages/dashboard-nested-pages/Employees";
 import Calendar from "./pages/dashboard-nested-pages/Calendar";
 
+// export const UserContext = createContext<any>([])
+
 export const RouterContainer = () => (
   <Routes>
     <Route path="/" element={<Home />} />
@@ -20,4 +22,4 @@ export const RouterContainer = () => (
       <Route path ="calendar" element={<Calendar/>}/>
     </Route>
   </Routes>
-);
+)

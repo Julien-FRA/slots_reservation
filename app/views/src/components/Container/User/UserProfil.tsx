@@ -1,36 +1,32 @@
-import React, { useEffect, useState } from 'react'
-import { getUser } from '../../../services/UserRequest';
+import { useContext, useEffect } from 'react'
+import { UserContext } from '../../../App';
 
-const UserProfil = () => {
-    const [id, setId] = useState("");
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [role, setRole] = useState("");
 
+const UserProfil = ({value}: any) => {
+    // Récupérer le context
+    const [users, setUsers] = useContext(UserContext)
     useEffect(() => {
-        (
-            async () => {
-                const response = await getUser();
-                setId(response.idUser)
-                setName(response.name)
-                setEmail(response.email)
-                setRole(response.role)
-            }
-        )();
-    })
+      console.log(users)
+    }, [users])
 
-  return (
-    <div className='row m-5'>
-        <div className="card col-6">
-            <div className="list-group list-group-flush">
-                <p className="list-group-item">ID: {id}</p>
-                <p className="list-group-item">Nom: {name}</p>
-                <p className="list-group-item">Email: {email}</p>
-                <p className="list-group-item">Rôle: {role}</p>
+  if (users) {
+    return (
+        <div className='row m-5'>
+            <div className="card col-6">
+                <div className="list-group list-group-flush">
+                    <p className="list-group-item">ID: {users.idUser}</p>
+                    <p className="list-group-item">Nom: {users.name}</p>
+                    <p className="list-group-item">Email: {users.email}</p>
+                    <p className="list-group-item">Rôle: {users.role}</p>
+                </div>
             </div>
         </div>
-    </div>
-  )
+      )
+  } else {
+    return (
+        <h1>Aucun utilisateur connecté</h1>
+    )
+  }
 }
 
 export default UserProfil

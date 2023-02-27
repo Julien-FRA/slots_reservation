@@ -54,3 +54,11 @@ export const getUser = async(): Promise<any> => (
     console.error('Error:', error);
   })
 )
+
+export const logoutUser = async () => {
+  await fetch(`${PATH}/user/logout`, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    credentials: 'include',
+  });
+}
