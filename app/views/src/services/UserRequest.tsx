@@ -1,7 +1,7 @@
 import axios from "axios";
 import { IUser } from "../schemas/User";
 
-const PATH = 'http://localhost:3200/api';
+const PATH = process.env.REACT_APP_API_PATH;
 
 export interface User {
   idUser?: number;
