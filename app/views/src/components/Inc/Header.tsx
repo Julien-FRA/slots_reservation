@@ -18,17 +18,35 @@ const Header = () => {
       }, 1000)
   }
 
-  let menu;
+  let menuUser;
+  let menuIsLogin;
 
   if (user) {
-    menu = (
+    menuUser = (
       <Link to='/login' className='btn btn-primary mx-2' onClick={handleLogout}>Logout</Link>
     )
+    menuIsLogin = (
+      <Nav>
+        <BtnLink link='/profil' placeholder='Profil' className='btn-link' />  
+      </Nav>
+    )
   } else {
-    menu = (
+    menuUser = (
       <>
         <BtnLink link='/login' placeholder='Login' className='btn btn-dark mx-2' />  
         <BtnLink link='/register' placeholder='Register' className='btn btn-secondary mx-2' />  
+      </>
+    )
+  }
+
+  let menuAdmin;
+
+  if(user?.role == "1") {
+    menuAdmin = (
+      <>
+        <Nav>
+          <BtnLink link='/dashboard/shop' placeholder='Dashboard' className='btn-link' />  
+        </Nav>     
       </>
     )
   }
@@ -47,18 +65,11 @@ const Header = () => {
             <Nav>
               <BtnLink link='/' placeholder='Home' className='btn-link' />
             </Nav>
-            <Nav>
-              <BtnLink link='/profil' placeholder='Profil' className='btn-link' />  
-            </Nav>
-            <Nav>
-              <BtnLink link='/dashboard/shop' placeholder='Dashboard' className='btn-link' />  
-            </Nav>
-            <Nav>
-              <BtnLink link='/dashboard/shop' placeholder='Dashboard' className='btn-link' />  
-            </Nav>
+            {menuIsLogin}
+            {menuAdmin}
           </Nav>
           <Form className="d-flex">
-          {menu}
+          {menuUser}
           </Form>
         </Navbar.Collapse>
       </Container>

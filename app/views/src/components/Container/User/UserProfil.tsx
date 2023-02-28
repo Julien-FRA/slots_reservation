@@ -9,7 +9,10 @@ const UserProfil = () => {
   if (user) {
     return (
       <div>
-        <p>Bonjour {user?.name}!</p>
+        <p>Bonjour <strong>{user?.name}</strong>!</p>
+        <p>ID: <strong>{user?.idUser}</strong></p>
+        <p>Email: <strong>{user?.email}</strong></p>
+        <p>Role: <strong>{user?.role}</strong></p>
       </div>
     );
   } else {
