@@ -100,11 +100,11 @@ func CreateEmployeeWorkingHours(workingHour WorkingHours) error {
 	return nil
 }
 
-func DeleteEmployeeWorkingHour(idEmployee, idWorkingHour uint64) error {
+func DeleteEmployeeWorkingHour(id uint64) error {
 
-	query := `DELETE FROM workingHours WHERE idEmployee=$1 AND idWorkingHours =$2;`
+	query := `DELETE FROM workingHours WHERE idWorkingHours=$1 `
 
-	_, err := db.Exec(query, idEmployee, idWorkingHour)
+	_, err := db.Exec(query, id)
 	if err != nil {
 		return err
 	}
