@@ -31,3 +31,42 @@ export const GetShopEmployeesWorkingHoursRequest = async (selectedShop: any): Pr
     })
     .catch(error => false)
 );
+
+export const UpdateEmployeeWorkingHoursRequest = async (workingHoursJSON: any): Promise<any> => (
+    await axios.put("http://localhost:3200/api/working-hours/update", {workingHoursJSON}, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+      console.log("this is a good response UpdateEmployeeWorkingHoursRequest",response);
+    }).catch(error => {
+      console.log("this is an error UpdateEmployeeWorkingHoursRequest",error);
+    })
+);
+
+export const CreateEmployeeWorkingHoursRequest = async (workingHoursJSON: any): Promise<any> => (
+    await axios.post("http://localhost:3200/api/working-hours/create", {workingHoursJSON}, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+      console.log("this is a good response CreateEmployeeWorkingHoursRequest",response);
+    }).catch(error => {
+      console.log("this is an error CreateEmployeeWorkingHoursRequest",error);
+    })
+);
+export const DeleteEmployeeWorkingHourRequest = async (id:any): Promise<any> => (
+  //remove the HARD CODED idShop, get it from URL/COOKIE
+  await axios.delete(`http://localhost:3200/api/working-hours/delete/${id}`, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+  })
+  .then(response => {
+    console.log("this is delete response", response)
+  }).catch(error => {
+    console.log("this is an error on delete",error);
+  })
+);

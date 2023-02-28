@@ -1,16 +1,20 @@
 import { useState } from "react";
 import { ToggleButtonGroup, ToggleButton } from "react-bootstrap";
+import { CreateEmployeeWorkingHoursRequest } from "../../../services/WorkingHoursRequest";
 import GlobalModal from '../../Container/Modal';
 
 const Calendar = (props: any) => {
     const [modalShow, setModalShow] = useState(false);
+    const [adminModalShow, setAdminModalShow] = useState(false);
     const [workingHour, setWorkingHour] = useState<any>();
+    const [workingHourArray, setWorkingHourArray] = useState<any>();
     const calendarProps = {
         props: props,
-        workingHour: workingHour
+        workingHour: workingHour,
+        setWorkingHour: setWorkingHour,
+        workingHourArray: workingHourArray
     }
-    console.log("this is calendar props", calendarProps)
-    console.log("upper calendar props", props)
+
     return (
         <div className='calendar-container'>
                 <div className='calendar-toggle-buttons'>
@@ -20,7 +24,7 @@ const Calendar = (props: any) => {
                         value={props.selectedEmployee}
                         onChange={props.handleToggleChange}
                         className="select-employee"
-                        defaultValue={1}
+                        
                     >
                         {props.employees?.map((employee:any) => (
                             <ToggleButton key={employee.idEmployee} id={"tbg-radio-" + employee.idEmployee} value={employee.idEmployee}>
@@ -44,24 +48,56 @@ const Calendar = (props: any) => {
                                         </div>
                                         <div className='calendar-body'>
                                             {date.workingHours.map((item: any) => (
-                                                <button className='calendar-body-items' onClickCapture={() => (setModalShow(true), setWorkingHour(item.startTime))}> {item.startTime} </button>
+                                                <button
+                                                    disabled={!props.isAdmin && item.status === 'taken' ? true : false}
+                                                    className={item.status === 'available' ? 'calendar-body-items' : 'calendar-body-items-taken'}
+                                                    onClickCapture={
+                                                        () => (setModalShow(true), setWorkingHour(item.startTime), setWorkingHourArray(item))
+                                                    }
+                                                >
+                                                    {item.startTime}
+                                                </button>
                                             ))}
                                         </div>
                                     </div>
                                 )
                             })}
+                            {props.isAdmin ?
+                                <div className="calendar-footer">
+                                    <button
+                                        className="calendar-footer-items"
+                                        onClick={() => (setAdminModalShow(true))}
+                                    >
+                                        Add working hours
+                                    </button>
+                                </div>
+                            : ''}
                         <div className='calendar-week-selectors'>
                             <i className="fa-solid fa-angle-right" onClick={props.handleNextWeek}></i>
                         </div>
-                        
-                    {props.isAdmin &&
-                        <GlobalModal
-                        {...calendarProps}
-                        type="appointmentModal"
-                        show={modalShow}
-                        onHide={() => (setModalShow(false), setWorkingHour(''))}
-                    />
-                    }
+                        {props.isAdmin ?
+                            <>
+                                <GlobalModal
+                                    {...calendarProps}
+                                    type={"createWorkingHourModal"}
+                                    show={adminModalShow}
+                                    onHide={() => setAdminModalShow(false)}
+                                />
+                                <GlobalModal
+                                    {...calendarProps}
+                                    type={"manageWorkingHourModal"}
+                                    show={modalShow}
+                                    onHide={() => setModalShow(false)}
+                                />
+                            </>
+                            :
+                            <GlobalModal
+                                {...calendarProps}
+                                type={"appointmentModal"}
+                                show={modalShow}
+                                onHide={() => (setModalShow(false), setWorkingHour(''))}
+                            />
+                        }
                     </>
                 </div>
         </div>

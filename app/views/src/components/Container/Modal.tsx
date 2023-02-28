@@ -1,9 +1,12 @@
-import { Console } from "console";
+import { useEffect, useState } from "react";
 import { Button, Card, Modal } from "react-bootstrap";
 import { CreateAppointmentRequest } from "../../services/AppointmentRequests";
 import { DeleteShopRequest } from '../../services/ShopRequest';
 import { EditShopRequest } from '../../services/ShopRequest';
 import EditShops from "./Shop/EditShop";
+import { UpdateEmployeeWorkingHoursRequest } from "../../services/WorkingHoursRequest";
+import WorkingHoursManager from "./WorkingHours/WorkingHoursManager";
+import CrudOperationsWorkingHours from "./Appointment/EditDeleteWorkingHoursModal";
 
 const GlobalModal: any = (props: any) => {
     
@@ -17,16 +20,13 @@ const GlobalModal: any = (props: any) => {
     }
     const PostAppointment = async () => {
         let appointmentJSON = selectedHour;
-        console.log("appointmentJSON", appointmentJSON)
-        try {
-            await (CreateAppointmentRequest(appointmentJSON))
-        } catch (error) {
-            console.error(error);
-        }
+        CreateAppointmentRequest(appointmentJSON);
+        workingHours[0].status = 'taken';
+        UpdateEmployeeWorkingHoursRequest(workingHours);
+        window.location.reload();
     }
-
     if (props.type === "deleteModal") {
-        return (
+            return (
             <Modal
                 {...props}
                 size="lg"
@@ -72,44 +72,50 @@ const GlobalModal: any = (props: any) => {
             </Modal.Footer>
             </Modal>
         );
-    } else if (props.type === "appointmentModal") {
-        console.log("props.props.shopEmployeesWorkinghours",props)
-    var regexHour = "([0-9]+(:[0-9]+))";
-    var regexWeek = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
-    var employeeArray = props.props.shopEmployeesWorkinghours.filter((obj: any) => obj.idEmployee === props.props.selectedEmployee);
-    var selectedHour: any = [];
-    console.log("props.props.selectedShop",props.props.selectedShop)
-
-    /**
-     * This will be used in appointment crud POST request
-     * This will also be used in workingHours crud POST request
-     * All data for both request should be contained in selectedHour array
-     */
-    for (var i = 0; i < employeeArray.length; i++) {
-        var selectedStartTime = employeeArray[i].startTime.match(regexHour);
-        var selectedEndTime = employeeArray[i].endTime.match(regexHour);
-        if (selectedStartTime[0] === props.workingHour) {
-            var selectedWeek:any = JSON.stringify(employeeArray[i].day).match(regexWeek);
-            selectedHour.push({
-                idEmployee: employeeArray[i].idEmployee,
-                idCustomer: 1, //here we must replace it by the cookie isCustomer
-                idShop: props.props.selectedShop,
-                startTime: selectedStartTime[0],
-                endTime: selectedEndTime[0],
-                name: employeeArray[i].name,
-                shopName: employeeArray[i].shopName,
-                day: selectedWeek[0]
-            })
-            break;
+    } else if (props.type === "appointmentModal") {  
+        var regexHour = "([0-9]+(:[0-9]+))";
+        var regexWeek = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
+        var employeeArray = props.props.shopEmployeesWorkinghours.filter((obj: any) => obj.idEmployee === props.props.selectedEmployee);
+        var selectedHour: any = [];
+        var workingHours: any = [];
+        
+        /** This will be used in appointment crud POST request
+        * This will also be used in workingHours crud POST request
+        * All data for both request should be contained in selectedHour array
+        */
+        for (var i = 0; i < employeeArray.length; i++) {
+            var selectedStartTime = employeeArray[i].startTime.match(regexHour);
+            var selectedEndTime = employeeArray[i].endTime.match(regexHour);
+            if (selectedStartTime[0] === props.workingHour) {
+                var selectedWeek:any = JSON.stringify(employeeArray[i].day).match(regexWeek);
+                selectedHour.push({
+                    idEmployee: employeeArray[i].idEmployee,
+                    idCustomer: 1, //here we must replace it by the cookie isCustomer
+                    idShop: props.props.selectedShop,
+                    startTime: selectedStartTime[0],
+                    endTime: selectedEndTime[0],
+                    name: employeeArray[i].name,
+                    shopName: employeeArray[i].shopName,
+                    day: selectedWeek[0]
+                });
+                workingHours.push({
+                    idEmployee: employeeArray[i].idEmployee,
+                    day: selectedWeek[0],
+                    startTime: selectedStartTime[0],
+                    endTime: selectedEndTime[0],
+                    status: employeeArray[i].status,
+                    idWorkingHours: employeeArray[i].idWorkingHours
+                })
+                break;
+            }    
         }
-    }
-    console.log("selectedHour", selectedHour)
+        
         return (
             <Modal
-                {...props}
-                size="lg"
-                aria-labelledby="contained-modal-title-vcenter"
-                centered
+            {...props}
+            size="lg"
+            aria-labelledby="contained-modal-title-vcenter"
+            centered
             >
                 <Modal.Header closeButton>
                     <Modal.Title id="contained-modal-title-vcenter">
@@ -134,6 +140,54 @@ const GlobalModal: any = (props: any) => {
                 </Modal.Footer>
             </Modal>
         );
+    } else if (props.type === "createWorkingHourModal") {
+        return (
+            <Modal
+                {...props}
+                size="lg"
+                aria-labelledby="contained-modal-title-vcenter"
+                centered
+            >
+            <Modal.Header closeButton>
+                <Modal.Title id="contained-modal-title-vcenter">
+                    Add working hours
+                </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                    <WorkingHoursManager {...props} requestType="create"/>
+            </Modal.Body>
+            <Modal.Footer>
+                
+            </Modal.Footer>
+            </Modal>
+        )
+    } else if (props.type === "manageWorkingHourModal") {
+        return (
+            <Modal
+            {...props}
+            size="lg"
+            aria-labelledby="contained-modal-title-vcenter"
+            centered
+            >
+                <Modal.Body>
+                    <CrudOperationsWorkingHours {...props}/>
+                </Modal.Body>
+            </Modal>
+        )
+    } else if (props.type === "editWorkingHourModal") {
+        var workingHourArray = props.workingHourArray;
+        return (
+            <Modal
+            {...props}
+            size="lg"
+            aria-labelledby="contained-modal-title-vcenter"
+            centered
+            >
+                <Modal.Body>
+                    <WorkingHoursManager workingHourArray={workingHourArray} {...props} requestType={"edit"}/>
+                </Modal.Body>
+            </Modal>
+        )
     }
 }
 

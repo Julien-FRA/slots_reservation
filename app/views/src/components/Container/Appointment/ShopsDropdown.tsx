@@ -4,7 +4,6 @@ const ShopsDropdown = (props: any) => {
     const selectedShop = (id: number) => {
         props.setSetSelectedShop(id);
     }
-    console.log("props.shopData", props.shopData)
     return (
         <DropdownButton id="dropdown-basic-button" title="Select your shop">
             {props.shopData.map((shop:any) => (

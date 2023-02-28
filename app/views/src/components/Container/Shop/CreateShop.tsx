@@ -5,7 +5,7 @@ import LoadSpinner from "../../Inc/LoadSpinner";
 
 const CreateShop = (props:any) => {
   //props.setShopRequestType(true);
-  console.log("ENTEREDSHOP", props.hasShop)
+  
   return (
     <>
       {props.isLoading ? (
