@@ -31,8 +31,8 @@ const LoginForm = () => {
           setError("")
           setTimeout(() => {
             navigate('/profil')
-            window.location.reload();
-          }, 1000)
+            window.location.reload()
+          }, 2000)
         } else {
           setIsLogin(false)
           setError("Echec de la connexion")

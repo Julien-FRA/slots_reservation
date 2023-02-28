@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Link } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 import { RouterContainer } from "./Router";
 import Header from "./components/Inc/Header";
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -6,29 +6,46 @@ import './assets/css/main.css';
 import { createContext, useEffect, useState } from "react";
 import { getUser } from "./services/UserRequest";
 
-export const UserContext = createContext<any>([])
+interface User {
+  id: string,
+  email: string,
+  name: string,
+  role: string,
+}
+
+export const UserContext = createContext<User | null>(null);
 
 //YOU CAN IMPORT FOOTER HERE
 const App = () => {
-  const [users, setUsers] = useState([])
+  const dataUser = {
+    id: "",
+    email: "",
+    name: "",
+    role: "",
+  }
+
+  const [user, setUser] = useState(dataUser)
 
   useEffect(() => {
-      (
-        async () => {
-            const response = await getUser();
-            setUsers(response)
-        }
-      )();
+    const userConnect = async() => {
+      try {
+          var response = await getUser();
+          setUser(response);
+      } catch (error) {
+          console.error(error);
+      }
+  }
+  userConnect()
   }, [])
 
   return (
-    <UserContext.Provider value={[users, setUsers]}>
+    <UserContext.Provider value={user}>
       <Router>
         <div className="app">
           <Header />
           <RouterContainer />
         </div>
-      </Router>*
+      </Router>
     </UserContext.Provider>
   );
 };

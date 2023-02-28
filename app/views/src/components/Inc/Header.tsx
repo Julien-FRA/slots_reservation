@@ -1,18 +1,14 @@
-import React, { useContext, useEffect } from 'react'
+import { useContext } from 'react'
 import { Container, Form, Nav, Navbar } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../../App';
-import { logoutUser } from '../../services/UserRequest';
+import { getUser, logoutUser } from '../../services/UserRequest';
 import BtnLink from '../Button/BtnLink';
 
 const Header = () => {
-  // Récupérer le context
-  const [users, setUsers] = useContext(UserContext)
-  const navigate = useNavigate();
+  const user = useContext(UserContext);
 
-  useEffect(() => {
-    console.log(users)
-  }, [users])
+  const navigate = useNavigate();
 
   const handleLogout = async () => {
       await logoutUser()
@@ -24,7 +20,7 @@ const Header = () => {
 
   let menu;
 
-  if (users) {
+  if (user) {
     menu = (
       <Link to='/login' className='btn btn-primary mx-2' onClick={handleLogout}>Logout</Link>
     )
