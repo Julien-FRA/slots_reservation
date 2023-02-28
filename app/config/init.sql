@@ -69,7 +69,8 @@ create table if not exists appointments (
 insert into users(email, name, password, role)
 values
     ('juan@gmail.com', 'Juan', 'password', 0),
-    ('alex@gmail.com', 'Alex', 'password', 1),
+    ('alex@gmail.com', 'Alex', 'password', 0),
+    ('admin@gmail.com', 'Admin', '$2y$14$CZ2zBjwuc40DsJmN.GEHXedsiSGF.xEM0iwXRGT8Q.uMg5SE5eCMK', 1),
     ('Dulls@gmail.com', 'Dulls', 'password', 0);
 
     

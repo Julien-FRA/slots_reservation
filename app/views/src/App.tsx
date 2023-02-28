@@ -7,7 +7,7 @@ import { createContext, useEffect, useState } from "react";
 import { getUser } from "./services/UserRequest";
 
 interface User {
-  id: string,
+  idUser: string,
   email: string,
   name: string,
   role: string,
@@ -18,7 +18,7 @@ export const UserContext = createContext<User | null>(null);
 //YOU CAN IMPORT FOOTER HERE
 const App = () => {
   const dataUser = {
-    id: "",
+    idUser: "",
     email: "",
     name: "",
     role: "",
