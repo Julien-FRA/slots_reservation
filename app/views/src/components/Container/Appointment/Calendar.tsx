@@ -8,20 +8,13 @@ const Calendar = (props: any) => {
     const [adminModalShow, setAdminModalShow] = useState(false);
     const [workingHour, setWorkingHour] = useState<any>();
     const [workingHourArray, setWorkingHourArray] = useState<any>();
-    const [addWorkingHoursJSON, setAddWorkingHoursJSON] = useState<any>([]);
     const calendarProps = {
         props: props,
         workingHour: workingHour,
         setWorkingHour: setWorkingHour,
         workingHourArray: workingHourArray
     }
-        console.log("adminModalShow",adminModalShow)
 
-    const createWorkingHour = () => {
-        console.log("adminModalShow",adminModalShow)
-        //CreateEmployeeWorkingHoursRequest(addWorkingHoursJSON)
-    }
-    console.log("this is dateArray", props.dateArray)
     return (
         <div className='calendar-container'>
                 <div className='calendar-toggle-buttons'>
@@ -58,7 +51,9 @@ const Calendar = (props: any) => {
                                                 <button
                                                     disabled={!props.isAdmin && item.status === 'taken' ? true : false}
                                                     className={item.status === 'available' ? 'calendar-body-items' : 'calendar-body-items-taken'}
-                                                    onClickCapture={() => (setModalShow(true), setWorkingHour(item.startTime), setWorkingHourArray(item))}
+                                                    onClickCapture={
+                                                        () => (setModalShow(true), setWorkingHour(item.startTime), setWorkingHourArray(item))
+                                                    }
                                                 >
                                                     {item.startTime}
                                                 </button>
@@ -71,7 +66,7 @@ const Calendar = (props: any) => {
                                 <div className="calendar-footer">
                                     <button
                                         className="calendar-footer-items"
-                                        onClick={() => (setAdminModalShow(true), createWorkingHour)}
+                                        onClick={() => (setAdminModalShow(true))}
                                     >
                                         Add working hours
                                     </button>
@@ -80,14 +75,21 @@ const Calendar = (props: any) => {
                         <div className='calendar-week-selectors'>
                             <i className="fa-solid fa-angle-right" onClick={props.handleNextWeek}></i>
                         </div>
-                        
                         {props.isAdmin ?
-                            <GlobalModal
-                                {...calendarProps}
-                                type={"createWorkingHourModal"}
-                                show={adminModalShow}
-                                onHide={() => setAdminModalShow(false)}
-                            />
+                            <>
+                                <GlobalModal
+                                    {...calendarProps}
+                                    type={"createWorkingHourModal"}
+                                    show={adminModalShow}
+                                    onHide={() => setAdminModalShow(false)}
+                                />
+                                <GlobalModal
+                                    {...calendarProps}
+                                    type={"manageWorkingHourModal"}
+                                    show={modalShow}
+                                    onHide={() => setModalShow(false)}
+                                />
+                            </>
                             :
                             <GlobalModal
                                 {...calendarProps}

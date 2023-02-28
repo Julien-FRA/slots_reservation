@@ -11,7 +11,8 @@ const WorkingHoursManagerForm = (props: any) => {
                 name="startTime"
                 required
                 type="text"
-                placeholder="Ex : 12:30"
+                    placeholder="Ex : 12:30"
+                    //defaultValue={"19:30"}
             />
             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
         </Form.Group>
@@ -23,6 +24,7 @@ const WorkingHoursManagerForm = (props: any) => {
                 required
                 type="text"
                 placeholder="Ex : 13:30"
+                    //defaultValue={"20:30"}
             />
             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
         </Form.Group>
@@ -31,11 +33,12 @@ const WorkingHoursManagerForm = (props: any) => {
             <InputGroup>
                 <Form.Control
                 onChange={props.handleOnChange}
-                name="service"
+                name="day"
                 type="text"
                 placeholder="Ex : 2023-02-28"
                 aria-describedby="inputGroupPrepend"
-                required
+                        required
+                    //defaultValue={"2023-03-04"}
                 />
                 <Form.Control.Feedback type="invalid">
                 Please change !
@@ -49,7 +52,8 @@ const WorkingHoursManagerForm = (props: any) => {
                 onChange={props.handleOnChange}
                 name="status"
                 type="text"
-                placeholder="Ex : Taken"
+                        placeholder="Ex : Taken"
+                        //defaultValue={"available"}
                 aria-describedby="inputGroupPrepend"
                 required
                 />
@@ -58,7 +62,7 @@ const WorkingHoursManagerForm = (props: any) => {
                 </Form.Control.Feedback>
             </InputGroup>
         </Form.Group>
-        {props.shopRequestType ? 
+        {props.workingHoursRequestType ? 
             <Button type="submit">Edit working hour</Button>
         :
             <Button type="submit">Create working hour</Button>

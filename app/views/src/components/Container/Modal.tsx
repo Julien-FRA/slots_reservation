@@ -6,6 +6,7 @@ import { EditShopRequest } from '../../services/ShopRequest';
 import EditShops from "./Shop/EditShop";
 import { UpdateEmployeeWorkingHoursRequest } from "../../services/WorkingHoursRequest";
 import WorkingHoursManager from "./WorkingHours/WorkingHoursManager";
+import CrudOperationsWorkingHours from "./Appointment/EditDeleteWorkingHoursModal";
 
 const GlobalModal: any = (props: any) => {
     
@@ -24,7 +25,6 @@ const GlobalModal: any = (props: any) => {
         UpdateEmployeeWorkingHoursRequest(workingHours);
         window.location.reload();
     }
-        console.log("props.type", props.type)
     if (props.type === "deleteModal") {
             return (
             <Modal
@@ -154,11 +154,38 @@ const GlobalModal: any = (props: any) => {
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                    <WorkingHoursManager requestType="create"/>
+                    <WorkingHoursManager {...props} requestType="create"/>
             </Modal.Body>
             <Modal.Footer>
                 
             </Modal.Footer>
+            </Modal>
+        )
+    } else if (props.type === "manageWorkingHourModal") {
+        return (
+            <Modal
+            {...props}
+            size="lg"
+            aria-labelledby="contained-modal-title-vcenter"
+            centered
+            >
+                <Modal.Body>
+                    <CrudOperationsWorkingHours {...props}/>
+                </Modal.Body>
+            </Modal>
+        )
+    } else if (props.type === "editWorkingHourModal") {
+        var workingHourArray = props.workingHourArray;
+        return (
+            <Modal
+            {...props}
+            size="lg"
+            aria-labelledby="contained-modal-title-vcenter"
+            centered
+            >
+                <Modal.Body>
+                    <WorkingHoursManager workingHourArray={workingHourArray} {...props} requestType={"edit"}/>
+                </Modal.Body>
             </Modal>
         )
     }
