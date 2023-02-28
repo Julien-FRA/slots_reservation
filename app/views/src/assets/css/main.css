@@ -127,6 +127,21 @@
     border: 1px;
     opacity: 30%;
 }
+.calendar-footer {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+.calendar-footer-items {
+    padding: 5px;
+    margin: 2px 0px;
+    width: 80%;
+    font-size: 10px;
+    background-color: #000000;
+    color: #ffffff;
+    border-radius: 5px;
+    border: 1px; 
+}
 .calendar-header span {
     display: flex;
     text-align: center;

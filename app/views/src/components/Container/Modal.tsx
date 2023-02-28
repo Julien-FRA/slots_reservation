@@ -5,6 +5,7 @@ import { DeleteShopRequest } from '../../services/ShopRequest';
 import { EditShopRequest } from '../../services/ShopRequest';
 import EditShops from "./Shop/EditShop";
 import { UpdateEmployeeWorkingHoursRequest } from "../../services/WorkingHoursRequest";
+import WorkingHoursManager from "./WorkingHours/WorkingHoursManager";
 
 const GlobalModal: any = (props: any) => {
     
@@ -23,7 +24,7 @@ const GlobalModal: any = (props: any) => {
         UpdateEmployeeWorkingHoursRequest(workingHours);
         window.location.reload();
     }
-        
+        console.log("props.type", props.type)
     if (props.type === "deleteModal") {
             return (
             <Modal
@@ -139,6 +140,27 @@ const GlobalModal: any = (props: any) => {
                 </Modal.Footer>
             </Modal>
         );
+    } else if (props.type === "createWorkingHourModal") {
+        return (
+            <Modal
+                {...props}
+                size="lg"
+                aria-labelledby="contained-modal-title-vcenter"
+                centered
+            >
+            <Modal.Header closeButton>
+                <Modal.Title id="contained-modal-title-vcenter">
+                    Add working hours
+                </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                    <WorkingHoursManager requestType="create"/>
+            </Modal.Body>
+            <Modal.Footer>
+                
+            </Modal.Footer>
+            </Modal>
+        )
     }
 }
 

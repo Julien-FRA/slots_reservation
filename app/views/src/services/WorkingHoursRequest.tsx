@@ -39,8 +39,21 @@ export const UpdateEmployeeWorkingHoursRequest = async (workingHoursJSON: any): 
         }
     })
     .then(response => {
-      console.log("this is a good response",response);
+      console.log("this is a good response UpdateEmployeeWorkingHoursRequest",response);
     }).catch(error => {
-      console.log("this is an error",error);
+      console.log("this is an error UpdateEmployeeWorkingHoursRequest",error);
+    })
+);
+
+export const CreateEmployeeWorkingHoursRequest = async (workingHoursJSON: any): Promise<any> => (
+    await axios.put("http://localhost:3200/api/working-hours/create", {workingHoursJSON}, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+      console.log("this is a good response CreateEmployeeWorkingHoursRequest",response);
+    }).catch(error => {
+      console.log("this is an error CreateEmployeeWorkingHoursRequest",error);
     })
 );
