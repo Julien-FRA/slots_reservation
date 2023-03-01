@@ -14,7 +14,5 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Cd project
-      run: cd .\app\
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+      run: docker compose up --build
