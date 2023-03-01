@@ -33,6 +33,7 @@ func initHandlers() {
 	router.HandleFunc("/api/shops", controller.GetAllShops).Methods("GET")
 	router.HandleFunc("/api/shop/user/{id}", controller.GetUserShop).Methods("GET")
 	router.HandleFunc("/api/shop/{id}", controller.GetShop).Methods("GET")
+	router.HandleFunc("/api/shop/research/{stringResearch}", controller.GetShopByName).Methods("GET")
 	router.HandleFunc("/api/shop/create", controller.CreateShop).Methods("POST")
 	router.HandleFunc("/api/shop/update", controller.UpdateShop).Methods("PUT")
 	router.HandleFunc("/api/shop/delete/{id}", controller.DeleteShop).Methods("DELETE")

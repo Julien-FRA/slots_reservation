@@ -66,6 +66,25 @@ func GetShop(w http.ResponseWriter, r *http.Request) {
 
 }
 
+func GetShopByName(w http.ResponseWriter, r *http.Request) {
+	// Set the response content type
+	w.Header().Set("Content-Type", "application/json")
+
+	// Get the string parameter from the request URL
+	params := mux.Vars(r)
+	stringResearch := params["stringResearch"]
+	// Call the model function with the string parameter
+	shopData, err := model.GetShopByName(stringResearch)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(err.Error()))
+		return
+	}
+
+	// Return the shop as part of a JSON response
+	json.NewEncoder(w).Encode(shopData)
+
+}
 func CreateShop(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
