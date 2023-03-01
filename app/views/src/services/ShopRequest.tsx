@@ -23,6 +23,22 @@ export const GetAllUsers = async (): Promise<User | false> => (
     .catch((error) => false)
 );
 
+export const GetAllShops = async (): Promise<Shop | false> => (
+    await axios.get("http://localhost:3200/api/shops")
+        .then((response) => response.data)
+
+        .catch((error) => false)
+);
+
+export const GetSingleShop = async (shopId:any): Promise<Shop | false> => (
+    await axios.get(`http://localhost:3200/api/shop/${shopId}`)
+        .then((response) => {
+            return response.data;
+        })
+        .catch((error) => false)
+);
+
+
 export const CreateShopsRequest = async (shopJSON: any): Promise<any> => (
     await axios.post("http://localhost:3200/api/shop/create", {shopJSON}, {
         headers: {

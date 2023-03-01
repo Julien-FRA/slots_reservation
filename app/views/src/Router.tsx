@@ -7,6 +7,8 @@ import DashBoard from "./pages/Dashboard";
 import Shop from "./pages/dashboard-nested-pages/Shop";
 import Employees from "./pages/dashboard-nested-pages/Employees";
 import Calendar from "./pages/dashboard-nested-pages/Calendar";
+import Shops from "./pages/Shops";
+import SingleShop from "./pages/SingleShop";
 import { useContext } from "react";
 import { UserContext } from "./App";
 
@@ -40,6 +42,8 @@ export const RouterContainer = () => {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/profil" element={<LoginRoute><Profil /></LoginRoute>} />
+      <Route path="/shops" element={<Shops />} />
+      <Route path="/shop/:shopId" element={<SingleShop />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/dashboard" element={<ProtectedRoute><DashBoard /></ProtectedRoute>}>
