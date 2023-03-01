@@ -6,7 +6,7 @@ const Calendar = () => {
     const [hasShop, setHasShop] = useState<boolean>(false);
     const [shopData, setHasShopData] = useState<any>([]);
     useEffect(() => {
-        console.log("useEffect is RAN")
+        
         const hasShopRequest = async() => {
             try {
                 var result = await GetUserShopRequest(); //add user ID in this func
@@ -23,7 +23,6 @@ const Calendar = () => {
         }
         hasShopRequest()
     }, [hasShop]);
-        console.log("shopData data",shopData)
     const shopProps:any = {
         shopData: {shopData}
     }

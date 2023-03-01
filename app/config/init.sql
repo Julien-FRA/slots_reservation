@@ -44,6 +44,7 @@ create table if not exists workingHours (
        day date,
        startTime time,
        endTime time,
+       status varchar(64) null,
        CONSTRAINT fk_employees  FOREIGN KEY(idEmployee)
        REFERENCES employees(idEmployee) ON DELETE CASCADE
 );
@@ -69,7 +70,8 @@ create table if not exists appointments (
 insert into users(email, name, password, role)
 values
     ('juan@gmail.com', 'Juan', 'password', 0),
-    ('alex@gmail.com', 'Alex', 'password', 1),
+    ('alex@gmail.com', 'Alex', 'password', 0),
+    ('admin@gmail.com', 'Admin', '$2y$14$CZ2zBjwuc40DsJmN.GEHXedsiSGF.xEM0iwXRGT8Q.uMg5SE5eCMK', 1),
     ('Dulls@gmail.com', 'Dulls', 'password', 0);
 
     
@@ -87,17 +89,17 @@ values
     (2,'Gloria@gmail.com', '0632095234', 'Gloria', 'parent', 'dps', 'joue un dk givre (miskine)', 30),
     (2,'Adeline@gmail.com', '0632095234', 'Adeline', 'parent', 'dps', 'joue un dk givre (miskine)', 30);
 
-insert into workingHours(idEmployee, day, startTime, endTime)
+insert into workingHours(idEmployee, day, startTime, endTime, status)
 values
-    (1,'2023-02-25','14:35:20','15:35:20'),
-    (1, '2023-02-26','14:35:20','15:35:20'),
-    (2,'2023-02-26','14:35:20','15:35:20'),
-    (2, '2023-02-27','15:35:20','16:35:20'),
-    (3, '2023-03-01','10:35:20','11:35:20'),
-    (3, '2023-03-02','09:35:20','12:35:20'),
-    (4, '2023-03-03','16:35:20','13:35:20'),
-    (5, '2023-03-05','17:35:20','14:35:20'),
-    (6, '2023-03-06','13:35:20','15:35:20');
+    (1,'2023-02-25','14:35:20','15:35:20','available'),
+    (1, '2023-02-26','14:35:20','15:35:20','available'),
+    (2,'2023-02-26','14:35:20','15:35:20','available'),
+    (2, '2023-02-27','15:35:20','16:35:20','available'),
+    (3, '2023-03-01','10:35:20','11:35:20','available'),
+    (3, '2023-03-02','09:35:20','12:35:20','taken'),
+    (4, '2023-03-03','16:35:20','13:35:20','available'),
+    (5, '2023-03-05','17:35:20','14:35:20','available'),
+    (6, '2023-03-06','13:35:20','15:35:20','taken');
 
 insert into customers(idUser)
 values

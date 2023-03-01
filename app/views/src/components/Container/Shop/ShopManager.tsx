@@ -25,7 +25,6 @@ const ShopManager: React.FC = () => {
    * @param event
    */
   const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>): void=> {
-  console.log("this is idshop", idShop)
       const value = event.target.value; 
       setShopData({
           ...shopData,
@@ -64,7 +63,6 @@ const ShopManager: React.FC = () => {
      * function, to update front in consequence.
      */
   useEffect(() => {
-      console.log("useEffect is RAN")
         const hasShopRequest = async() => {
         setIsLoading(true);
         try {

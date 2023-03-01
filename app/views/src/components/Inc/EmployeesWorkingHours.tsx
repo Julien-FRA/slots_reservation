@@ -20,8 +20,6 @@ function Schedule() {
             var endTimeRegex = schedule[i].endTime.match(regex);
             var newDate = new Date(dayRegex[0]);
             var weekDay = newDate.toLocaleString('en-us', { weekday: 'long' });
-            console.log("dayRegex", dayRegex)
-            console.log("this is weekDayEMplo", weekDay)
             scheduleRegex[i].day = weekDay;
             scheduleRegex[i].startTime = startTimeRegex[0];
             scheduleRegex[i].endTime = endTimeRegex[0];

@@ -1,9 +1,7 @@
 import React, { SyntheticEvent, useState } from 'react'
 import { loginUser } from '../../services/UserRequest'
+import { useNavigate } from "react-router-dom";
 import BtnSubmit from '../Button/BtnSubmit'
-import InputMail from '../Input/InputMail'
-import InputPsw from '../Input/InputPsw'
-import InputText from '../Input/InputText'
 
 const LoginForm = () => {
   const dataUser = {
@@ -14,6 +12,8 @@ const LoginForm = () => {
   const [login, setLogin] = useState(dataUser);
   const [error, setError] = useState("");
   const [isLogin, setIsLogin] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleForm = (e: any) => {
     setLogin({ ...login, [e.target.id]: e.target.value })
@@ -29,6 +29,10 @@ const LoginForm = () => {
         if(successLogin.message !== "Echec de la connexion") {
           setIsLogin(true)
           setError("")
+          setTimeout(() => {
+            navigate('/profil')
+            window.location.reload()
+          }, 2000)
         } else {
           setIsLogin(false)
           setError("Echec de la connexion")
