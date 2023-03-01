@@ -63,17 +63,31 @@ func GetShopEmployees(w http.ResponseWriter, r *http.Request) {
 }
 
 func CreateEmployee(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
 	var employee model.Employee
-	decoder := json.NewDecoder(r.Body)
-	err := decoder.Decode(&employee)
+
+	var reqBody struct {
+		EmployeeJSON string `json:"employeeJSON"`
+	}
+
+	err := json.NewDecoder(r.Body).Decode(&reqBody)
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(err.Error()))
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	fmt.Printf("Received employee reqBody: %+v\n", reqBody)
+	err = json.Unmarshal([]byte(reqBody.EmployeeJSON), &employee)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 	fmt.Printf("Received employee data: %+v\n", employee)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
 	err = model.CreateEmployee(employee)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
@@ -84,18 +98,28 @@ func CreateEmployee(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// "json: cannot unmarshal string into Go struct field Employees.employeeJSON of type []model.Employee"
 func UpdateEmployee(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
-	decoder := json.NewDecoder(r.Body)
 	var employee model.Employee
-	err := decoder.Decode(&employee)
+
+	var reqBody struct {
+		EmployeeJSON string `json:"employeeJSON"`
+	}
+
+	err := json.NewDecoder(r.Body).Decode(&reqBody)
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(err.Error()))
+		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
+	err = json.Unmarshal([]byte(reqBody.EmployeeJSON), &employee)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	fmt.Printf("Received employee data in update: %+v\n", employee)
 	err = model.UpdateEmployee(employee)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
@@ -110,15 +134,15 @@ func DeleteEmployee(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	param := mux.Vars(r)
-	idStr := param["id"]
-	id, err := strconv.ParseUint(idStr, 10, 64)
+	idEmployee := param["id"]
+	id, err := strconv.ParseUint(idEmployee, 10, 64)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(err.Error()))
 		return
 	}
 
-	err = model.DeleteEmployee(id)
+	err = model.DeleteEmployeeWorkingHour(id)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(err.Error()))

@@ -2,18 +2,21 @@ import { useEffect, useState } from 'react';
 import { GetEmployeeWorkingHoursRequest, GetShopEmployeesWorkingHoursRequest } from '../../../services/WorkingHoursRequest';
 import { GetShopEmployeeRequest } from '../../../services/EmployeeRequests';
 import Calendar from '../Appointment/Calendar';
-import ShopsDropdown from './ShopsDropdown';
+import ShopsDropdown from '../../Input/ShopsDropdown';
+import { GetUserShopRequest } from '../../../services/ShopRequest';
 
 const CalendarManager = (props:any) => {
     const [currentWeek, setCurrentWeek] = useState(getCurrentWeekDates());
     const [employees, setEmployees] = useState<any>();
     const [employeeWorkingHours, setEmployeeWorkingHours] = useState<any>([]);
+    const [userShop, setUserShop] = useState<any>([]);
     const [shopEmployeesWorkinghours, setShopEmployeesWorkinghours] = useState<any>([]);
     /**
      * On admin selected shop hook is handled by dropdown, 
      * On customer its handled by shopCard containing shopId (this is in order to display shopEmployees)
      */
-    const [selectedShop, setSetSelectedShop] = useState<any>(2);
+    //const [selectedShop, setSetSelectedShop] = useState<any>(2);
+    const [userIdShop, setUserIdShop] = useState<any>();
     const [selectedEmployee, setSelectedEmployee] = useState(4);
     /**
      * This is for testing, we need to get the role somehow, cookies ? | false === user
@@ -88,7 +91,7 @@ const CalendarManager = (props:any) => {
     useEffect(() => {
         const employeeName = async() => {
             try {
-                var response = await GetShopEmployeeRequest(selectedShop);
+                var response = await GetShopEmployeeRequest(userIdShop);
                 setEmployees(response);
             } catch (error) {
                 console.error(error);
@@ -109,16 +112,27 @@ const CalendarManager = (props:any) => {
                  * Here add the props.idShop from Calendar page for admin session => selectedShop hook. 
                  * For users session we need to extract the idShop from the cookies => cookie data
                  */
-                var response = await GetShopEmployeesWorkingHoursRequest(selectedShop);
+                var response = await GetShopEmployeesWorkingHoursRequest(userIdShop);
                 setShopEmployeesWorkinghours(response);
             } catch (error) {
                 console.error(error);
             }
         }
+        const hasShopRequest = async() => {
+            
+            try {
+                var result = await GetUserShopRequest();
+                setUserShop(result);
+                setUserIdShop(result[0].idShop);  
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        hasShopRequest()
         workingHours();
         employeeName();
         ShopEmployeesWorkinghours();
-    }, [selectedEmployee, selectedShop]);
+    }, [selectedEmployee, userIdShop]);
     /**
      * Handle selected employee toggle change
      * @param value 
@@ -158,9 +172,10 @@ const CalendarManager = (props:any) => {
         shopEmployeesWorkinghours: shopEmployeesWorkinghours,
         dateArray: dateArray,
         shopData: props.shopData.shopData,
-        selectedShop: selectedShop,
-        setSetSelectedShop: setSetSelectedShop,
+        setUserIdShop: setUserIdShop,
         getCurrentWeekDates: getCurrentWeekDates,
+        userIdShop: userIdShop,
+        userShop: userShop,
         handlePrevWeek: handlePrevWeek,
         handleNextWeek: handleNextWeek,
         handleToggleChange: handleToggleChange
