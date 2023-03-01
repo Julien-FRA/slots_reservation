@@ -1,7 +1,7 @@
 import { Table } from 'react-bootstrap';
 import { useState, useEffect } from "react";
-import { User } from '../../services/HttpRequests';
-import { GetEmployeesWorkingHours } from '../../services/HttpRequests';
+import { User } from '../../services/ShopRequest';
+import { GetShopEmployeesWorkingHoursRequest } from '../../services/WorkingHoursRequest';
 
 function Schedule() {
     const [schedule, setSchedule] = useState <any>([]);
@@ -9,7 +9,7 @@ function Schedule() {
     useEffect(() => {
       const loadSchedule = async () => {
         try {
-          const schedule:any = await GetEmployeesWorkingHours();
+          const schedule:any = await GetShopEmployeesWorkingHoursRequest(1);
           var regex = "([0-9]+(:[0-9]+)+)";
           var regexDate = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
 
@@ -19,8 +19,7 @@ function Schedule() {
             var startTimeRegex = schedule[i].startTime.match(regex);
             var endTimeRegex = schedule[i].endTime.match(regex);
             var newDate = new Date(dayRegex[0]);
-            var weekDay = newDate.toLocaleString('en-us', {  weekday: 'long' });
-
+            var weekDay = newDate.toLocaleString('en-us', { weekday: 'long' });
             scheduleRegex[i].day = weekDay;
             scheduleRegex[i].startTime = startTimeRegex[0];
             scheduleRegex[i].endTime = endTimeRegex[0];

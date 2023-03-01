@@ -1,5 +1,7 @@
 package model
 
+import "fmt"
+
 type Shop struct {
 	ID      uint64 `json:"idShop"`
 	ID_USER uint64 `json:"idUser"`
@@ -43,11 +45,79 @@ func GetAllShops() ([]Shop, error) {
 	return shops, nil
 }
 
+func GetUserShop(idUser uint64) ([]Shop, error) {
+	var userShop []Shop
+
+	query := `select idShop, idUser, address, service, name from shops where idUser=$1;`
+
+	rows, err := db.Query(query, idUser)
+	if err != nil {
+		return userShop, err
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		var idShop, idUser uint64
+		var service, address, name string
+
+		err := rows.Scan(&idShop, &idUser, &address, &service, &name)
+		if err != nil {
+			return userShop, err
+		}
+
+		shop := Shop{
+			ID:      idShop,
+			ID_USER: idUser,
+			NAME:    name,
+			ADDRESS: address,
+			SERVICE: service,
+		}
+
+		userShop = append(userShop, shop)
+	}
+
+	return userShop, nil
+}
+
 func GetShop(id uint64) (Shop, error) {
 	var shop Shop
 
 	query := `select idShop, idUser, address, service, name from shops where idShop=$1;`
 	row, err := db.Query(query, id)
+	if err != nil {
+		return shop, err
+	}
+
+	defer row.Close()
+
+	if row.Next() {
+		var idShop, idUser uint64
+		var service, address, name string
+
+		err := row.Scan(&idShop, &idUser, &address, &service, &name)
+		if err != nil {
+			return shop, err
+		}
+
+		shop = Shop{
+			ID:      idShop,
+			ID_USER: idUser,
+			NAME:    name,
+			ADDRESS: address,
+			SERVICE: service,
+		}
+	}
+	return shop, nil
+}
+
+func GetShopByName(stringResearch string) (Shop, error) {
+	var shop Shop
+	fmt.Printf("Received shop datas: %+v\n", stringResearch)
+	query := `SELECT idShop, idUser, address, service, name FROM shops WHERE name ILIKE '%' || $1 || '%'`
+	fmt.Printf("Query is %+v\n", query)
+
+	row, err := db.Query(query, stringResearch)
 	if err != nil {
 		return shop, err
 	}

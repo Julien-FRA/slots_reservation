@@ -1,10 +1,10 @@
 import React from "react";
-import CreateShop from "../../components/Inc/CreateShopForm";
+import ShopManager from "../../components/Container/Shop/ShopManager";
 
 const Shop = () => (
     <div className="shop-container">
-        <h1>This is Shop SubPage</h1>
-        <CreateShop/>
+        <h1>My shops</h1>
+        <ShopManager/>
     </div>
 );
 

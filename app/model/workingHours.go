@@ -6,20 +6,23 @@ type WorkingHours struct {
 	DAY         string `json:"day"`
 	STARTTIME   string `json:"startTime"`
 	ENDTIME     string `json:"endTime"`
+	STATUS      string `json:"status"`
 }
 type ShopEmployeesWorkingHours struct {
+	ID          uint64 `json:"idWorkingHours"`
 	DAY         string `json:"day"`
 	STARTTIME   string `json:"startTime"`
 	ENDTIME     string `json:"endTime"`
 	ID_Employee uint64 `json:"idEmployee"`
 	SHOP        string `json:"shopName"`
 	NAME        string `json:"name"`
+	STATUS      string `json:"status"`
 }
 
 func GetEmployeeWorkingHours(id uint64) ([]WorkingHours, error) {
 	var employeeWorkingHours []WorkingHours
 
-	query := `select idWorkingHours, idEmployee, day, startTime, endTime from workingHours WHERE idEmployee=$1;`
+	query := `select idWorkingHours, idEmployee, day, startTime, endTime, status from workingHours WHERE idEmployee=$1;`
 	row, err := db.Query(query, id)
 	if err != nil {
 		return employeeWorkingHours, err
@@ -28,9 +31,9 @@ func GetEmployeeWorkingHours(id uint64) ([]WorkingHours, error) {
 
 	for row.Next() {
 		var idWorkingHours, idEmployee uint64
-		var day, startTime, endTime string
+		var day, startTime, endTime, status string
 
-		err := row.Scan(&idWorkingHours, &idEmployee, &day, &startTime, &endTime)
+		err := row.Scan(&idWorkingHours, &idEmployee, &day, &startTime, &endTime, &status)
 		if err != nil {
 			return employeeWorkingHours, err
 		}
@@ -41,6 +44,7 @@ func GetEmployeeWorkingHours(id uint64) ([]WorkingHours, error) {
 			DAY:         day,
 			STARTTIME:   startTime,
 			ENDTIME:     endTime,
+			STATUS:      status,
 		}
 		employeeWorkingHours = append(employeeWorkingHours, employeeWorkingHour)
 	}
@@ -50,7 +54,7 @@ func GetEmployeeWorkingHours(id uint64) ([]WorkingHours, error) {
 func GetShopEmployeesWorkingHours(id uint64) ([]ShopEmployeesWorkingHours, error) {
 	var shopEmployeesWorkingHours []ShopEmployeesWorkingHours
 
-	query := `select workingHours.day, workingHours.startTime, workingHours.endTime,  employees.idEmployee, employees.name, shops.name from ((workingHours
+	query := `select workingHours.idWorkingHours, workingHours.day, workingHours.startTime, workingHours.endTime, workingHours.status,  employees.idEmployee, employees.name, shops.name from ((workingHours
 INNER JOIN employees ON workingHours.idEmployee = employees.idEmployee)
 INNER JOIN shops ON employees.idShop = shops.idShop) WHERE shops.idShop =$1 ORDER BY workingHours.day;`
 
@@ -61,18 +65,20 @@ INNER JOIN shops ON employees.idShop = shops.idShop) WHERE shops.idShop =$1 ORDE
 	defer row.Close()
 
 	for row.Next() {
-		var idEmployee uint64
-		var day, startTime, endTime, shopName, name string
+		var idWorkingHours, idEmployee uint64
+		var day, startTime, endTime, status, shopName, name string
 
-		err := row.Scan(&day, &startTime, &endTime, &idEmployee, &name, &shopName)
+		err := row.Scan(&idWorkingHours, &day, &startTime, &endTime, &status, &idEmployee, &name, &shopName)
 		if err != nil {
 			return shopEmployeesWorkingHours, err
 		}
 
 		shopEmployeesWorkingHour := ShopEmployeesWorkingHours{
+			ID:          idWorkingHours,
 			DAY:         day,
 			STARTTIME:   startTime,
 			ENDTIME:     endTime,
+			STATUS:      status,
 			ID_Employee: idEmployee,
 			SHOP:        shopName,
 			NAME:        name,
@@ -83,9 +89,9 @@ INNER JOIN shops ON employees.idShop = shops.idShop) WHERE shops.idShop =$1 ORDE
 }
 
 func CreateEmployeeWorkingHours(workingHour WorkingHours) error {
-	query := `insert into workingHours(idEmployee, day, startTime, endTime) values($1, $2, $3, $4);`
+	query := `insert into workingHours(idEmployee, day, startTime, endTime, status) values($1, $2, $3, $4, $5);`
 
-	_, err := db.Exec(query, workingHour.ID_Employee, workingHour.DAY, workingHour.STARTTIME, workingHour.ENDTIME)
+	_, err := db.Exec(query, workingHour.ID_Employee, workingHour.DAY, workingHour.STARTTIME, workingHour.ENDTIME, workingHour.STATUS)
 
 	if err != nil {
 		return err
@@ -94,11 +100,22 @@ func CreateEmployeeWorkingHours(workingHour WorkingHours) error {
 	return nil
 }
 
-func DeleteEmployeeWorkingHour(idEmployee, idWorkingHour uint64) error {
+func DeleteEmployeeWorkingHour(id uint64) error {
 
-	query := `DELETE FROM workingHours WHERE idEmployee=$1 AND idWorkingHours =$2;`
+	query := `DELETE FROM workingHours WHERE idWorkingHours=$1 `
 
-	_, err := db.Exec(query, idEmployee, idWorkingHour)
+	_, err := db.Exec(query, id)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func UpdateEmployeeWorkingHours(workingHour WorkingHours) error {
+
+	query := `update workingHours set idEmployee=$1, day=$2, startTime=$3, endTime=$4, status=$5 where idWorkingHours=$6;`
+
+	_, err := db.Exec(query, workingHour.ID_Employee, workingHour.DAY, workingHour.STARTTIME, workingHour.ENDTIME, workingHour.STATUS, workingHour.ID)
 	if err != nil {
 		return err
 	}

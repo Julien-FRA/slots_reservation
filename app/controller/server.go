@@ -26,12 +26,14 @@ func initHandlers() {
 	router.HandleFunc("/api/user/login", controller.LoginUser).Methods("POST")
 	router.HandleFunc("/api/user/logout", controller.LogoutUser).Methods("POST")
 	router.HandleFunc("/api/users", controller.GetAllUsers).Methods("GET")
-	router.HandleFunc("/api/user/update", controller.UpdateUser).Methods("PUT")
+	router.HandleFunc("/api/user/update/{id}", controller.UpdateUser).Methods("PUT")
 	router.HandleFunc("/api/user/delete/{id}", controller.DeleteUser).Methods("DELETE")
 
 	// Router for professionals  test
 	router.HandleFunc("/api/shops", controller.GetAllShops).Methods("GET")
+	router.HandleFunc("/api/shop/user/{id}", controller.GetUserShop).Methods("GET")
 	router.HandleFunc("/api/shop/{id}", controller.GetShop).Methods("GET")
+	router.HandleFunc("/api/shop/research/{stringResearch}", controller.GetShopByName).Methods("GET")
 	router.HandleFunc("/api/shop/create", controller.CreateShop).Methods("POST")
 	router.HandleFunc("/api/shop/update", controller.UpdateShop).Methods("PUT")
 	router.HandleFunc("/api/shop/delete/{id}", controller.DeleteShop).Methods("DELETE")
@@ -39,6 +41,7 @@ func initHandlers() {
 	//router for employees
 	router.HandleFunc("/api/employees", controller.GetAllEmployees).Methods("GET")
 	router.HandleFunc("/api/employee/{id}", controller.GetEmployee).Methods("GET")
+	router.HandleFunc("/api/employee/shop/{id}", controller.GetShopEmployees).Methods("GET")
 	router.HandleFunc("/api/employee/create", controller.CreateEmployee).Methods("POST")
 	router.HandleFunc("/api/employee/update", controller.UpdateEmployee).Methods("PUT")
 	router.HandleFunc("/api/employee/delete/{id}", controller.DeleteEmployee).Methods("DELETE")
@@ -47,7 +50,16 @@ func initHandlers() {
 	router.HandleFunc("/api/working-hours-employee/{id}", controller.GetEmployeeWorkingHours).Methods("GET")
 	router.HandleFunc("/api/working-hours-shop/{id}", controller.GetShopEmployeesWorkingHours).Methods("GET")
 	router.HandleFunc("/api/working-hours/create", controller.CreateEmployeeWorkingHours).Methods("POST")
-	router.HandleFunc("/api/working-hours/delete/{idEmployee}/{idWorkingHours}", controller.DeleteEmployeeWorkingHour).Methods("DELETE")
+	router.HandleFunc("/api/working-hours/update", controller.UpdateEmployeeWorkingHours).Methods("PUT")
+	router.HandleFunc("/api/working-hours/delete/{id}", controller.DeleteEmployeeWorkingHour).Methods("DELETE")
+
+	// Router for appointments
+	router.HandleFunc("/api/appointments", controller.GetAllAppointmentsController).Methods("GET")
+	router.HandleFunc("/api/appointment/customer/{id}", controller.GetCustomerAppointmentsController).Methods("GET")
+	router.HandleFunc("/api/appointment/shop/{id}", controller.GetShopAppointmentsController).Methods("GET")
+	router.HandleFunc("/api/appointment/create", controller.CreateAppointmentController).Methods("POST")
+	router.HandleFunc("/api/appointment/update", controller.UpdateAppointmentController).Methods("PUT")
+	router.HandleFunc("/api/appointment/delete/{id}", controller.DeleteAppointmentController).Methods("DELETE")
 
 	//check status user
 	router.HandleFunc("/api/user/role/{id}", controller.RolesManagement).Methods("GET")
@@ -56,7 +68,7 @@ func initHandlers() {
 
 func Start() {
 	router = mux.NewRouter()
-  
+
 	corsOpts := cors.New(cors.Options{
 		AllowedOrigins: []string{"http://localhost:3000"}, //for this base url
 		AllowedMethods: []string{

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { IUser } from "../schemas/User";
 
-const PATH = 'http://localhost:3200/api';
+const PATH = process.env.REACT_APP_API_PATH;
 
 export interface User {
   idUser?: number;
@@ -54,3 +54,11 @@ export const getUser = async(): Promise<any> => (
     console.error('Error:', error);
   })
 )
+
+export const logoutUser = async () => {
+  await fetch(`${PATH}/user/logout`, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    credentials: 'include',
+  });
+}

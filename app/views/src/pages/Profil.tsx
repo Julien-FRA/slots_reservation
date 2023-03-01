@@ -1,8 +1,8 @@
-import UserProfil from "../components/Container/UserProfil";
+import UserProfil from "../components/Container/User/UserProfil";
 
 const Profil = () => (
     <>
-        <h1>This is Users Profil</h1>
+        <h1>Page du profil utilisateur</h1>
         <UserProfil />
     </>
 );
